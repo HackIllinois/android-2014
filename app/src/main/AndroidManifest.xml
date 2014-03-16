@@ -10,6 +10,12 @@
         <activity
             android:name="org.hackillinois.android.MainActivity"
             android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="org.hackillinois.android.LoginActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_login"
+            android:theme="@style/FullscreenTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
