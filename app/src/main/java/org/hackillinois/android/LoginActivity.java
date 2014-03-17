@@ -58,7 +58,7 @@ public class LoginActivity extends Activity {
         }
 
         final View controlsView = findViewById(R.id.fullscreen_content_controls);
-        final View contentView = findViewById(R.id.fullscreen_content);
+        final View contentView = findViewById(R.id.surface); // replaced fullscreen_content with surface
 
         // Set up an instance of SystemUiHider to control the system UI for
         // this activity.
@@ -117,7 +117,7 @@ public class LoginActivity extends Activity {
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
-        findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
+        findViewById(R.id.launchbutton).setOnTouchListener(mDelayHideTouchListener); //// CHECK THIS!!!!!!
     }
 
     @Override
@@ -163,3 +163,5 @@ public class LoginActivity extends Activity {
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
     }
 }
+
+
