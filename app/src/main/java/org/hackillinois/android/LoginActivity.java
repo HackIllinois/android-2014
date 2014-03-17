@@ -3,6 +3,7 @@ package org.hackillinois.android;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Point;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -14,6 +15,9 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.Toast;
+import android.widget.VideoView;
 
 import org.hackillinois.android.util.SystemUiHider;
 
@@ -25,11 +29,7 @@ import java.io.IOException;
  *
  * @see SystemUiHider
  */
-public class LoginActivity extends Activity implements SurfaceHolder.Callback {
-
-    private MediaPlayer mp;
-
-    private SurfaceView mSurfaceView;
+public class LoginActivity extends Activity {
 
     /**
      * Whether or not the system UI should be auto-hidden after
@@ -69,6 +69,31 @@ public class LoginActivity extends Activity implements SurfaceHolder.Callback {
         if (bar != null) {
             bar.hide();
         }
+
+        final ImageView button = (ImageView) findViewById(R.id.launchbutton);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(LoginActivity.this, "clicked", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(LoginActivity.this, GoogleAuthActivity.class));
+            }
+        });
+
+        final VideoView video = (VideoView) findViewById(R.id.videoView);
+        video.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.launch_video));
+        video.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                video.requestFocus();
+                video.start();
+            }
+        });
+        video.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                video.start();
+            }
+        });
 
         final View controlsView = findViewById(R.id.fullscreen_content_controls);
         final View contentView = findViewById(R.id.fullscreen_content);
@@ -132,12 +157,7 @@ public class LoginActivity extends Activity implements SurfaceHolder.Callback {
         // while interacting with the UI.
         //findViewById(R.id.launchbutton).setOnTouchListener(mDelayHideTouchListener);
 
-        mp = new MediaPlayer();
-        mSurfaceView = (SurfaceView) findViewById(R.id.surface);
-        SurfaceHolder holder = mSurfaceView.getHolder();
-        if (holder != null) {
-            holder.addCallback(this);
-        }
+
     }
 
     @Override
@@ -183,84 +203,6 @@ public class LoginActivity extends Activity implements SurfaceHolder.Callback {
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
     }
 
-    /**
-     * This is called immediately after the surface is first created.
-     * Implementations of this should start up whatever rendering code
-     * they desire.  Note that only one thread can ever draw into
-     * a {@link android.view.Surface}, so you should not draw into the Surface here
-     * if your normal rendering will be in another thread.
-     *
-     * @param holder The SurfaceHolder whose surface is being created.
-     */
-    @Override
-    public void surfaceCreated(SurfaceHolder holder) {
-        Uri video = Uri.parse("android.resource://" + getPackageName() + "/"
-                + R.raw.launch_video);
-
-        try {
-            mp.setDataSource(this, video);
-            mp.prepare();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-//        //Get the dimensions of the video
-//        int videoWidth = mp.getVideoHeight();
-//        int videoHeight = mp.getVideoWidth();
-//
-//        Display display = getWindowManager().getDefaultDisplay();
-//        Point size = new Point();
-//        display.getSize(size);
-//        int screen_width = size.x;
-//        int screen_height = size.y;
-//
-//        //Get the SurfaceView layout parameters
-//        ViewGroup.LayoutParams lp = mSurfaceView.getLayoutParams();
-//
-//        //Set the width of the SurfaceView to the width of the screen
-//        if (lp != null) {
-//            lp.width = screen_width;
-//
-//            //Set the height of the SurfaceView to match the aspect ratio of the video
-//            //be sure to cast these as floats otherwise the calculation will likely be 0
-//            lp.height = (int) (((float) videoHeight / (float) videoWidth) * (float) screen_width);
-//        }
-//
-//        mSurfaceView.setLayoutParams(lp);
-
-        mp.start();
-       // mp.setLooping(true);
-    }
-
-    /**
-     * This is called immediately after any structural changes (format or
-     * size) have been made to the surface.  You should at this point update
-     * the imagery in the surface.  This method is always called at least
-     * once, after {@link #surfaceCreated}.
-     *
-     * @param holder The SurfaceHolder whose surface has changed.
-     * @param format The new PixelFormat of the surface.
-     * @param width  The new width of the surface.
-     * @param height The new height of the surface.
-     */
-    @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
-    }
-
-    /**
-     * This is called immediately before a surface is being destroyed. After
-     * returning from this call, you should no longer try to access this
-     * surface.  If you have a rendering thread that directly accesses
-     * the surface, you must ensure that thread is no longer touching the
-     * Surface before returning from this function.
-     *
-     * @param holder The SurfaceHolder whose surface is being destroyed.
-     */
-    @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
-
-    }
 }
 
 
