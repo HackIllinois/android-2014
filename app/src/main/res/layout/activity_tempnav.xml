@@ -7,12 +7,19 @@
     <Button
         android:id="@+id/GoogleAuthNavBtn"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content" />
+        android:layout_width="wrap_content"
+        android:text="Google Auth Activity" />
 
     <Button
         android:id="@+id/HelpNavBtn"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content" />
+        android:layout_width="wrap_content"
+        android:text="Help Activity" />
 
+    <Button
+        android:id="@+id/NewsfeedBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Newsfeed Activity"/>
 
 </LinearLayout>

@@ -14,6 +14,10 @@ import android.widget.VideoView;
 
 /**
  * Created by fishbeinb on 3/19/14.
+ *
+ * This class is temporary-- it is not part of the real app.
+ * It is only used to bypass google authentication for testing purposes.
+ * -- Will
  */
 public class TempNavActivity extends Activity {
 
@@ -21,7 +25,7 @@ public class TempNavActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_google_auth);
+        setContentView(R.layout.activity_tempnav);
 
         ActionBar bar = getActionBar();
         if (bar != null) {
@@ -32,17 +36,23 @@ public class TempNavActivity extends Activity {
         GoogleAuthButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(TempNavActivity.this, "Google Auth", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(TempNavActivity.this, GoogleAuthActivity.class));
             }
         });
 
         final Button HelpButton = (Button) findViewById(R.id.HelpNavBtn);
-        GoogleAuthButton.setOnClickListener(new View.OnClickListener() {
+        HelpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(TempNavActivity.this, "Help", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(TempNavActivity.this, HelpActivity.class));
+            }
+        });
+
+        final Button NewsfeedButton = (Button) findViewById(R.id.NewsfeedBtn);
+        NewsfeedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(TempNavActivity.this, NewsfeedActivity.class));
             }
         });
     }

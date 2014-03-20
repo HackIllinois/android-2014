@@ -48,7 +48,7 @@ public class LoginActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(LoginActivity.this, "clicked", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(LoginActivity.this, GoogleAuthActivity.class));
+                startActivity(new Intent(LoginActivity.this, TempNavActivity.class));//GoogleAuthActivity.class));
             }
         });
 
