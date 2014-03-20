@@ -4,11 +4,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 
@@ -32,11 +36,12 @@ public class GoogleAuthActivity extends Activity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_google_auth);
 
+        Scope scope = new Scope(Scopes.PROFILE);
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(Plus.API, null)
-                .addScope(Plus.SCOPE_PLUS_LOGIN)
+                .addScope(scope)
                 .build();
     }
 
@@ -61,6 +66,8 @@ public class GoogleAuthActivity extends Activity implements
         if(Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null){
             Person current = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
             String id = current.getId(); // this is the id for the person we need to pass up to the DB
+            Log.d("ID", id);
+            Toast.makeText(this, id, Toast.LENGTH_SHORT).show();
         }
     }
 
