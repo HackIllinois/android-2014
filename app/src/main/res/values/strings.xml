@@ -14,5 +14,7 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_google_auth">GoogleAuthActivity</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_help">Help Activity</string>
+    <string name="title_activity_newsfeed">Newsfeed</string>
 
 </resources>

@@ -36,6 +36,22 @@
             android:name="org.hackillinois.android.GoogleAuthActivity"
             android:label="@string/title_activity_google_auth" >
         </activity>
+        <activity
+            android:name="org.hackillinois.android.TempNavActivity"
+            android:label="Tempory Navigation Activity" >
+        </activity>
+        <activity
+            android:name="org.hackillinois.android.HelpActivity"
+            android:label="@string/title_activity_help" >
+        </activity>
+        <activity
+            android:name="org.hackillinois.android.NewsfeedActivity"
+            android:label="@string/title_activity_newsfeed" >
+        </activity>
+        <activity
+            android:name="org.hackillinois.android.util.NewsfeedActivity"
+            android:label="@string/title_activity_newsfeed" >
+        </activity>
     </application>
 
 </manifest>
