@@ -3,6 +3,7 @@
     package="org.hackillinois.android" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
 
@@ -44,10 +45,6 @@
         </activity>
         <activity
             android:name="org.hackillinois.android.NewsfeedActivity"
-            android:label="@string/title_activity_newsfeed" >
-        </activity>
-        <activity
-            android:name="org.hackillinois.android.util.NewsfeedActivity"
             android:label="@string/title_activity_newsfeed" >
         </activity>
     </application>
