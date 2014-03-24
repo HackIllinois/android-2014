@@ -18,7 +18,7 @@ import org.json.JSONObject;
 
 public class NewsfeedActivity extends Activity implements AsyncJsonListener {
 
-    private static final String EXHIBITS_JSON_URL = "http://eohmobile.appspot.com/api/exhibits.json";
+    private static final String NEWSFEED_JSON_URL = "http://dev.hackillinois.org/mobile/newsfeed";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +27,7 @@ public class NewsfeedActivity extends Activity implements AsyncJsonListener {
 
         if( isOnline() ) {
             ProgressBar progress = (ProgressBar) findViewById(R.id.newsfeed_activity_progress);
-            AsyncGetJson task = new AsyncGetJson(this, EXHIBITS_JSON_URL, progress);
+            AsyncGetJson task = new AsyncGetJson(this, NEWSFEED_JSON_URL, progress);
             task.execute();
         } else {
             Toast.makeText(this, "No Internet connection found.", Toast.LENGTH_LONG).show();
@@ -66,17 +66,17 @@ public class NewsfeedActivity extends Activity implements AsyncJsonListener {
 
     /** Callback method that is called after the JSON is received **/
     @Override
-    public void onJsonReceived(JSONObject json) {
+    public void onJsonReceived(Object json) {
         try {
 
-            /** Get the data out of the JSON. The exact get("")'s here will depend on what
+            /** Get the data out of the JSON. The exact get("*")'s here will depend on what
              *  the backend returns.  {} is a JSONObject, and [] is a JSONArray */
-            JSONArray jsonArray = (JSONArray) json.get("results");
+            JSONArray jsonArray = (JSONArray) json;
             String output = "";
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject curr = jsonArray.getJSONObject(i);
-                String name = curr.getString("name");
-                output += name + "\n";
+                String description = curr.getString("description");
+                output += description + "\n";
             }
 
             TextView newsfeedText = (TextView) findViewById(R.id.newsfeed_activity_text);
