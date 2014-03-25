@@ -1,6 +1,10 @@
 package org.hackillinois.android;
 
 import android.graphics.Color;
+import android.text.Html;
+import android.text.Spanned;
+
+import java.util.ArrayList;
 
 /**
  * @author Will Hennessy
@@ -9,46 +13,37 @@ import android.graphics.Color;
  */
 public class NewsItem {
 
-    private String subject;
     private String description;
-    private String time;
+    private int time;
     private String iconUrl;
-    private Highlight[] highlights;  //:[[range,color,type]],
+    private ArrayList<Highlight> highlights;  // [[range,color], [range,color]]
     private boolean isEmergency;
 
 
     /** Constructor **/
-    public NewsItem(String subject, String description, String time, String iconUrl, Highlight[] highlighted, boolean isEmergency) {
-        this.subject = subject;
+    public NewsItem(String description, int time, String iconUrl, boolean isEmergency) {
         this.description = description;
         this.time = time;
         this.iconUrl = iconUrl;
-        this.highlights = highlighted;
         this.isEmergency = isEmergency;
+        this.highlights = null;
     }
 
 
-    public String getSubject() {
-        return subject;
-    }
-
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
-
-    public String getDescription() {
-        return description;
+    /** Getters and Setters **/
+    public Spanned getDescription() {
+        return Html.fromHtml(description);
     }
 
     public void setDescription(String description) {
         this.description = description;
     }
 
-    public String getTime() {
+    public int getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(int time) {
         this.time = time;
     }
 
@@ -60,14 +55,6 @@ public class NewsItem {
         this.iconUrl = iconUrl;
     }
 
-    public Highlight[] getHighlights() {
-        return highlights;
-    }
-
-    public void setHighlights(Highlight[] highlights) {
-        this.highlights = highlights;
-    }
-
     public boolean isEmergency() {
         return isEmergency;
     }
@@ -76,18 +63,57 @@ public class NewsItem {
         this.isEmergency = isEmergency;
     }
 
+    public void addHighlight(int startIdx, int endIdx, int r, int g, int b) {
+        if (highlights == null)
+            highlights = new ArrayList<Highlight>();
+
+        highlights.add(new Highlight(startIdx, endIdx, r, g, b));
+        generateHighlightedDescription();   // regenerate a description with colored word
+    }
+
+
+    /** Private method to generate a String description with colored/highlighted words
+     *  and set that as the member variable description. */
+    private void generateHighlightedDescription() {
+        StringBuilder colored = new StringBuilder();
+        Highlight currHighlight = null;
+
+        for( int i = 0; i < description.length(); i++ ) {
+
+            // check if this index is the start of a highlighted region
+            for(Highlight h : highlights) {
+                if ( currHighlight == null && i == h.startIdx ) {
+                    colored.append("<font color='");
+                    colored.append(h.color);
+                    colored.append("'>");
+                    currHighlight = h;
+                }
+            }
+
+            // append the current letter
+            colored.append(description.charAt(i));
+
+            // check if this index is the end of a highlighted region
+            if( currHighlight != null && i == currHighlight.endIdx ) {
+                colored.append("</font>");
+                currHighlight = null;
+            }
+        }
+
+        this.description = colored.toString();
+    }
+
 
     private class Highlight {
         public Highlight(int startIdx, int endIdx, int r, int g, int b) {
             this.startIdx = startIdx;
             this.endIdx = endIdx;
-            this.color = Color.rgb(r, g, b);
+            this.color = String.format("#%06X", 0xFFFFFF & Color.rgb(r, g, b));
         }
 
         int startIdx;       // index of the first char in the string to highlight
         int endIdx;         // index of the last char in the string to highlight
-        int color;          // integer rgb color to highlight the text
+        String color;       // String hex color to highlight the text
     }
-
 
 }

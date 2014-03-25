@@ -19,6 +19,7 @@ android {
 }
 
 dependencies {
+    compile files('libs/picasso-2.2.0.jar')
     compile 'com.android.support:support-v4:19.0.1'
     compile 'com.google.android.gms:play-services:4.2.42'
 }
