@@ -10,15 +10,16 @@ package org.hackillinois.android;
  * will call the onJsonReceived callback method after the JSON is retrieved.
  */
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
-
-import org.json.JSONObject;
-
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ProgressBar;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
 
 public class AsyncGetJson extends AsyncTask<String, Void, Integer> {
 
@@ -28,7 +29,7 @@ public class AsyncGetJson extends AsyncTask<String, Void, Integer> {
     private String json_url;			// the url of the JSON
     private AsyncJsonListener callback; // a reference to the AsyncJsonListener that requested this JSON
     private ProgressBar progress;		// the progress bar provided by the AsyncJsonListener
-    private JSONObject json;
+    private Object json;
 
 
     /** Constructor
@@ -64,7 +65,12 @@ public class AsyncGetJson extends AsyncTask<String, Void, Integer> {
                 json_str += line;
             in.close();
 
-            json = new JSONObject( json_str ); // the final JSON object
+
+            /** Must be able to retrieve either a JSONObject or JSONArray **/
+            if(json_str.charAt(0) == '{')
+                json = new JSONObject( json_str );
+            else if(json_str.charAt(0) == '[')
+                json = new JSONArray( json_str );
         }
         catch(Exception e) {
             e.printStackTrace();
