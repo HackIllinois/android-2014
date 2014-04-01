@@ -1,5 +1,9 @@
 <resources>
 
     <color name="black_overlay">#66000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="background_grey">#F2F2F2</color>
+    <color name="hackillinois_red">#C34831</color>
+    <color name="hackillinois_blue">#115E7B</color>
 
 </resources>

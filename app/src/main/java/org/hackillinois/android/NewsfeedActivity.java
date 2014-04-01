@@ -20,13 +20,18 @@ import java.util.ArrayList;
 
 public class NewsfeedActivity extends Activity implements AsyncJsonListener {
 
-    private static final String NEWSFEED_JSON_URL = "http://dev.hackillinois.org/mobile/newsfeed";
+    private static final String NEWSFEED_JSON_URL = "http://www.hackillinois.org/mobile/newsfeed";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newsfeed);
 
+        loadNews();
+    }
+
+
+    private void loadNews() {
         if( isOnline() ) {
             ProgressBar progress = (ProgressBar) findViewById(R.id.newsfeed_activity_progress);
             AsyncGetJson task = new AsyncGetJson(this, NEWSFEED_JSON_URL, progress);
@@ -46,11 +51,9 @@ public class NewsfeedActivity extends Activity implements AsyncJsonListener {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.newsfeed_menu_refresh) {
+            loadNews();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -107,6 +110,7 @@ public class NewsfeedActivity extends Activity implements AsyncJsonListener {
 
             ListView newsfeedList = (ListView) findViewById(R.id.newsfeed_activity_list);
             newsfeedList.setAdapter(new NewsfeedListAdapter(NewsfeedActivity.this, allNewsItems));
+
 
         } catch(JSONException j) {
             j.printStackTrace();

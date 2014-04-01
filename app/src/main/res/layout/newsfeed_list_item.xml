@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@color/background_grey"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="0dp" >
 
-    <ImageView
-        android:id="@+id/newsfeed_list_item_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true" />
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_toRightOf="@id/newsfeed_list_item_image"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp">
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="6dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:paddingLeft="26dp"
+        android:paddingRight="6dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
+        android:background="@color/white">
 
         <TextView
             android:id="@+id/newsfeed_list_item_description"
@@ -31,5 +35,13 @@
             android:layout_height="wrap_content" />
 
     </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/newsfeed_list_item_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/temp_blue_square"/>
 
 </RelativeLayout>

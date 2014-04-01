@@ -16,5 +16,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_help">Help Activity</string>
     <string name="title_activity_newsfeed">Newsfeed</string>
+    <string name="refresh">Refresh</string>
 
 </resources>
