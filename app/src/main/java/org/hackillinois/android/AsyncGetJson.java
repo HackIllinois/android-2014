@@ -33,7 +33,7 @@ public class AsyncGetJson extends AsyncTask<String, Void, Integer> {
 
 
     /** Constructor
-     * @param callback - a class that impement AsyncJsonListener
+     * @param callback - a class that implement AsyncJsonListener
      * @param json_url - the URL of the JSON to fetch
      * @param progress - (optional) the progress bar in the view that is loading JSON
     **/
