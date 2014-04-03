@@ -124,7 +124,9 @@ public class MainActivity extends Activity
             return fragment;
         }
 
-        public PlaceholderFragment() {
+        public PlaceholderFragment()
+        {
+
         }
 
         @Override

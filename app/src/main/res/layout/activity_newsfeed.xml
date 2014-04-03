@@ -9,7 +9,10 @@
         android:id="@+id/newsfeed_activity_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="top"/>
+        android:gravity="top"
+        android:dividerHeight="0dp"
+        android:divider="@null"
+        android:background="@color/background_grey" />
 
     <ProgressBar
         android:id="@+id/newsfeed_activity_progress"

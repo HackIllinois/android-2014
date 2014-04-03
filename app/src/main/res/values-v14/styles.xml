@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Blue action bar style -->
+    <style name="Theme.Hackillinois_blue_actionbar" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:actionBarItemBackground">@drawable/selectable_background_hackillinois_blue_actionbar</item>
+        <item name="android:popupMenuStyle">@style/PopupMenu.Hackillinois_blue_actionbar</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListView.Hackillinois_blue_actionbar</item>
+        <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.Hackillinois_blue_actionbar</item>
+        <item name="android:actionDropDownStyle">@style/DropDownNav.Hackillinois_blue_actionbar</item>
+        <item name="android:actionBarStyle">@style/ActionBar.Solid.Hackillinois_blue_actionbar</item>
+        <item name="android:actionModeBackground">@drawable/cab_background_top_hackillinois_blue_actionbar</item>
+        <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_hackillinois_blue_actionbar</item>
+        <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Hackillinois_blue_actionbar</item>
+
+        <!-- Light.DarkActionBar specific -->
+        <item name="android:actionBarWidgetTheme">@style/Theme.Hackillinois_blue_actionbar.Widget</item>
+
+    </style>
+
+    <style name="ActionBar.Solid.Hackillinois_blue_actionbar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@drawable/ab_solid_hackillinois_blue_actionbar</item>
+        <item name="android:backgroundStacked">@drawable/ab_stacked_solid_hackillinois_blue_actionbar</item>
+        <item name="android:backgroundSplit">@drawable/ab_bottom_solid_hackillinois_blue_actionbar</item>
+        <item name="android:progressBarStyle">@style/ProgressBar.Hackillinois_blue_actionbar</item>
+    </style>
+
+    <style name="ActionBar.Transparent.Hackillinois_blue_actionbar" parent="@style/Widget.AppCompat.ActionBar">
+        <item name="android:background">@drawable/ab_transparent_hackillinois_blue_actionbar</item>
+        <item name="android:progressBarStyle">@style/ProgressBar.Hackillinois_blue_actionbar</item>
+    </style>
+
+    <!-- this style is only referenced in a Light.DarkActionBar based theme -->
+    <style name="Theme.Hackillinois_blue_actionbar.Widget" parent="@style/Theme.AppCompat">
+        <item name="android:popupMenuStyle">@style/PopupMenu.Hackillinois_blue_actionbar</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListView.Hackillinois_blue_actionbar</item>
+    </style>
+
+
+
+    <!-- Red action bar style -->
+    <style name="Theme.Hackillinois_red_actionbar" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:actionBarItemBackground">@drawable/selectable_background_hackillinois_red_actionbar</item>
+        <item name="android:popupMenuStyle">@style/PopupMenu.Hackillinois_red_actionbar</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListView.Hackillinois_red_actionbar</item>
+        <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.Hackillinois_red_actionbar</item>
+        <item name="android:actionDropDownStyle">@style/DropDownNav.Hackillinois_red_actionbar</item>
+        <item name="android:actionBarStyle">@style/ActionBar.Solid.Hackillinois_red_actionbar</item>
+        <item name="android:actionModeBackground">@drawable/cab_background_top_hackillinois_red_actionbar</item>
+        <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_hackillinois_red_actionbar</item>
+        <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Hackillinois_red_actionbar</item>
+
+        <!-- Light.DarkActionBar specific -->
+        <item name="android:actionBarWidgetTheme">@style/Theme.Hackillinois_red_actionbar.Widget</item>
+
+    </style>
+
+    <style name="ActionBar.Solid.Hackillinois_red_actionbar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@drawable/ab_solid_hackillinois_red_actionbar</item>
+        <item name="android:backgroundStacked">@drawable/ab_stacked_solid_hackillinois_red_actionbar</item>
+        <item name="android:backgroundSplit">@drawable/ab_bottom_solid_hackillinois_red_actionbar</item>
+        <item name="android:progressBarStyle">@style/ProgressBar.Hackillinois_red_actionbar</item>
+    </style>
+
+    <style name="ActionBar.Transparent.Hackillinois_red_actionbar" parent="@style/Widget.AppCompat.ActionBar">
+        <item name="android:background">@drawable/ab_transparent_hackillinois_red_actionbar</item>
+        <item name="android:progressBarStyle">@style/ProgressBar.Hackillinois_red_actionbar</item>
+    </style>
+
+    <!-- this style is only referenced in a Light.DarkActionBar based theme -->
+    <style name="Theme.Hackillinois_red_actionbar.Widget" parent="@style/Theme.AppCompat">
+        <item name="android:popupMenuStyle">@style/PopupMenu.Hackillinois_red_actionbar</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListView.Hackillinois_red_actionbar</item>
+    </style>
+
+</resources>
