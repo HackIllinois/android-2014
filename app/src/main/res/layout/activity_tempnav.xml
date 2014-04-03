@@ -22,4 +22,16 @@
         android:layout_height="wrap_content"
         android:text="Newsfeed Activity"/>
 
+    <Button
+        android:id="@+id/ProfileBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Profile Activity"/>
+
+    <Button
+        android:id="@+id/SkillsBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Skills Activity"/>
+
 </LinearLayout>

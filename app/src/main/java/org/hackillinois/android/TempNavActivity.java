@@ -55,6 +55,24 @@ public class TempNavActivity extends Activity {
                 startActivity(new Intent(TempNavActivity.this, NewsfeedActivity.class));
             }
         });
-    }
+
+        final Button ProfileButton = (Button) findViewById(R.id.ProfileBtn);
+        ProfileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(TempNavActivity.this, ProfileActivity.class));
+            }
+        });
+
+        final Button SkillsButton = (Button) findViewById(R.id.SkillsBtn);
+        SkillsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(TempNavActivity.this, SkillsActivity.class));
+            }
+        });
+
+
+        }
 
 }

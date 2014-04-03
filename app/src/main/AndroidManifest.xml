@@ -55,7 +55,18 @@
             android:label="@string/title_activity_newsfeed"
             android:theme="@style/Theme.Hackillinois_blue_actionbar">
         </activity>
+<<<<<<< HEAD
+        <activity
+            android:name="org.hackillinois.android.ProfileActivity"
+            android:label="@string/title_activity_profile" >
+        </activity>
+        <activity
+            android:name="org.hackillinois.android.SkillsActivity"
+            android:label="@string/title_activity_skills" >
+        </activity>
+=======
 
+>>>>>>> 0cfc7e348386709f50912e4f48eeb384301e3cd7
     </application>
 
 </manifest>
