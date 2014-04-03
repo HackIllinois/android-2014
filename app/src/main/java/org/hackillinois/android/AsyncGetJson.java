@@ -19,6 +19,7 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class AsyncGetJson extends AsyncTask<String, Void, Integer> {
@@ -57,8 +58,15 @@ public class AsyncGetJson extends AsyncTask<String, Void, Integer> {
         try {
             URL source = new URL(json_url);
 
+
+            HttpURLConnection con = (HttpURLConnection) source.openConnection();
+            con.addRequestProperty("Email", "jacob@hackillinois.org");
+            con.setRequestMethod("GET");
+            con.setRequestProperty("Content-Type","application/json");
+
+
             /** get the JSON string **/
-            BufferedReader in = new BufferedReader( new InputStreamReader( source.openStream() ) );
+            BufferedReader in = new BufferedReader( new InputStreamReader( con.getInputStream() ) );
             String json_str = "";
             String line;
             while( (line = in.readLine()) != null )	// get the JSON
