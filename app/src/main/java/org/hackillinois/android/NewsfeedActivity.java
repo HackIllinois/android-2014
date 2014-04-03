@@ -60,7 +60,7 @@ public class NewsfeedActivity extends Activity implements AsyncJsonListener {
     }
 
 
-    /** Determines if the device is online **/
+    /** Determine if the device is online **/
     public boolean isOnline() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
