@@ -73,21 +73,17 @@ public class ScheduleFragment extends Fragment {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "Friday";
+                    return getString(R.string.friday);
                 case 1:
-                    return "Saturday";
+                    return getString(R.string.saturday);
                 case 2:
-                    return "Sunday";
+                    return getString(R.string.sunday);
             }
             return null;
         }
     }
 
     public static class FridaySchedule extends Fragment {
-
-        public FridaySchedule() {
-        }
-
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -97,9 +93,6 @@ public class ScheduleFragment extends Fragment {
 
     public static class SaturdaySchedule extends Fragment {
 
-        public SaturdaySchedule() {
-        }
-
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             return super.onCreateView(inflater, container, savedInstanceState);
@@ -107,9 +100,6 @@ public class ScheduleFragment extends Fragment {
     }
 
     public static class SundaySchedule extends Fragment {
-
-        public SundaySchedule() {
-        }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

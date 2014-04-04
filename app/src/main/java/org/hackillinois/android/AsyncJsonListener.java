@@ -6,6 +6,7 @@ package org.hackillinois.android;
  *  Use onJsonReceived(Object json) in a list fragment to access the JSON and populate UI
  */
 
+@Deprecated
 public interface AsyncJsonListener {
 
     public void onJsonReceived( Object json );

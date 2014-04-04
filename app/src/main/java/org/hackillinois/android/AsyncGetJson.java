@@ -22,6 +22,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+@Deprecated
 public class AsyncGetJson extends AsyncTask<String, Void, Integer> {
 
     private static final int JSON_SUCCESS = 0x0;

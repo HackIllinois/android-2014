@@ -19,5 +19,8 @@
     <string name="title_activity_skills">Skills</string>
     <string name="refresh">Refresh</string>
     <string name="ble_not_supported">BLE is not supported on this device</string>
+    <string name="friday">Friday</string>
+    <string name="saturday">Saturday</string>
+    <string name="sunday">Sunday</string>
 
 </resources>
