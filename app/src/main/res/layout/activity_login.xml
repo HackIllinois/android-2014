@@ -3,7 +3,7 @@
     tools:context="org.hackillinois.android.SplashScreenActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0099cc" >
+    >
 
     <VideoView
         android:id="@+id/videoView"
@@ -12,8 +12,15 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true" />
+        android:layout_alignParentRight="true"
+        />
 
+    <ImageView
+        android:id="@+id/splash_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/vid_splash"
+        android:scaleType="centerCrop"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,8 +47,6 @@
             android:layout_weight="1"
             android:src="@drawable/launch_button"
             android:clickable="true"/>
-
-
     </LinearLayout>
 
 
