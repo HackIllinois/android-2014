@@ -20,7 +20,6 @@ public class SplashScreenActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_login);
 
         View decorView = getWindow().getDecorView();
@@ -35,6 +34,7 @@ public class SplashScreenActivity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
                 startActivity(intent);//GoogleAuthActivity.class));
+                overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
             }
         });
 
@@ -43,7 +43,7 @@ public class SplashScreenActivity extends Activity {
         video.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
-                video.requestFocus();
+                //video.requestFocus();
                 video.start();
             }
         });
