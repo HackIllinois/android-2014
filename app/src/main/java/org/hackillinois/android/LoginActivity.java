@@ -33,8 +33,8 @@ public class LoginActivity extends Activity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(LoginActivity.this, "clicked", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));//GoogleAuthActivity.class));
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);//GoogleAuthActivity.class));
             }
         });
 
