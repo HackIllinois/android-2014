@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import org.hackillinois.android.models.people.Hacker;
 import org.hackillinois.android.models.people.Mentor;
 import org.hackillinois.android.models.people.Person;
@@ -18,10 +20,12 @@ import java.util.List;
 public class NearbyListAdapter extends ArrayAdapter<Person> {
 
     private LayoutInflater mLayoutInflater;
+    Picasso picasso;
 
     public NearbyListAdapter(Context context) {
         super(context, R.layout.profile_list_item, R.id.profile_list_item_name);
         mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        picasso = Picasso.with(context);
     }
 
     @Override
@@ -43,6 +47,9 @@ public class NearbyListAdapter extends ArrayAdapter<Person> {
 
         Person person = getItem(position);
         if (person != null) {
+            String url = "https://graph.facebook.com/" + person.getFbID() + "/picture?type=large";
+            picasso.load(url).resize(80, 80).centerCrop().into(viewHolder.profileImageView);
+
             viewHolder.nameTextView.setText(person.getName());
             if (person instanceof Staff ) {
                 viewHolder.companyTextView.setText(((Staff) person).getCompany());
@@ -53,7 +60,6 @@ public class NearbyListAdapter extends ArrayAdapter<Person> {
             } else if (person instanceof Hacker) {
                 viewHolder.companyTextView.setText(((Hacker) person).getSchool());
                 viewHolder.jobTitleTextView.setText(((Hacker) person).getYear());
-
             }
             viewHolder.locationTextView.setText(person.getHomebase());
         }

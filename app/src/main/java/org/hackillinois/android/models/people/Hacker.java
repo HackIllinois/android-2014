@@ -18,7 +18,6 @@ public class Hacker extends Person {
     }
 
     public String getSchool() {
-
         return school;
     }
 }

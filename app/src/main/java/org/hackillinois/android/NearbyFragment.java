@@ -46,7 +46,7 @@ public class NearbyFragment extends ListFragment
         mNearbyListAdapter = new NearbyListAdapter(getActivity());
         setListAdapter(mNearbyListAdapter);
         mHandler = new Handler();
-        mScanning = true;
+        mScanning = false;
         if (!getActivity().getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
             setEmptyText(getString(R.string.ble_not_supported));
             setListShown(true);
