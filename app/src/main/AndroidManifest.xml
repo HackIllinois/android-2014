@@ -60,10 +60,6 @@
             android:theme="@style/Theme.Hackillinois_blue_actionbar">
         </activity>
         <activity
-            android:name="org.hackillinois.android.ProfileActivity"
-            android:label="@string/title_activity_profile" >
-        </activity>
-        <activity
             android:name="org.hackillinois.android.SkillsActivity"
             android:label="@string/title_activity_skills" >
         </activity>
