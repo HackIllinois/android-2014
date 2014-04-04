@@ -9,24 +9,30 @@ import android.content.Intent;
 import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 
 import org.hackillinois.android.models.Person;
 
 import java.util.List;
 
-public class NearbyFragment extends ListFragment implements LoaderManager.LoaderCallbacks<List<Person>>, BluetoothAdapter.LeScanCallback{
+public class NearbyFragment extends ListFragment
+        implements LoaderManager.LoaderCallbacks<List<Person>>,
+        BluetoothAdapter.LeScanCallback {
+
+    private static final long SCAN_PERIOD = 10000;
+    private static final String TAG = "NearbyFragment";
 
     private BluetoothAdapter mBluetoothAdapter;
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
+    private Handler mHandler;
+    private boolean mScanning;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mHandler = new Handler();
+        mScanning = true;
         if (!getActivity().getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
             setEmptyText(getString(R.string.ble_not_supported));
             setListShown(true);
@@ -39,6 +45,26 @@ public class NearbyFragment extends ListFragment implements LoaderManager.Loader
                 Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                 startActivityForResult(enableBtIntent, 1);
             }
+            scanLeDevice(mScanning);
+        }
+    }
+
+    private void scanLeDevice(final boolean enable) {
+        if (enable) {
+            // Stops scanning after a pre-defined scan period.
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mScanning = false;
+                    mBluetoothAdapter.stopLeScan(NearbyFragment.this);
+                }
+            }, SCAN_PERIOD);
+
+            mScanning = true;
+            mBluetoothAdapter.startLeScan(NearbyFragment.this);
+        } else {
+            mScanning = false;
+            mBluetoothAdapter.stopLeScan(NearbyFragment.this);
         }
     }
 
@@ -59,6 +85,7 @@ public class NearbyFragment extends ListFragment implements LoaderManager.Loader
 
     @Override
     public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
+        Log.i(TAG, "ADDRESS IS " + device.getAddress());
 
     }
 }

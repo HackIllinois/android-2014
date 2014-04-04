@@ -1,23 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Blue action bar style -->
-    <style name="Theme.Hackillinois_blue_actionbar" parent="@style/Theme.AppCompat.Light.DarkActionBar">
-        <item name="actionBarItemBackground">@drawable/selectable_background_hackillinois_blue_actionbar</item>
-        <item name="popupMenuStyle">@style/PopupMenu.Hackillinois_blue_actionbar</item>
-        <item name="dropDownListViewStyle">@style/DropDownListView.Hackillinois_blue_actionbar</item>
-        <item name="actionBarTabStyle">@style/ActionBarTabStyle.Hackillinois_blue_actionbar</item>
-        <item name="actionDropDownStyle">@style/DropDownNav.Hackillinois_blue_actionbar</item>
-        <item name="actionBarStyle">@style/ActionBar.Solid.Hackillinois_blue_actionbar</item>
-        <item name="actionModeBackground">@drawable/cab_background_top_hackillinois_blue_actionbar</item>
-        <item name="actionModeSplitBackground">@drawable/cab_background_bottom_hackillinois_blue_actionbar</item>
-        <item name="actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Hackillinois_blue_actionbar</item>
-
-        <!-- Light.DarkActionBar specific -->
-        <item name="actionBarWidgetTheme">@style/Theme.Hackillinois_blue_actionbar.Widget</item>
-
-    </style>
-
     <style name="ActionBar.Solid.Hackillinois_blue_actionbar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
         <item name="background">@drawable/ab_solid_hackillinois_blue_actionbar</item>
         <item name="backgroundStacked">@drawable/ab_stacked_solid_hackillinois_blue_actionbar</item>
@@ -54,33 +37,6 @@
 
     <style name="ActionButton.CloseMode.Hackillinois_blue_actionbar" parent="@style/Widget.AppCompat.ActionButton.CloseMode">
         <item name="android:background">@drawable/btn_cab_done_hackillinois_blue_actionbar</item>
-    </style>
-
-    <!-- this style is only referenced in a Light.DarkActionBar based theme -->
-    <style name="Theme.Hackillinois_blue_actionbar.Widget" parent="@style/Theme.AppCompat">
-        <item name="popupMenuStyle">@style/PopupMenu.Hackillinois_blue_actionbar</item>
-        <item name="dropDownListViewStyle">@style/DropDownListView.Hackillinois_blue_actionbar</item>
-    </style>
-
-
-
-
-
-    <!-- Red action bar style -->
-    <style name="Theme.Hackillinois_red_actionbar" parent="@style/Theme.AppCompat.Light.DarkActionBar">
-        <item name="actionBarItemBackground">@drawable/selectable_background_hackillinois_red_actionbar</item>
-        <item name="popupMenuStyle">@style/PopupMenu.Hackillinois_red_actionbar</item>
-        <item name="dropDownListViewStyle">@style/DropDownListView.Hackillinois_red_actionbar</item>
-        <item name="actionBarTabStyle">@style/ActionBarTabStyle.Hackillinois_red_actionbar</item>
-        <item name="actionDropDownStyle">@style/DropDownNav.Hackillinois_red_actionbar</item>
-        <item name="actionBarStyle">@style/ActionBar.Solid.Hackillinois_red_actionbar</item>
-        <item name="actionModeBackground">@drawable/cab_background_top_hackillinois_red_actionbar</item>
-        <item name="actionModeSplitBackground">@drawable/cab_background_bottom_hackillinois_red_actionbar</item>
-        <item name="actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Hackillinois_red_actionbar</item>
-
-        <!-- Light.DarkActionBar specific -->
-        <item name="actionBarWidgetTheme">@style/Theme.Hackillinois_red_actionbar.Widget</item>
-
     </style>
 
     <style name="ActionBar.Solid.Hackillinois_red_actionbar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
@@ -121,10 +77,12 @@
         <item name="android:background">@drawable/btn_cab_done_hackillinois_red_actionbar</item>
     </style>
 
-    <!-- this style is only referenced in a Light.DarkActionBar based theme -->
-    <style name="Theme.Hackillinois_red_actionbar.Widget" parent="@style/Theme.AppCompat">
-        <item name="popupMenuStyle">@style/PopupMenu.Hackillinois_red_actionbar</item>
-        <item name="dropDownListViewStyle">@style/DropDownListView.Hackillinois_red_actionbar</item>
+    <!-- This isn't working :( -->
+    <style name="LauncherAnimation" parent="android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/abc_slide_in_bottom</item>
+        <item name="android:activityOpenExitAnimation">@anim/abc_slide_in_bottom</item>
+        <item name="android:activityCloseEnterAnimation">@anim/abc_slide_out_top</item>
+        <item name="android:activityCloseExitAnimation">@anim/abc_slide_out_top</item>
     </style>
 
 </resources>

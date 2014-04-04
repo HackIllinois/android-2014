@@ -50,7 +50,7 @@ public class MainActivity extends FragmentActivity
         switch (position){
             case 0:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
+                        .replace(R.id.container, new NearbyFragment())
                         .commit();
                 break;
             case 1:
@@ -75,7 +75,7 @@ public class MainActivity extends FragmentActivity
                 mTitle = getString(R.string.title_section2);
                 break;
             case 3:
-                mTitle = "Schedule";
+                mTitle = getString(R.string.title_section3);
                 break;
         }
     }
