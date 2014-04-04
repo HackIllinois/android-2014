@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">HackIllinois Android</string>
+    <string name="app_name_launcher">HackIllinois</string>
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
@@ -13,7 +14,6 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_google_auth">GoogleAuthActivity</string>
-    <string name="hello_world">Hello world!</string>
     <string name="title_activity_help">Help Activity</string>
     <string name="title_activity_newsfeed">Newsfeed</string>
     <string name="title_activity_profile">Profile</string>
