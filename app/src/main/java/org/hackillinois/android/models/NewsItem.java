@@ -1,4 +1,4 @@
-package org.hackillinois.android;
+package org.hackillinois.android.models;
 
 import android.graphics.Color;
 import android.text.Html;

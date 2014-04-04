@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import org.hackillinois.android.models.NewsItem;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

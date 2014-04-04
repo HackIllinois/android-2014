@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import org.hackillinois.android.models.NewsItem;
+
 import java.util.ArrayList;
 
 /**
