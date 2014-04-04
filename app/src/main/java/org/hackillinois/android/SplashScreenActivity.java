@@ -23,6 +23,11 @@ public class SplashScreenActivity extends Activity {
 
         setContentView(R.layout.activity_login);
 
+        View decorView = getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+        decorView.setSystemUiVisibility(uiOptions);
+
+
         final ImageView button = (ImageView) findViewById(R.id.launchbutton);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
