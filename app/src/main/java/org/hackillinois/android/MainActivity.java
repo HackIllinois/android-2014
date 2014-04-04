@@ -14,17 +14,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.hackillinois.android.models.people.Person;
+
+import java.util.List;
+
 public class MainActivity extends FragmentActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks,
+        PeopleFragment.OnDataPass {
 
-    /**
-     * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
-     */
     private NavigationDrawerFragment mNavigationDrawerFragment;
+    private List<Person> mPeople;
 
-    /**
-     * Used to store the last screen title. For use in {@link #restoreActionBar()}.
-     */
     private CharSequence mTitle;
 
     @Override
@@ -50,7 +50,7 @@ public class MainActivity extends FragmentActivity
         switch (position){
             case 0:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, new NearbyFragment())
+                        .replace(R.id.container, new PeopleFragment())
                         .commit();
                 break;
             case 1:
@@ -111,6 +111,11 @@ public class MainActivity extends FragmentActivity
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onDataPass(final List<Person> people) {
+        mPeople = people;
     }
 
     /**

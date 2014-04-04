@@ -17,12 +17,12 @@ import org.hackillinois.android.models.people.Staff;
 
 import java.util.List;
 
-public class NearbyListAdapter extends ArrayAdapter<Person> {
+public class PeopleListAdapter extends ArrayAdapter<Person> {
 
     private LayoutInflater mLayoutInflater;
     Picasso picasso;
 
-    public NearbyListAdapter(Context context) {
+    public PeopleListAdapter(Context context) {
         super(context, R.layout.profile_list_item, R.id.profile_list_item_name);
         mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         picasso = Picasso.with(context);
@@ -48,7 +48,7 @@ public class NearbyListAdapter extends ArrayAdapter<Person> {
         Person person = getItem(position);
         if (person != null) {
             String url = "https://graph.facebook.com/" + person.getFbID() + "/picture?type=large";
-            picasso.load(url).resize(80, 80).centerCrop().into(viewHolder.profileImageView);
+            picasso.load(url).resize(200, 200).centerCrop().into(viewHolder.profileImageView);
 
             viewHolder.nameTextView.setText(person.getName());
             if (person instanceof Staff ) {

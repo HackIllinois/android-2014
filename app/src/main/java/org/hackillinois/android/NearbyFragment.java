@@ -9,29 +9,24 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ListFragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.util.Log;
 
 import org.hackillinois.android.Utils.AdRecord;
 import org.hackillinois.android.models.people.Person;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 
 public class NearbyFragment extends ListFragment
-        implements LoaderManager.LoaderCallbacks<List<Person>>,
-        BluetoothAdapter.LeScanCallback {
+        implements BluetoothAdapter.LeScanCallback, PeopleFragment.OnDataPass {
 
     private static final long SCAN_PERIOD = 10000;
     private static final String TAG = "NearbyFragment";
-    private static final String PEOPLE_URL = "http://hackillinois.org/mobile/person";
 
     private BluetoothAdapter mBluetoothAdapter;
-    private NearbyListAdapter mNearbyListAdapter;
+    private PeopleListAdapter mPeopleListAdapter;
     private Handler mHandler;
     private boolean mScanning;
+    private List<Person> mPeople;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -43,8 +38,8 @@ public class NearbyFragment extends ListFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mNearbyListAdapter = new NearbyListAdapter(getActivity());
-        setListAdapter(mNearbyListAdapter);
+        mPeopleListAdapter = new PeopleListAdapter(getActivity());
+        setListAdapter(mPeopleListAdapter);
         mHandler = new Handler();
         mScanning = false;
         if (!getActivity().getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
@@ -61,16 +56,6 @@ public class NearbyFragment extends ListFragment
             }
             Log.i(TAG, mBluetoothAdapter.getAddress());
             scanLeDevice(mScanning);
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (mNearbyListAdapter.isEmpty()) {
-            getLoaderManager().initLoader(0, null, this).forceLoad();
-        } else {
-            setListShown(true);
         }
     }
 
@@ -94,32 +79,6 @@ public class NearbyFragment extends ListFragment
     }
 
     @Override
-    public Loader<List<Person>> onCreateLoader(int id, Bundle args) {
-        try {
-            return new PersonDataLoader(getActivity(), new URL(PEOPLE_URL));
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<List<Person>> loader, List<Person> data) {
-        mNearbyListAdapter.setData(data);
-
-        if (isResumed()) {
-            setListShown(true);
-        } else {
-            setListShownNoAnimation(true);
-        }
-
-    }
-
-    @Override
-    public void onLoaderReset(Loader<List<Person>> loader) {
-    }
-
-    @Override
     public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
         Log.i(TAG, "ADDRESS IS " + device.getAddress());
         List<AdRecord> adRecords = AdRecord.parseScanRecord(scanRecord);
@@ -128,4 +87,8 @@ public class NearbyFragment extends ListFragment
         }
     }
 
+    @Override
+    public void onDataPass(final List<Person> people) {
+        mPeople = people;
+    }
 }
