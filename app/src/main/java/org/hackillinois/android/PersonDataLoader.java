@@ -18,7 +18,7 @@ import java.util.List;
 
 public class PersonDataLoader extends AsyncTaskLoader<List<Person>> {
 
-    URL urlToLoad;
+    private URL urlToLoad;
 
     public PersonDataLoader(Context context, URL url) {
         super(context);
