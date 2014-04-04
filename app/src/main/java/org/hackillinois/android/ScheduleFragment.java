@@ -8,7 +8,6 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 /**
  * @author vishal
@@ -17,32 +16,16 @@ import android.widget.Toast;
  */
 public class ScheduleFragment extends Fragment {
 
-    public ScheduleFragment() {
-    }
-
     private SchedulePagerAdapter mSchedulePagerAdapter;
     private ViewPager mViewPager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_schedule, container, false);
-        if (rootView != null) {
-
-            return rootView;
-        }
-        return super.onCreateView(inflater, container, savedInstanceState);
-    }
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
+        mViewPager = (ViewPager) rootView.findViewById(R.id.schedule_pager);
         mSchedulePagerAdapter = new SchedulePagerAdapter(getFragmentManager());
-        mViewPager = (ViewPager) getActivity().findViewById(R.id.schedule_pager);
-        if (mViewPager == null) {
-            Toast.makeText(getActivity(), "FUCKKK", Toast.LENGTH_SHORT).show();
-        } else
-            mViewPager.setAdapter(mSchedulePagerAdapter);
+        mViewPager.setAdapter(mSchedulePagerAdapter);
+        return rootView;
     }
 
     public class SchedulePagerAdapter extends FragmentPagerAdapter {

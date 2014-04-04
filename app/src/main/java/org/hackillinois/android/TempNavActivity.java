@@ -3,14 +3,9 @@ package org.hackillinois.android;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.Toast;
-import android.widget.VideoView;
 
 /**
  * Created by fishbeinb on 3/19/14.
