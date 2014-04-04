@@ -1,6 +1,5 @@
 package org.hackillinois.android;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -12,11 +11,11 @@ import android.widget.VideoView;
 
 /**
  * @author Vishal Disawar, Will Hennessy
- *         LoginActivity -- rocket ship VideoView in the background, with the I logo
+ *         SplashScreenActivity -- rocket ship VideoView in the background, with the I logo
  *         and Launch button overlayed.
  */
 
-public class LoginActivity extends Activity {
+public class SplashScreenActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,16 +23,11 @@ public class LoginActivity extends Activity {
 
         setContentView(R.layout.activity_login);
 
-        ActionBar bar = getActionBar();
-        if (bar != null) {
-            bar.hide();
-        }
-
         final ImageView button = (ImageView) findViewById(R.id.launchbutton);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
                 startActivity(intent);//GoogleAuthActivity.class));
             }
         });

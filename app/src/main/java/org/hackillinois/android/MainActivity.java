@@ -64,7 +64,6 @@ public class MainActivity extends FragmentActivity
                         .commit();
                 break;
         }
-
     }
 
     public void onSectionAttached(int number) {
@@ -134,11 +133,6 @@ public class MainActivity extends FragmentActivity
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
             fragment.setArguments(args);
             return fragment;
-        }
-
-        public PlaceholderFragment()
-        {
-
         }
 
         @Override
