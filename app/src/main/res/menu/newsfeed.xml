@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="org.hackillinois.android.NewsfeedActivity" >
+    tools:context="org.hackillinois.android.NewsfeedFragment" >
 
     <item
         android:id="@+id/newsfeed_menu_refresh"

@@ -3,10 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_grey"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:paddingTop="8dp"
-    android:paddingBottom="0dp" >
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp"
+    android:paddingTop="6dp" >
 
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -15,12 +14,12 @@
         android:layout_height="match_parent"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="6dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp"
-        android:paddingLeft="26dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:paddingLeft="20dp"
         android:paddingRight="6dp"
-        android:paddingTop="6dp"
-        android:paddingBottom="6dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         android:background="@color/white">
 
         <TextView

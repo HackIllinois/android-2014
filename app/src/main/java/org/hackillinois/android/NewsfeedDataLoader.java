@@ -1,0 +1,79 @@
+package org.hackillinois.android;
+
+import android.content.Context;
+import android.support.v4.content.AsyncTaskLoader;
+
+import org.hackillinois.android.Utils.Utils;
+import org.hackillinois.android.models.NewsItem;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+public class NewsfeedDataLoader extends AsyncTaskLoader<List<NewsItem>> {
+
+    private URL urlToLoad;
+
+    public NewsfeedDataLoader(Context context, URL url) {
+        super(context);
+        urlToLoad = url;
+    }
+
+    @Override
+    public List<NewsItem> loadInBackground() {
+        String data = null;
+        try {
+            data = Utils.loadData(urlToLoad);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (data != null) {
+
+            try {
+                JSONArray jsonArray = new JSONArray(data);
+                ArrayList<NewsItem> allNewsItems = new ArrayList<NewsItem>();
+
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject curr = jsonArray.getJSONObject(i);
+                    String description = curr.getString("description");
+                    int time = curr.getInt("time");
+                    String iconUrl = curr.getString("icon_url");
+                    boolean isEmergency = curr.getBoolean("emergency");
+
+                    NewsItem buildingItem = new NewsItem(description, time, iconUrl, isEmergency);
+
+                    JSONArray jsonHighlights = curr.getJSONArray("highlighted");
+                    for( int j = 0; j < jsonHighlights.length(); j++ ) {
+                        JSONArray currHighlight = jsonHighlights.getJSONArray(j);
+
+                        // range
+                        JSONArray range = currHighlight.getJSONArray(0);
+                        int startIdx = range.getInt(0);
+                        int endIdx = range.getInt(1);
+
+                        // color
+                        JSONArray color = currHighlight.getJSONArray(1);
+                        int red = color.getInt(0);
+                        int green = color.getInt(1);
+                        int blue = color.getInt(2);
+
+                        buildingItem.addHighlight(startIdx, endIdx, red, green, blue);
+                    }
+
+                    allNewsItems.add( buildingItem );
+                }
+
+                return allNewsItems;
+
+            } catch(JSONException j) {
+                j.printStackTrace();
+            }
+        }
+        return null;
+    }
+}

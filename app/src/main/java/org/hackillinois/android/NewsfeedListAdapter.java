@@ -12,7 +12,7 @@ import com.squareup.picasso.Picasso;
 
 import org.hackillinois.android.models.NewsItem;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Will Hennessy
@@ -22,23 +22,14 @@ import java.util.ArrayList;
  */
 public class NewsfeedListAdapter extends ArrayAdapter<NewsItem> {
 
-    private ArrayList<NewsItem> allNewsItems;
     private LayoutInflater mLayoutInflater;
+    Picasso picasso;
 
     /** Constructor **/
-    public NewsfeedListAdapter(Activity activity, ArrayList<NewsItem> n) {
-        super(activity, 0, n);
-        allNewsItems = n;
+    public NewsfeedListAdapter(Activity activity) {
+        super(activity, R.layout.newsfeed_list_item, R.id.newsfeed_list_item_description);
         mLayoutInflater = activity.getLayoutInflater();
-    }
-
-
-    /** Custom class to hold rowViews in memory and re-use them
-     *  Decreases number of calls to rowView.findViewById() which is expensive. **/
-    static class ViewHolder {
-        public ImageView image;
-        public TextView description;
-        public TextView time;
+        picasso = Picasso.with(activity);
     }
 
 
@@ -59,13 +50,12 @@ public class NewsfeedListAdapter extends ArrayAdapter<NewsItem> {
         }
 
 
-        NewsItem newsItem = allNewsItems.get(position);
+        NewsItem newsItem = getItem(position);
 
         holder.description.setText( newsItem.getDescription() );
         holder.time.setText( "time: " + newsItem.getTime() );
 
-        Picasso.with(getContext())
-                .load( newsItem.getIconUrl() )
+        picasso.load(newsItem.getIconUrl())
                 // waiting for Eva to reply with more info about theses images before I do formatting...
                 //.placeholder(R.drawable.placeholder)
                 //.error(R.drawable.error)
@@ -74,6 +64,26 @@ public class NewsfeedListAdapter extends ArrayAdapter<NewsItem> {
                 .into(holder.image);
 
         return rowView;
+    }
+
+
+    /** Set the data for the list adapter **/
+    public void setData(List<NewsItem> data) {
+        if (data != null) {
+            clear();
+            for (NewsItem news : data) {
+                add(news);
+            }
+        }
+    }
+
+
+    /** Custom class to hold rowViews in memory and re-use them
+     *  Decreases number of calls to rowView.findViewById() which is expensive. **/
+    static class ViewHolder {
+        public ImageView image;
+        public TextView description;
+        public TextView time;
     }
 
 }
