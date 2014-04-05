@@ -38,8 +38,8 @@
 
     <ImageView
         android:id="@+id/newsfeed_list_item_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_alignParentLeft="true"
         android:src="@drawable/temp_blue_square"/>
 
