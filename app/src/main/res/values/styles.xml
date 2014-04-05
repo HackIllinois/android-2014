@@ -77,12 +77,9 @@
         <item name="android:background">@drawable/btn_cab_done_hackillinois_red_actionbar</item>
     </style>
 
-    <!-- This isn't working :( -->
     <style name="LauncherAnimation" parent="android:style/Animation.Activity">
-        <item name="android:activityOpenEnterAnimation">@anim/abc_slide_in_bottom</item>
-        <item name="android:activityOpenExitAnimation">@anim/abc_slide_in_bottom</item>
-        <item name="android:activityCloseEnterAnimation">@anim/abc_slide_out_top</item>
-        <item name="android:activityCloseExitAnimation">@anim/abc_slide_out_top</item>
+        <item name="android:windowEnterAnimation">@anim/abc_fade_in</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_up</item>
     </style>
 
 </resources>

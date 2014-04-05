@@ -1,42 +1,39 @@
 package org.hackillinois.android;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.DialogFragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.VideoView;
 
 /**
  * @author Vishal Disawar, Will Hennessy
- *         SplashScreenActivity -- rocket ship VideoView in the background, with the I logo
+ *         SplashScreenDialogFragment -- rocket ship VideoView in the background, with the I logo
  *         and Launch button overlayed.
  */
 
-public class SplashScreenActivity extends Activity {
+public class SplashScreenDialogFragment extends DialogFragment {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-
-        final ImageView splash = (ImageView) findViewById(R.id.splash_image);
-        final ImageView button = (ImageView) findViewById(R.id.launchbutton);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.activity_login, container, false);
+        final ImageView splash = (ImageView) rootView.findViewById(R.id.splash_image);
+        final ImageView button = (ImageView) rootView.findViewById(R.id.launchbutton);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                v.setVisibility(View.INVISIBLE);
-                Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
-                startActivity(intent);//GoogleAuthActivity.class));
-                overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
+                splash.setVisibility(View.VISIBLE);
+                dismiss();
             }
         });
 
-        final VideoView video = (VideoView) findViewById(R.id.videoView);
-        video.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.launch_video));
+        final VideoView video = (VideoView) rootView.findViewById(R.id.videoView);
+        video.setVideoURI(Uri.parse("android.resource://" + getActivity().getPackageName() + "/" + R.raw.launch_video));
         video.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
@@ -57,7 +54,7 @@ public class SplashScreenActivity extends Activity {
                 video.start();
             }
         });
+        return rootView;
     }
-
 }
 
