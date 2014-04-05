@@ -4,6 +4,9 @@ import android.graphics.Color;
 import android.text.Html;
 import android.text.Spanned;
 
+import org.joda.time.DateTime;
+import org.joda.time.Period;
+
 import java.util.ArrayList;
 
 /**
@@ -30,7 +33,7 @@ public class NewsItem {
     }
 
 
-    /** Getters and Setters **/
+    /** ----- Getters and Setters ----- **/
     public Spanned getDescription() {
         return Html.fromHtml(description);
     }
@@ -39,8 +42,8 @@ public class NewsItem {
         this.description = description;
     }
 
-    public int getTime() {
-        return time;
+    public String getTime() {
+        return format_time(time);
     }
 
     public void setTime(int time) {
@@ -62,6 +65,37 @@ public class NewsItem {
     public void setEmergency(boolean isEmergency) {
         this.isEmergency = isEmergency;
     }
+
+
+    /** ----- Private functions ----- **/
+    /** Convert an int unix time to a String i.e. '5m ago' **/
+    private String format_time(int unixTime) {
+        DateTime time = new DateTime((long) unixTime*1000);
+        DateTime now = new DateTime();
+        Period diff = new Period(time, now);
+
+        if(diff.getDays() > 0)
+            return diff.getDays() + "d ago";
+        else if(diff.getHours() > 0)
+            return diff.getHours() + "h ago";
+        else
+            return diff.getMinutes() + "m ago";
+    }
+
+
+    /** Private class to represent colored words in the news description **/
+    private class Highlight {
+        public Highlight(int startIdx, int endIdx, int r, int g, int b) {
+            this.startIdx = startIdx;
+            this.endIdx = endIdx;
+            this.color = String.format("#%06X", 0xFFFFFF & Color.rgb(r, g, b));
+        }
+
+        int startIdx;       // index of the first char in the string to highlight
+        int endIdx;         // index of the last char in the string to highlight
+        String color;       // String hex color to highlight the text
+    }
+
 
     public void addHighlight(int startIdx, int endIdx, int r, int g, int b) {
         if (highlights == null)
@@ -101,19 +135,6 @@ public class NewsItem {
         }
 
         this.description = colored.toString();
-    }
-
-
-    private class Highlight {
-        public Highlight(int startIdx, int endIdx, int r, int g, int b) {
-            this.startIdx = startIdx;
-            this.endIdx = endIdx;
-            this.color = String.format("#%06X", 0xFFFFFF & Color.rgb(r, g, b));
-        }
-
-        int startIdx;       // index of the first char in the string to highlight
-        int endIdx;         // index of the last char in the string to highlight
-        String color;       // String hex color to highlight the text
     }
 
 }

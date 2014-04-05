@@ -53,7 +53,7 @@ public class NewsfeedListAdapter extends ArrayAdapter<NewsItem> {
         NewsItem newsItem = getItem(position);
 
         holder.description.setText( newsItem.getDescription() );
-        holder.time.setText( "time: " + newsItem.getTime() );
+        holder.time.setText( newsItem.getTime() );
 
         picasso.load(newsItem.getIconUrl())
                 // waiting for Eva to reply with more info about theses images before I do formatting...
