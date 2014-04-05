@@ -1,8 +1,10 @@
 package org.hackillinois.android;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -29,17 +31,26 @@ public class MainActivity extends ActionBarActivity
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private List<Person> mPeople;
+    private SplashScreenDialogFragment mSplashFragment;
 
     private CharSequence mTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        SplashScreenDialogFragment splashFragment = new SplashScreenDialogFragment();
-        splashFragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.Theme_Hackillinois_Launcher);
-        splashFragment.show(fragmentTransaction, "splash");
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean viewed = sharedPreferences.getBoolean(getString(R.string.pref_splash_viewed), false);
+        if (!viewed) {
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            mSplashFragment = new SplashScreenDialogFragment();
+            mSplashFragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.Theme_Hackillinois_Launcher);
+            mSplashFragment.show(fragmentTransaction, "splash");
+        }
+
         setContentView(R.layout.activity_main);
+
+        ActionBar actionBar = getSupportActionBar(); // || getActionBar();
+        actionBar.setIcon(getResources().getDrawable(R.drawable.icon_white));
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
@@ -54,8 +65,16 @@ public class MainActivity extends ActionBarActivity
             // Tint that shit!
             SystemBarTintManager tintManager = new SystemBarTintManager(this);
             tintManager.setStatusBarTintEnabled(true);
-            int actionBarColor = getResources().getColor(R.color.hackillinois_blue);
+            int actionBarColor = getResources().getColor(R.color.hackillinois_blue_tran);
             tintManager.setStatusBarTintColor(actionBarColor);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mSplashFragment != null) {
+            mSplashFragment.dismiss();
         }
     }
 
@@ -103,7 +122,6 @@ public class MainActivity extends ActionBarActivity
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -173,5 +191,4 @@ public class MainActivity extends ActionBarActivity
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
     }
-
 }

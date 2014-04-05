@@ -2,7 +2,8 @@
 <resources>
 
     <style name="ActionBar.Solid.Hackillinois_blue_actionbar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="background">@drawable/ab_solid_hackillinois_blue_actionbar</item>
+        <item name="background">@color/hackillinois_blue_tran</item>
+        <!--<item name="background">@drawable/ab_solid_hackillinois_blue_actionbar</item> -->
         <item name="backgroundStacked">@drawable/ab_stacked_solid_hackillinois_blue_actionbar</item>
         <item name="backgroundSplit">@drawable/ab_bottom_solid_hackillinois_blue_actionbar</item>
         <item name="progressBarStyle">@style/ProgressBar.Hackillinois_blue_actionbar</item>

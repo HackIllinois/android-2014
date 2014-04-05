@@ -5,5 +5,6 @@
     <color name="background_grey">#F2F2F2</color>
     <color name="hackillinois_red">#C34831</color>
     <color name="hackillinois_blue">#115E7B</color>
+    <color name="hackillinois_blue_tran">#DD115E7B</color>
 
 </resources>

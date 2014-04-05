@@ -22,5 +22,6 @@
     <string name="friday">Friday</string>
     <string name="saturday">Saturday</string>
     <string name="sunday">Sunday</string>
+    <string name="pref_splash_viewed">PREF_SPLASH_VIEWED</string>
 
 </resources>

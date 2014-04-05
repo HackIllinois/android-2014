@@ -8,9 +8,11 @@
         <item name="actionBarTabStyle">@style/ActionBarTabStyle.Hackillinois_blue_actionbar</item>
         <item name="actionDropDownStyle">@style/DropDownNav.Hackillinois_blue_actionbar</item>
         <item name="actionBarStyle">@style/ActionBar.Solid.Hackillinois_blue_actionbar</item>
+        <item name="background">@color/hackillinois_blue_tran</item>
         <item name="actionModeBackground">@drawable/cab_background_top_hackillinois_blue_actionbar</item>
         <item name="actionModeSplitBackground">@drawable/cab_background_bottom_hackillinois_blue_actionbar</item>
         <item name="actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Hackillinois_blue_actionbar</item>
+        <item name="windowActionBarOverlay">true</item>
 
         <!-- Light.DarkActionBar specific -->
         <item name="actionBarWidgetTheme">@style/Theme.Hackillinois_blue_actionbar.Widget</item>

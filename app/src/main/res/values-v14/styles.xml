@@ -3,7 +3,8 @@
 
 
     <style name="ActionBar.Solid.Hackillinois_blue_actionbar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@drawable/ab_solid_hackillinois_blue_actionbar</item>
+        <item name="android:background">@color/hackillinois_blue_tran</item>
+        <!--<item name="android:background">@drawable/ab_solid_hackillinois_blue_actionbar</item>-->
         <item name="android:backgroundStacked">@drawable/ab_stacked_solid_hackillinois_blue_actionbar</item>
         <item name="android:backgroundSplit">@drawable/ab_bottom_solid_hackillinois_blue_actionbar</item>
         <item name="android:progressBarStyle">@style/ProgressBar.Hackillinois_blue_actionbar</item>

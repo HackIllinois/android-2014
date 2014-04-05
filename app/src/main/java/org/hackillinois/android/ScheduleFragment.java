@@ -1,5 +1,6 @@
 package org.hackillinois.android;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -8,6 +9,8 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import org.hackillinois.android.Utils.Utils;
 
 /**
  * @author vishal
@@ -20,12 +23,25 @@ public class ScheduleFragment extends Fragment {
     private ViewPager mViewPager;
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_schedule, container, false);
         mViewPager = (ViewPager) rootView.findViewById(R.id.schedule_pager);
         mSchedulePagerAdapter = new SchedulePagerAdapter(getFragmentManager());
         mViewPager.setAdapter(mSchedulePagerAdapter);
+        mViewPager.setClipToPadding(false);
+        Utils.setInsets(getActivity(), mViewPager);
         return rootView;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        ((MainActivity) activity).onSectionAttached(3);
     }
 
     public class SchedulePagerAdapter extends FragmentPagerAdapter {

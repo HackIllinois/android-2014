@@ -26,6 +26,8 @@ public class PeopleFragment extends ListFragment
         super.onActivityCreated(savedInstanceState);
         setEmptyText("No peeps");
         setListShown(false);
+        getListView().setClipToPadding(false);
+        Utils.setInsets(getActivity(), getListView());
     }
 
     @Override
@@ -44,8 +46,6 @@ public class PeopleFragment extends ListFragment
         } else {
             setListShown(true);
         }
-        getListView().setClipToPadding(false);
-        Utils.setInsets(getActivity(), getListView());
     }
 
     @Override
@@ -78,6 +78,7 @@ public class PeopleFragment extends ListFragment
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         dataPasser = (OnDataPass) activity;
+        ((MainActivity) activity).onSectionAttached(1);
     }
 
     public interface OnDataPass {
