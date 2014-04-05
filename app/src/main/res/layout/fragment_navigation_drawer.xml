@@ -6,4 +6,5 @@
     android:divider="@android:color/transparent"
     android:dividerHeight="0dp"
     android:background="#cccc"
+    android:paddingTop="?attr/actionBarSize"
     tools:context="org.hackillinois.android.NavigationDrawerFragment" />

@@ -12,6 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,12 @@ public class PersonDataLoader extends AsyncTaskLoader<List<Person>> {
 
     @Override
     public List<Person> loadInBackground() {
-        String data = Utils.loadData(urlToLoad);
+        String data = null;
+        try {
+            data = Utils.loadData(urlToLoad);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         if (data != null) {
             List<Person> persons = new ArrayList<Person>();
             try {

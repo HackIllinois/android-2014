@@ -5,42 +5,44 @@ import android.os.Build;
 import android.view.View;
 
 import com.readystatesoftware.systembartint.SystemBarTintManager;
+import com.squareup.okhttp.OkHttpClient;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.StringWriter;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class Utils {
 
-    public static String loadData(URL urlToLoad) {
-        HttpURLConnection con = null;
+    private static OkHttpClient client = new OkHttpClient();
+
+    public static String loadData(URL urlToLoad) throws IOException {
+        HttpURLConnection con = client.open(urlToLoad);
+        InputStream inputStream = null;
         try {
-            con = (HttpURLConnection) urlToLoad.openConnection();
             con.addRequestProperty("Email", "jacob@hackillinois.org");
             con.setRequestMethod("GET");
             con.setRequestProperty("Content-Type", "application/json");
 
-            InputStreamReader inputStreamReader = new InputStreamReader(con.getInputStream());
-            StringWriter stringWriter = new StringWriter();
-            char[] buffer = new char[8192];
-            int count;
-            while ((count = inputStreamReader.read(buffer, 0, buffer.length)) != -1) {
-                stringWriter.write(buffer, 0, count);
-            }
-            return stringWriter.toString();
-        } catch (IOException e) {
-            e.printStackTrace();
+            inputStream = con.getInputStream();
+
+            byte[] response = readFully(inputStream);
+            return new String(response);
         } finally {
-            try {
-                if (con != null) {
-                    con.disconnect();
-                }
-            } catch (Exception ignored) {
+            if (inputStream != null) {
+                inputStream.close();
             }
         }
-        return null;
+    }
+
+    private static byte[] readFully(InputStream in) throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        for (int count; (count = in.read(buffer)) != -1; ) {
+            out.write(buffer, 0, count);
+        }
+        return out.toByteArray();
     }
 
     public static void setInsets(Activity context, View view) {
