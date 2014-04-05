@@ -23,6 +23,7 @@ public class SplashScreenDialogFragment extends DialogFragment {
 
     private ImageView splash;
     private VideoView video;
+    private boolean prepared;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,9 +35,7 @@ public class SplashScreenDialogFragment extends DialogFragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //video.stopPlayback();
-                //video.setVisibility(View.INVISIBLE);
-//                splash.setVisibility(View.VISIBLE);
+                splash.setVisibility(View.VISIBLE);
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putBoolean(getString(R.string.pref_splash_viewed), true);
@@ -59,27 +58,31 @@ public class SplashScreenDialogFragment extends DialogFragment {
     @Override
     public void onStop() {
         super.onStop();
-        video.stopPlayback();
-        splash.setVisibility(View.VISIBLE);
+        video.pause();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        video.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                video.start();
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        splash.setVisibility(View.INVISIBLE);
-                    }
-                }, 100);
 
-            }
-        });
+        if (prepared) {
+            video.resume();
+        } else {
+            video.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    video.start();
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            prepared = true;
+                            splash.setVisibility(View.INVISIBLE);
+                        }
+                    }, 100);
+                }
+            });
+        }
     }
 }
 

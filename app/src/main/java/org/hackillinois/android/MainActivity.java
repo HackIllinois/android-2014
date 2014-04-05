@@ -33,10 +33,13 @@ public class MainActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        final FragmentManager fm = getSupportFragmentManager();
+        mSplashFragment = (SplashScreenDialogFragment) fm.findFragmentByTag("splash");
         boolean viewed = sharedPreferences.getBoolean(getString(R.string.pref_splash_viewed), false);
-        if (!viewed) {
+        if (!viewed && mSplashFragment == null) {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             mSplashFragment = new SplashScreenDialogFragment();
+            mSplashFragment.setRetainInstance(false);
             mSplashFragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.Theme_Hackillinois_Launcher);
             mSplashFragment.show(fragmentTransaction, "splash");
         }
@@ -61,14 +64,6 @@ public class MainActivity extends ActionBarActivity
             tintManager.setStatusBarTintEnabled(true);
             int actionBarColor = getResources().getColor(R.color.hackillinois_blue_tran);
             tintManager.setStatusBarTintColor(actionBarColor);
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (mSplashFragment != null) {
-            mSplashFragment.dismiss();
         }
     }
 
