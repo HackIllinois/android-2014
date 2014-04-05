@@ -41,7 +41,7 @@ public class TempNavActivity extends Activity {
         NewsfeedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(TempNavActivity.this, NewsfeedActivity.class));
+                startActivity(new Intent(TempNavActivity.this, NewsfeedFragment.class));
             }
         });
 
