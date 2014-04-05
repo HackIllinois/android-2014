@@ -1,6 +1,5 @@
 package org.hackillinois.android;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,11 +20,6 @@ public class TempNavActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_tempnav);
-
-        ActionBar bar = getActionBar();
-        if (bar != null) {
-            bar.hide();
-        }
 
         final Button GoogleAuthButton = (Button) findViewById(R.id.GoogleAuthNavBtn);
         GoogleAuthButton.setOnClickListener(new View.OnClickListener() {

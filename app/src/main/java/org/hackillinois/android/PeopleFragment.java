@@ -6,6 +6,7 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 
+import org.hackillinois.android.Utils.Utils;
 import org.hackillinois.android.models.people.Person;
 
 import java.net.MalformedURLException;
@@ -32,6 +33,7 @@ public class PeopleFragment extends ListFragment
         super.onCreate(savedInstanceState);
         mPeopleListAdapter = new PeopleListAdapter(getActivity());
         setListAdapter(mPeopleListAdapter);
+
     }
 
     @Override
@@ -42,6 +44,8 @@ public class PeopleFragment extends ListFragment
         } else {
             setListShown(true);
         }
+        getListView().setClipToPadding(false);
+        Utils.setInsets(getActivity(), getListView());
     }
 
     @Override

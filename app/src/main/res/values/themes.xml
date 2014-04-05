@@ -16,6 +16,10 @@
         <item name="actionBarWidgetTheme">@style/Theme.Hackillinois_blue_actionbar.Widget</item>
     </style>
 
+    <!-- this is for transluscent bar compatibility-->
+    <style name="Theme.Hackillinois_blue_actionbar.transCompat" parent="@style/Theme.Hackillinois_blue_actionbar">
+    </style>
+
     <!-- this style is only referenced in a Light.DarkActionBar based theme -->
     <style name="Theme.Hackillinois_blue_actionbar.Widget" parent="@style/Theme.AppCompat">
         <item name="popupMenuStyle">@style/PopupMenu.Hackillinois_blue_actionbar</item>
