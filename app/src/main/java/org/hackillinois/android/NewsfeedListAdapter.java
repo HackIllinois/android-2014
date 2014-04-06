@@ -51,6 +51,7 @@ public class NewsfeedListAdapter extends ArrayAdapter<NewsItem> {
         holder.description.setText( newsItem.getDescription() );
         holder.time.setText( newsItem.getTime() );
         final Resources resources = getContext().getResources();
+        // this is super hacky
         if (newsItem.isEmergency()) {
             holder.image.setImageDrawable(resources.getDrawable(R.drawable.emergency));
         } else if (newsItem.getIconUrl().contains("announce")){

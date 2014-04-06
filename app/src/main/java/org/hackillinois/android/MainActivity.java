@@ -47,7 +47,7 @@ public class MainActivity extends ActionBarActivity
         setContentView(R.layout.activity_main);
 
         ActionBar actionBar = getSupportActionBar(); // || getActionBar();
-        actionBar.setIcon(getResources().getDrawable(R.drawable.icon_white));
+        actionBar.setIcon(getResources().getDrawable(R.drawable.hackillinois_icon_white));
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
