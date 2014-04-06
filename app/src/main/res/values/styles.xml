@@ -2,80 +2,13 @@
 <resources>
 
     <style name="ActionBar.Solid.Hackillinois_blue_actionbar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="background">@color/hackillinois_blue_tran</item>
-        <!--<item name="background">@drawable/ab_solid_hackillinois_blue_actionbar</item> -->
-        <item name="backgroundStacked">@drawable/ab_stacked_solid_hackillinois_blue_actionbar</item>
-        <item name="backgroundSplit">@drawable/ab_bottom_solid_hackillinois_blue_actionbar</item>
-        <item name="progressBarStyle">@style/ProgressBar.Hackillinois_blue_actionbar</item>
-    </style>
-
-    <style name="ActionBar.Transparent.Hackillinois_blue_actionbar" parent="@style/Widget.AppCompat.ActionBar">
-        <item name="background">@drawable/ab_transparent_hackillinois_blue_actionbar</item>
-        <item name="progressBarStyle">@style/ProgressBar.Hackillinois_blue_actionbar</item>
-    </style>
-
-    <style name="PopupMenu.Hackillinois_blue_actionbar" parent="@style/Widget.AppCompat.PopupMenu">
-        <item name="android:popupBackground">@drawable/menu_dropdown_panel_hackillinois_blue_actionbar</item>
-    </style>
-
-    <style name="DropDownListView.Hackillinois_blue_actionbar" parent="@style/Widget.AppCompat.ListView.DropDown">
-        <item name="android:listSelector">@drawable/selectable_background_hackillinois_blue_actionbar</item>
-    </style>
-
-    <style name="ActionBarTabStyle.Hackillinois_blue_actionbar" parent="@style/Widget.AppCompat.ActionBar.TabView">
-        <item name="android:background">@drawable/tab_indicator_ab_hackillinois_blue_actionbar</item>
-    </style>
-
-    <style name="DropDownNav.Hackillinois_blue_actionbar" parent="@style/Widget.AppCompat.Spinner.DropDown.ActionBar">
-        <item name="android:background">@drawable/spinner_background_ab_hackillinois_blue_actionbar</item>
-        <item name="android:popupBackground">@drawable/menu_dropdown_panel_hackillinois_blue_actionbar</item>
-        <item name="android:dropDownSelector">@drawable/selectable_background_hackillinois_blue_actionbar</item>
-    </style>
-
-    <style name="ProgressBar.Hackillinois_blue_actionbar" parent="@style/Widget.AppCompat.ProgressBar.Horizontal">
-        <item name="android:progressDrawable">@drawable/progress_horizontal_hackillinois_blue_actionbar</item>
-    </style>
-
-    <style name="ActionButton.CloseMode.Hackillinois_blue_actionbar" parent="@style/Widget.AppCompat.ActionButton.CloseMode">
-        <item name="android:background">@drawable/btn_cab_done_hackillinois_blue_actionbar</item>
+        <item name="android:background">@color/hackillinois_blue_trans</item>
+        <item name="background">@color/hackillinois_blue_trans</item>
     </style>
 
     <style name="ActionBar.Solid.Hackillinois_red_actionbar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="background">@drawable/ab_solid_hackillinois_red_actionbar</item>
-        <item name="backgroundStacked">@drawable/ab_stacked_solid_hackillinois_red_actionbar</item>
-        <item name="backgroundSplit">@drawable/ab_bottom_solid_hackillinois_red_actionbar</item>
-        <item name="progressBarStyle">@style/ProgressBar.Hackillinois_red_actionbar</item>
-    </style>
-
-    <style name="ActionBar.Transparent.Hackillinois_red_actionbar" parent="@style/Widget.AppCompat.ActionBar">
-        <item name="background">@drawable/ab_transparent_hackillinois_red_actionbar</item>
-        <item name="progressBarStyle">@style/ProgressBar.Hackillinois_red_actionbar</item>
-    </style>
-
-    <style name="PopupMenu.Hackillinois_red_actionbar" parent="@style/Widget.AppCompat.PopupMenu">
-        <item name="android:popupBackground">@drawable/menu_dropdown_panel_hackillinois_red_actionbar</item>
-    </style>
-
-    <style name="DropDownListView.Hackillinois_red_actionbar" parent="@style/Widget.AppCompat.ListView.DropDown">
-        <item name="android:listSelector">@drawable/selectable_background_hackillinois_red_actionbar</item>
-    </style>
-
-    <style name="ActionBarTabStyle.Hackillinois_red_actionbar" parent="@style/Widget.AppCompat.ActionBar.TabView">
-        <item name="android:background">@drawable/tab_indicator_ab_hackillinois_red_actionbar</item>
-    </style>
-
-    <style name="DropDownNav.Hackillinois_red_actionbar" parent="@style/Widget.AppCompat.Spinner.DropDown.ActionBar">
-        <item name="android:background">@drawable/spinner_background_ab_hackillinois_red_actionbar</item>
-        <item name="android:popupBackground">@drawable/menu_dropdown_panel_hackillinois_red_actionbar</item>
-        <item name="android:dropDownSelector">@drawable/selectable_background_hackillinois_red_actionbar</item>
-    </style>
-
-    <style name="ProgressBar.Hackillinois_red_actionbar" parent="@style/Widget.AppCompat.ProgressBar.Horizontal">
-        <item name="android:progressDrawable">@drawable/progress_horizontal_hackillinois_red_actionbar</item>
-    </style>
-
-    <style name="ActionButton.CloseMode.Hackillinois_red_actionbar" parent="@style/Widget.AppCompat.ActionButton.CloseMode">
-        <item name="android:background">@drawable/btn_cab_done_hackillinois_red_actionbar</item>
+        <item name="android:background">@color/hackillinois_red_trans</item>
+        <item name="background">@color/hackillinois_red_trans</item>
     </style>
 
     <style name="LauncherAnimation" parent="android:style/Animation.Activity">

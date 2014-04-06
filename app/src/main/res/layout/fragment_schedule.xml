@@ -11,7 +11,8 @@
     <android.support.v4.view.PagerTitleStrip
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/ab_solid_hackillinois_blue_actionbar">
+        android:background="@color/hackillinois_red_trans"
+        >
 
         </android.support.v4.view.PagerTitleStrip>
 

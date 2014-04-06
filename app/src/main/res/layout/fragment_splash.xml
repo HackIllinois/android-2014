@@ -3,7 +3,7 @@
     tools:context="org.hackillinois.android.SplashScreenDialogFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/hackillinois_blue_tran"
+    android:background="@color/hackillinois_blue_trans"
     >
 
     <VideoView
