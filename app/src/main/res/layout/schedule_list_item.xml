@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@color/background_grey"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:paddingTop="6dp">
+
+    <TextView
+        android:id="@+id/schedule_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginLeft="4dp"
+        android:textSize="18sp"
+        android:text="10:00 AM" />
+
+    <ImageView
+        android:id="@+id/schedule_icon"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="4dp"
+        android:src="@drawable/icon_white" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:id="@+id/schedule_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:padding="4dp"
+            android:text="How to make a simple app" />
+
+        <TextView
+            android:id="@+id/schedule_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:text="Applications are way too complicated these days. Let’s learn how to make them simple. What is that?" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:id="@+id/schedule_room"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ff7d7d7d"
+                android:text="SC 2205"/>
+
+            <TextView
+                android:id="@+id/schedule_add_calendar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ff7d7d7d"
+                android:text="@string/add_to_calendar"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="5dp"
+                android:clickable="true"/>
+            </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>
