@@ -36,7 +36,9 @@ public class NewsfeedDataLoader extends AsyncTaskLoader<List<NewsItem>> {
 
             try {
                 JSONArray jsonArray = new JSONArray(data);
-                ArrayList<NewsItem> allNewsItems = new ArrayList<NewsItem>();
+                ArrayList<NewsItem> newsItems = new ArrayList<NewsItem>();
+                ArrayList<NewsItem> emergencyNewsItems = new ArrayList<NewsItem>();
+
 
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject curr = jsonArray.getJSONObject(i);
@@ -65,10 +67,16 @@ public class NewsfeedDataLoader extends AsyncTaskLoader<List<NewsItem>> {
                         buildingItem.addHighlight(startIdx, endIdx, red, green, blue);
                     }
 
-                    allNewsItems.add( buildingItem );
+                    if(isEmergency)
+                        emergencyNewsItems.add(buildingItem);
+                    else
+                        newsItems.add( buildingItem );
                 }
 
-                return allNewsItems;
+                // put the emergency items at the top, followed by the others news items
+                emergencyNewsItems.addAll(newsItems);
+
+                return emergencyNewsItems;
 
             } catch(JSONException j) {
                 j.printStackTrace();

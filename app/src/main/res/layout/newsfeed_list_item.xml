@@ -14,11 +14,11 @@
         android:layout_height="match_parent"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="6dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="16dp"
-        android:paddingLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:paddingLeft="28dp"
         android:paddingRight="8dp"
-        android:paddingTop="8dp"
+        android:paddingTop="6dp"
         android:paddingBottom="8dp"
         android:background="@color/white">
 
@@ -26,7 +26,9 @@
             android:id="@+id/newsfeed_list_item_time"
             android:gravity="right"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="@color/text_grey"/>
 
         <TextView
             android:id="@+id/newsfeed_list_item_description"

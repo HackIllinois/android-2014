@@ -68,16 +68,25 @@ public class NewsItem {
 
 
     /** ----- Private functions ----- **/
-    /** Convert an int unix time to a String i.e. '5m ago' **/
+    /** Convert an int unix time to a String i.e. '5m ago'
+     *  Only called when the NewsItem object is constructed **/
     private String format_time(int unixTime) {
         DateTime time = new DateTime((long) unixTime*1000);
         DateTime now = new DateTime();
         Period diff = new Period(time, now);
 
-        if(diff.getDays() > 0)
+        if(diff.getYears() > 0)
+            return diff.getYears() + "years ago";
+        else if(diff.getMonths() > 0)
+            return diff.getMonths() + "months ago";
+        else if(diff.getWeeks() > 0)
+            return diff.getWeeks() + "w ago";
+        else if(diff.getDays() > 0)
             return diff.getDays() + "d ago";
         else if(diff.getHours() > 0)
             return diff.getHours() + "h ago";
+        else if(diff.getMinutes() == 0)
+            return "just now";
         else
             return diff.getMinutes() + "m ago";
     }
