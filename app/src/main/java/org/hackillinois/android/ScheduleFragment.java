@@ -149,6 +149,7 @@ public class ScheduleFragment extends Fragment {
             super.onActivityCreated(savedInstanceState);
             setEmptyText("You're completely free!");
             setListShown(false);
+            getListView().setBackgroundColor(getResources().getColor(R.color.background_grey));
         }
 
         @Override
@@ -237,6 +238,7 @@ public class ScheduleFragment extends Fragment {
             super.onActivityCreated(savedInstanceState);
             setEmptyText("You're completely free!");
             setListShown(false);
+            getListView().setBackgroundColor(getResources().getColor(R.color.background_grey));
         }
 
         @Override
@@ -300,6 +302,7 @@ public class ScheduleFragment extends Fragment {
             super.onActivityCreated(savedInstanceState);
             setEmptyText("You're completely free!");
             setListShown(false);
+            getListView().setBackgroundColor(getResources().getColor(R.color.background_grey));
         }
 
         /**

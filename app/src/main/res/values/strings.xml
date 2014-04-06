@@ -24,7 +24,7 @@
     <string name="sunday">Sunday</string>
     <string name="pref_splash_viewed">PREF_SPLASH_VIEWED</string>
     <string name="no_news">No news</string>
-    <string name="add_to_calendar">Add</string>
+    <string name="add_to_calendar">Add to Calendar</string>
     <string name="loading_data_error">An error occurred while loading the data.</string>
 
 </resources>
