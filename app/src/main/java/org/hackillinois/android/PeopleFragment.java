@@ -33,6 +33,7 @@ public class PeopleFragment extends ListFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
         mPeopleListAdapter = new PeopleListAdapter(getActivity());
         setListAdapter(mPeopleListAdapter);
 
