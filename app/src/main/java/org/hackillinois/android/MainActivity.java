@@ -62,7 +62,7 @@ public class MainActivity extends ActionBarActivity
             // Tint that shit!
             SystemBarTintManager tintManager = new SystemBarTintManager(this);
             tintManager.setStatusBarTintEnabled(true);
-            int actionBarColor = getResources().getColor(R.color.hackillinois_blue_tran);
+            int actionBarColor = getResources().getColor(R.color.hackillinois_blue_trans);
             tintManager.setStatusBarTintColor(actionBarColor);
         }
     }
