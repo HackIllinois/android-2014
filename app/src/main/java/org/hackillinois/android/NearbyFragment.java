@@ -1,11 +1,13 @@
 package org.hackillinois.android;
 
+import android.annotation.TargetApi;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ListFragment;
@@ -16,6 +18,7 @@ import org.hackillinois.android.models.people.Person;
 
 import java.util.List;
 
+@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class NearbyFragment extends ListFragment
         implements BluetoothAdapter.LeScanCallback, PeopleFragment.OnDataPass {
 
