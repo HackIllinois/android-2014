@@ -1,5 +1,6 @@
 package org.hackillinois.android;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -37,16 +38,25 @@ public class MainActivity extends ActionBarActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         final FragmentManager fm = getSupportFragmentManager();
         mSplashFragment = (SplashScreenDialogFragment) fm.findFragmentByTag("splash");
         boolean viewed = sharedPreferences.getBoolean(getString(R.string.pref_splash_viewed), false);
+
         if (!viewed && mSplashFragment == null) {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             mSplashFragment = new SplashScreenDialogFragment();
             mSplashFragment.setRetainInstance(false);
             mSplashFragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.Theme_Hackillinois_Launcher);
             mSplashFragment.show(fragmentTransaction, "splash");
+        }
+
+        // launch the google login activity if they haven't logged in yet
+        String userEmail = sharedPreferences.getString(getString(R.string.pref_email), null);
+        if(false) {//userEmail == null) {
+            Intent loginActivity = new Intent(this, GoogleAuthActivity.class);
+            startActivity(loginActivity);
         }
 
         setContentView(R.layout.activity_main);
