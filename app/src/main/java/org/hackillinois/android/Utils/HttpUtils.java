@@ -1,9 +1,13 @@
 package org.hackillinois.android.Utils;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.squareup.okhttp.HttpResponseCache;
 import com.squareup.okhttp.OkHttpClient;
+
+import org.hackillinois.android.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -15,6 +19,7 @@ public class HttpUtils {
 
     private static HttpUtils httpUtils;
     private OkHttpClient client;
+    private Context mContext;
 
     public static HttpUtils getHttpUtils(Context context) throws IOException {
         if (httpUtils != null) {
@@ -28,13 +33,16 @@ public class HttpUtils {
         client = new OkHttpClient();
         client.setOkResponseCache(new HttpResponseCache(context.getCacheDir(), 1024));
         URL.setURLStreamHandlerFactory(client);
+        mContext = context;
     }
 
     public String loadData(URL urlToLoad) throws IOException {
         HttpURLConnection con = client.open(urlToLoad);
         InputStream inputStream = null;
         try {
-            con.addRequestProperty("Email", "jacob@hackillinois.org");
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+            String email = sharedPreferences.getString(mContext.getString(R.string.pref_email), "");
+            con.addRequestProperty("Email", email); //"jacob@hackillinois.org");
             con.setRequestMethod("GET");
             con.setRequestProperty("Content-Type", "application/json");
 
