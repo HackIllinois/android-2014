@@ -55,12 +55,29 @@
             android:layout_marginTop="4dp"
             android:layout_marginBottom="8dp">
 
+            <ImageView
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_location_schedule_icon" />
+
             <TextView
                 android:id="@+id/schedule_room"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#ff7d7d7d"
-                android:text="SC 2205"/>
+                android:layout_gravity="center_vertical"
+                android:text="SC 2205" />
+
+            <ImageView
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:src="@drawable/ic_calendar_schedule_icon"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="5dp"
+                android:id="@+id/schedule_add_calendar_icon"
+                android:clickable="true"/>
 
             <TextView
                 android:id="@+id/schedule_add_calendar"
@@ -68,10 +85,9 @@
                 android:layout_height="wrap_content"
                 android:textColor="#ff7d7d7d"
                 android:text="@string/add_to_calendar"
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="5dp"
-                android:clickable="true"/>
-            </LinearLayout>
+                android:layout_gravity="center_vertical"
+                android:clickable="true" />
+        </LinearLayout>
 
     </LinearLayout>
 

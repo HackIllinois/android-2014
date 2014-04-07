@@ -1,7 +1,13 @@
 package org.hackillinois.android.models;
 
+import android.util.Log;
+
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
 import org.joda.time.Period;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.PeriodFormatter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -75,28 +81,36 @@ public class ScheduleItem {
         return format_time(time);
     }
 
+    public int getHour(){ return time_hour(time); }
+
+    public int getMinute() { return time_minute(time); }
+
+    public int getDay() { return format_day(time); }
+
     public String getIconURL() {
         return iconURL;
     }
 
     private String format_time(int unixTime) {
         DateTime time = new DateTime((long) unixTime*1000);
-        DateTime now = new DateTime();
-        Period diff = new Period(now, time);
+        //Log.i("poop", time.toString());
+        DateTimeFormatter formatter = DateTimeFormat.shortTime();
+        return time.toString(formatter);
+    }
 
-        if(diff.getYears() > 0)
-            return diff.getYears() + "years ago";
-        else if(diff.getMonths() > 0)
-            return diff.getMonths() + "months ago";
-        else if(diff.getWeeks() > 0)
-            return diff.getWeeks() + "w ago";
-        else if(diff.getDays() > 0)
-            return diff.getDays() + "d ago";
-        else if(diff.getHours() > 0)
-            return diff.getHours() + "h ago";
-        else if(diff.getMinutes() == 0)
-            return "just now";
-        else
-            return diff.getMinutes() + "m ago";
+    private int format_day(int unixTime){
+        DateTime time = new DateTime((long) unixTime*1000);
+        //int fag = DateTimeConstants.MONDAY;
+        return time.getDayOfMonth();
+    }
+
+    private int time_hour(int unixTime){
+        DateTime time = new DateTime((long) unixTime*1000);
+        return time.getHourOfDay();
+    }
+
+    private int time_minute(int unixTime){
+        DateTime time = new DateTime((long) unixTime*1000);
+        return time.getMinuteOfHour();
     }
 }

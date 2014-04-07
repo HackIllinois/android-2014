@@ -12,6 +12,7 @@ import com.squareup.picasso.Picasso;
 
 import org.hackillinois.android.models.ScheduleItem;
 
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -56,6 +57,7 @@ public class ScheduleListAdapter extends ArrayAdapter<ScheduleItem> {
             holder.descriptionTextView = (TextView) rowView.findViewById(R.id.schedule_description);
             holder.roomTextView = (TextView) rowView.findViewById(R.id.schedule_room);
             holder.calendarTextView = (TextView) rowView.findViewById(R.id.schedule_add_calendar);
+            holder.calendarImageView = (ImageView) rowView.findViewById(R.id.schedule_add_calendar_icon);
 
             rowView.setTag(holder); // set the tag for this row so that it can be retrieved again
         } else {
@@ -63,7 +65,7 @@ public class ScheduleListAdapter extends ArrayAdapter<ScheduleItem> {
         }
 
         // load the views in the row with data
-        ScheduleItem item = getItem(position);
+        final ScheduleItem item = getItem(position);
         holder.timeTextView.setText(item.getTime());
         // load the image into the ImageView
         if(item.getIconURL() != null)
@@ -72,7 +74,18 @@ public class ScheduleListAdapter extends ArrayAdapter<ScheduleItem> {
         holder.titleTextView.setText(item.getEventName());
         holder.descriptionTextView.setText(item.getDescription());
         holder.roomTextView.setText(item.getRoomName() + " " + item.getRoomNumber());
-        holder.calendarTextView.setText(" Add");
+        holder.calendarTextView.setText("Add");
+
+        final View.OnClickListener addToCalendar = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar beginTime = Calendar.getInstance();
+
+            }
+        };
+
+        holder.calendarTextView.setOnClickListener(addToCalendar);
+        holder.calendarImageView.setOnClickListener(addToCalendar);
 
         return rowView;
     }
@@ -89,11 +102,6 @@ public class ScheduleListAdapter extends ArrayAdapter<ScheduleItem> {
                 add(item); // add each item to the end of the list
             }
         }
-        else if(dataList == null){
-            for (ScheduleItem item : dataList) {
-                add(item); // add each item to the end of the list
-            }
-        }
     }
 
     /**
@@ -106,6 +114,7 @@ public class ScheduleListAdapter extends ArrayAdapter<ScheduleItem> {
         public TextView descriptionTextView;
         public TextView roomTextView;
         public TextView calendarTextView;
+        public ImageView calendarImageView;
     }
 
 }
