@@ -1,6 +1,5 @@
 package org.hackillinois.android;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,6 +27,7 @@ public class MainActivity extends ActionBarActivity
     private static final String PEOPLE_TAG = "peopleFrag";
     private static final String NEWS_TAG = "newsFrag";
     private static final String SCHEDULE_TAG = "scheduleFrag";
+    private static final String LOGIN_TAG = "loginFrag";
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private List<Person> mPeople;
@@ -50,13 +50,6 @@ public class MainActivity extends ActionBarActivity
             mSplashFragment.setRetainInstance(false);
             mSplashFragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.Theme_Hackillinois_Launcher);
             mSplashFragment.show(fragmentTransaction, "splash");
-        }
-
-        // launch the google login activity if they haven't logged in yet
-        String userEmail = sharedPreferences.getString(getString(R.string.pref_email), null);
-        if(false) {//userEmail == null) {
-            Intent loginActivity = new Intent(this, GoogleAuthActivity.class);
-            startActivity(loginActivity);
         }
 
         setContentView(R.layout.activity_main);
@@ -115,6 +108,15 @@ public class MainActivity extends ActionBarActivity
                         .replace(R.id.container, scheduleFragment, SCHEDULE_TAG).addToBackStack(null)
                         .commit();
                 break;
+            case 3:
+                Fragment loginFragment = fragmentManager.findFragmentByTag(LOGIN_TAG);
+                if (loginFragment == null) {
+                    loginFragment = new GoogleAuthFragment();
+                }
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, loginFragment, LOGIN_TAG).addToBackStack(null)
+                        .commit();
+                break;
         }
     }
 
@@ -128,6 +130,9 @@ public class MainActivity extends ActionBarActivity
                 break;
             case 3:
                 mTitle = getString(R.string.title_section3);
+                break;
+            case 4:
+                mTitle = getString(R.string.title_section4);
                 break;
         }
     }
