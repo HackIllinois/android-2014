@@ -24,7 +24,7 @@ public class PeopleFragment extends ListFragment
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setEmptyText("No peeps");
+        setEmptyText(getString(R.string.loading_data_error));
         setListShown(false);
         getListView().setClipToPadding(false);
         Utils.setInsets(getActivity(), getListView());
@@ -33,6 +33,7 @@ public class PeopleFragment extends ListFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
         mPeopleListAdapter = new PeopleListAdapter(getActivity());
         setListAdapter(mPeopleListAdapter);
 

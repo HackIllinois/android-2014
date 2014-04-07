@@ -3,7 +3,7 @@ package org.hackillinois.android;
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
-import org.hackillinois.android.Utils.Utils;
+import org.hackillinois.android.Utils.HttpUtils;
 import org.hackillinois.android.models.NewsItem;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,9 +17,11 @@ import java.util.List;
 public class NewsfeedDataLoader extends AsyncTaskLoader<List<NewsItem>> {
 
     private URL urlToLoad;
+    private Context mContext;
 
     public NewsfeedDataLoader(Context context, URL url) {
         super(context);
+        mContext = context;
         urlToLoad = url;
     }
 
@@ -27,7 +29,8 @@ public class NewsfeedDataLoader extends AsyncTaskLoader<List<NewsItem>> {
     public List<NewsItem> loadInBackground() {
         String data = null;
         try {
-            data = Utils.loadData(urlToLoad);
+            HttpUtils httpUtils = HttpUtils.getHttpUtils(mContext);
+            data = httpUtils.loadData(urlToLoad);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -80,6 +83,8 @@ public class NewsfeedDataLoader extends AsyncTaskLoader<List<NewsItem>> {
 
             } catch(JSONException j) {
                 j.printStackTrace();
+            } catch(NullPointerException e) {
+                e.printStackTrace();
             }
         }
         return null;

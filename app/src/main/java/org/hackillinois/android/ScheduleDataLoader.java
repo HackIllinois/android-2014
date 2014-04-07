@@ -3,7 +3,7 @@ package org.hackillinois.android;
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
-import org.hackillinois.android.Utils.Utils;
+import org.hackillinois.android.Utils.HttpUtils;
 import org.hackillinois.android.models.ScheduleItem;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,9 +21,11 @@ public class ScheduleDataLoader extends AsyncTaskLoader<List<ScheduleItem>> {
 
     private URL url;
     private String day;
+    private Context mContext;
 
     public ScheduleDataLoader(Context context, URL url, String day) {
         super(context);
+        mContext = context;
         this.url = url;
         this.day = day;
     }
@@ -35,7 +37,8 @@ public class ScheduleDataLoader extends AsyncTaskLoader<List<ScheduleItem>> {
         String data = null; // this will hold the JSON in a string representation
         // try loading the URL
         try{
-           data = Utils.loadData(url);
+            HttpUtils httpUtils = HttpUtils.getHttpUtils(mContext);
+            data = httpUtils.loadData(url);
         } catch (IOException e) {
             e.printStackTrace();
         }

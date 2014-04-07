@@ -1,10 +1,12 @@
 package org.hackillinois.android;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -23,6 +25,10 @@ public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks,
         PeopleFragment.OnDataPass {
 
+    private static final String PEOPLE_TAG = "peopleFrag";
+    private static final String NEWS_TAG = "newsFrag";
+    private static final String SCHEDULE_TAG = "scheduleFrag";
+
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private List<Person> mPeople;
     private SplashScreenDialogFragment mSplashFragment;
@@ -32,10 +38,12 @@ public class MainActivity extends ActionBarActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         final FragmentManager fm = getSupportFragmentManager();
         mSplashFragment = (SplashScreenDialogFragment) fm.findFragmentByTag("splash");
         boolean viewed = sharedPreferences.getBoolean(getString(R.string.pref_splash_viewed), false);
+
         if (!viewed && mSplashFragment == null) {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             mSplashFragment = new SplashScreenDialogFragment();
@@ -44,10 +52,17 @@ public class MainActivity extends ActionBarActivity
             mSplashFragment.show(fragmentTransaction, "splash");
         }
 
+        // launch the google login activity if they haven't logged in yet
+        String userEmail = sharedPreferences.getString(getString(R.string.pref_email), null);
+        if(false) {//userEmail == null) {
+            Intent loginActivity = new Intent(this, GoogleAuthActivity.class);
+            startActivity(loginActivity);
+        }
+
         setContentView(R.layout.activity_main);
 
         ActionBar actionBar = getSupportActionBar(); // || getActionBar();
-        actionBar.setIcon(getResources().getDrawable(R.drawable.icon_white));
+        actionBar.setIcon(getResources().getDrawable(R.drawable.hackillinois_icon_white));
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
@@ -74,18 +89,30 @@ public class MainActivity extends ActionBarActivity
 
         switch (position){
             case 0:
+                Fragment peopleFragment = fragmentManager.findFragmentByTag(PEOPLE_TAG);
+                if (peopleFragment == null) {
+                    peopleFragment = new PeopleFragment();
+                }
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, new PeopleFragment())
+                        .replace(R.id.container, peopleFragment, PEOPLE_TAG).addToBackStack(null)
                         .commit();
                 break;
             case 1:
+                Fragment newsFragment = fragmentManager.findFragmentByTag(NEWS_TAG);
+                if (newsFragment == null) {
+                    newsFragment = new NewsfeedFragment();
+                }
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, new NewsfeedFragment())
+                        .replace(R.id.container, newsFragment, NEWS_TAG).addToBackStack(null)
                         .commit();
                 break;
             case 2:
+                Fragment scheduleFragment = fragmentManager.findFragmentByTag(SCHEDULE_TAG);
+                if (scheduleFragment == null) {
+                    scheduleFragment = new ScheduleFragment();
+                }
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, new ScheduleFragment())
+                        .replace(R.id.container, scheduleFragment, SCHEDULE_TAG).addToBackStack(null)
                         .commit();
                 break;
         }

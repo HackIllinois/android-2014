@@ -3,7 +3,7 @@ package org.hackillinois.android;
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
-import org.hackillinois.android.Utils.Utils;
+import org.hackillinois.android.Utils.HttpUtils;
 import org.hackillinois.android.models.people.Hacker;
 import org.hackillinois.android.models.people.Mentor;
 import org.hackillinois.android.models.people.Person;
@@ -20,17 +20,20 @@ import java.util.List;
 public class PersonDataLoader extends AsyncTaskLoader<List<Person>> {
 
     private URL urlToLoad;
+    private Context mContext;
 
     public PersonDataLoader(Context context, URL url) {
         super(context);
         urlToLoad = url;
+        mContext = context;
     }
 
     @Override
     public List<Person> loadInBackground() {
         String data = null;
         try {
-            data = Utils.loadData(urlToLoad);
+            HttpUtils httpUtils = HttpUtils.getHttpUtils(mContext);
+            data = httpUtils.loadData(urlToLoad);
         } catch (IOException e) {
             e.printStackTrace();
         }

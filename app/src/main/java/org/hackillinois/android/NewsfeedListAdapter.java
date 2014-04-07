@@ -1,14 +1,13 @@
 package org.hackillinois.android;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.squareup.picasso.Picasso;
 
 import org.hackillinois.android.models.NewsItem;
 
@@ -23,13 +22,11 @@ import java.util.List;
 public class NewsfeedListAdapter extends ArrayAdapter<NewsItem> {
 
     private LayoutInflater mLayoutInflater;
-    Picasso picasso;
 
     /** Constructor **/
     public NewsfeedListAdapter(Activity activity) {
         super(activity, R.layout.newsfeed_list_item, R.id.newsfeed_list_item_description);
         mLayoutInflater = activity.getLayoutInflater();
-        picasso = Picasso.with(activity);
     }
 
 
@@ -38,7 +35,7 @@ public class NewsfeedListAdapter extends ArrayAdapter<NewsItem> {
         View rowView = convertView;
         ViewHolder holder;
         if(rowView == null) { // try to reuse a row view that is out of sight
-            rowView = mLayoutInflater.inflate(R.layout.newsfeed_list_item, null);
+            rowView = mLayoutInflater.inflate(R.layout.newsfeed_list_item, parent, false);
 
             holder = new ViewHolder();
             holder.image = (ImageView) rowView.findViewById(R.id.newsfeed_list_item_image);
@@ -49,20 +46,19 @@ public class NewsfeedListAdapter extends ArrayAdapter<NewsItem> {
             holder = (ViewHolder) rowView.getTag();
         }
 
-
         NewsItem newsItem = getItem(position);
 
         holder.description.setText( newsItem.getDescription() );
         holder.time.setText( newsItem.getTime() );
-
-        picasso.load(newsItem.getIconUrl())
-                // waiting for Eva to reply with more info about theses images before I do formatting...
-                //.placeholder(R.drawable.placeholder)
-                //.error(R.drawable.error)
-                //.resizeDimen(R.dimen.list_detail_image_size, R.dimen.list_detail_image_size)
-                //.centerInside()
-                .into(holder.image);
-
+        final Resources resources = getContext().getResources();
+        // this is super hacky
+        if (newsItem.isEmergency()) {
+            holder.image.setImageDrawable(resources.getDrawable(R.drawable.emergency));
+        } else if (newsItem.getIconUrl().contains("announce")){
+            holder.image.setImageDrawable(resources.getDrawable(R.drawable.announce));
+        } else {
+            holder.image.setImageDrawable(resources.getDrawable(R.drawable.hackillinois));
+        }
         return rowView;
     }
 

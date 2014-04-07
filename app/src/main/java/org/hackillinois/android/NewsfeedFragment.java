@@ -24,9 +24,9 @@ public class NewsfeedFragment extends ListFragment
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setEmptyText("No news");
+        setEmptyText(getString(R.string.loading_data_error));
         ListView list = getListView();
-        list.setBackgroundColor( getResources().getColor(R.color.background_grey) );
+        list.setBackgroundColor(getResources().getColor(R.color.background_grey));
         list.setDividerHeight(0);
         setListShown(false);
         list.setClipToPadding(false);
@@ -41,7 +41,6 @@ public class NewsfeedFragment extends ListFragment
         setListAdapter(mNewsfeedListAdapter);
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
@@ -51,7 +50,6 @@ public class NewsfeedFragment extends ListFragment
             setListShown(true);
         }
     }
-
 
     @Override
     public Loader<List<NewsItem>> onCreateLoader(int id, Bundle args) {

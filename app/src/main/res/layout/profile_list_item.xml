@@ -21,24 +21,28 @@
             android:id="@+id/profile_list_item_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:singleLine="true"
             android:textSize="16sp"/>
 
         <TextView
             android:id="@+id/profile_list_item_company"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:singleLine="true"
             android:textSize="12sp"/>
 
         <TextView
             android:id="@+id/profile_list_item_job_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:singleLine="true"
             android:textSize="12sp"/>
 
         <TextView
             android:id="@+id/profile_list_item_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:singleLine="true"
             android:textSize="12sp"/>
 
         </LinearLayout>

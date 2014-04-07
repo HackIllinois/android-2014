@@ -36,6 +36,8 @@ public class GoogleAuthActivity extends Activity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_google_auth);
 
+        Toast.makeText(this, "hi auth activity", Toast.LENGTH_LONG).show();
+
         Scope scope = new Scope(Scopes.PROFILE);
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
