@@ -22,8 +22,8 @@ import java.util.List;
 
 /**
  * @author vishal
- * <p/>
- *The top level fragment for the Schedule. Has a view pager for Friday, Saturday, and Sunday
+ *         <p/>
+ *         The top level fragment for the Schedule. Has a view pager for Friday, Saturday, and Sunday
  */
 public class ScheduleFragment extends Fragment {
 
@@ -34,7 +34,7 @@ public class ScheduleFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_schedule, container, false);
         mViewPager = (ViewPager) rootView.findViewById(R.id.schedule_pager);
-        mSchedulePagerAdapter = new SchedulePagerAdapter(getFragmentManager());
+        mSchedulePagerAdapter = new SchedulePagerAdapter(getChildFragmentManager());
         mViewPager.setAdapter(mSchedulePagerAdapter);
         mViewPager.setClipToPadding(false);
         Utils.setInsets(getActivity(), mViewPager); // for the tinting
@@ -113,6 +113,7 @@ public class ScheduleFragment extends Fragment {
             super.onCreate(savedInstanceState);
             mListAdapter = new ScheduleListAdapter(getActivity());
             setListAdapter(mListAdapter);// set the list adapter to our custom list adapter
+            //setRetainInstance(true);
         }
 
         /**
@@ -124,26 +125,14 @@ public class ScheduleFragment extends Fragment {
         @Override
         public void onResume() {
             super.onResume();
-            if(mListAdapter.isEmpty()){
-                getLoaderManager().initLoader(0, null, this).forceLoad();
+            if (mListAdapter.isEmpty()) {
+
+                getLoaderManager().initLoader(0, null, FridaySchedule.this).forceLoad();
             } else {
                 setListShown(true);
             }
         }
 
-        /**
-         * Called when the fragment's activity has been created and this
-         * fragment's view hierarchy instantiated.  It can be used to do final
-         * initialization once these pieces are in place, such as retrieving
-         * views or restoring state.  It is also useful for fragments that use
-         * {@link #setRetainInstance(boolean)} to retain their instance,
-         * as this callback tells the fragment when it is fully associated with
-         * the new activity instance.  This is called after {@link #onCreateView}
-         * and before {@link #onViewStateRestored(android.os.Bundle)}.
-         *
-         * @param savedInstanceState If the fragment is being re-created from
-         *                           a previous saved state, this is the state.
-         */
         @Override
         public void onActivityCreated(Bundle savedInstanceState) {
             super.onActivityCreated(savedInstanceState);
@@ -167,7 +156,7 @@ public class ScheduleFragment extends Fragment {
          */
         @Override
         public Loader<List<ScheduleItem>> onCreateLoader(int id, Bundle args) {
-            try{
+            try {
                 return new ScheduleDataLoader(getActivity(), new URL(SCHEDULE_URL), "Friday");
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -190,7 +179,7 @@ public class ScheduleFragment extends Fragment {
         public void onLoadFinished(Loader<List<ScheduleItem>> loader, List<ScheduleItem> data) {
             // load data into the list
             mListAdapter.setData(data);
-            if(isResumed()){
+            if (isResumed()) {
                 setListShown(true); // show the list
             } else {
                 setListShownNoAnimation(true); // show the list but w/o animation
@@ -221,13 +210,16 @@ public class ScheduleFragment extends Fragment {
             super.onCreate(savedInstanceState);
             mListAdapter = new ScheduleListAdapter(getActivity());
             setListAdapter(mListAdapter);// set the list adapter to our custom list adapter
+            //setRetainInstance(true);
         }
 
         @Override
         public void onResume() {
             super.onResume();
-            if(mListAdapter.isEmpty()){
-                getLoaderManager().initLoader(0, null, this).forceLoad();
+            if (mListAdapter.isEmpty()) {
+
+                getLoaderManager().initLoader(0, null, SaturdaySchedule.this).forceLoad();
+
             } else {
                 setListShown(true);
             }
@@ -249,7 +241,7 @@ public class ScheduleFragment extends Fragment {
 
         @Override
         public Loader<List<ScheduleItem>> onCreateLoader(int id, Bundle args) {
-            try{
+            try {
                 return new ScheduleDataLoader(getActivity(), new URL(SCHEDULE_URL), "Saturday");
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -261,7 +253,7 @@ public class ScheduleFragment extends Fragment {
         public void onLoadFinished(Loader<List<ScheduleItem>> loader, List<ScheduleItem> data) {
             // load data into the list
             mListAdapter.setData(data);
-            if(isResumed()){
+            if (isResumed()) {
                 setListShown(true); // show the list
             } else {
                 setListShownNoAnimation(true); // show the list but w/o animation
@@ -285,13 +277,14 @@ public class ScheduleFragment extends Fragment {
             super.onCreate(savedInstanceState);
             mListAdapter = new ScheduleListAdapter(getActivity());
             setListAdapter(mListAdapter);// set the list adapter to our custom list adapter
+            //setRetainInstance(true);
         }
 
         @Override
         public void onResume() {
             super.onResume();
-            if(mListAdapter.isEmpty()){
-                getLoaderManager().initLoader(0, null, this).forceLoad();
+            if (mListAdapter.isEmpty()) {
+                getLoaderManager().initLoader(0, null, SundaySchedule.this).forceLoad();
             } else {
                 setListShown(true);
             }
@@ -305,10 +298,6 @@ public class ScheduleFragment extends Fragment {
             getListView().setBackgroundColor(getResources().getColor(R.color.background_grey));
         }
 
-        /**
-         * Called when the fragment is no longer attached to its activity.  This
-         * is called after {@link #onDestroy()}.
-         */
         @Override
         public void onDetach() {
             getLoaderManager().destroyLoader(0);
@@ -317,7 +306,7 @@ public class ScheduleFragment extends Fragment {
 
         @Override
         public Loader<List<ScheduleItem>> onCreateLoader(int id, Bundle args) {
-            try{
+            try {
                 return new ScheduleDataLoader(getActivity(), new URL(SCHEDULE_URL), "Sunday");
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -329,7 +318,7 @@ public class ScheduleFragment extends Fragment {
         public void onLoadFinished(Loader<List<ScheduleItem>> loader, List<ScheduleItem> data) {
             // load data into the list
             mListAdapter.setData(data);
-            if(isResumed()){
+            if (isResumed()) {
                 setListShown(true); // show the list
             } else {
                 setListShownNoAnimation(true); // show the list but w/o animation

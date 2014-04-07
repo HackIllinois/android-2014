@@ -55,6 +55,7 @@ public class ScheduleListAdapter extends ArrayAdapter<ScheduleItem> {
             holder.titleTextView = (TextView) rowView.findViewById(R.id.schedule_title);
             holder.descriptionTextView = (TextView) rowView.findViewById(R.id.schedule_description);
             holder.roomTextView = (TextView) rowView.findViewById(R.id.schedule_room);
+            holder.calendarTextView = (TextView) rowView.findViewById(R.id.schedule_add_calendar);
 
             rowView.setTag(holder); // set the tag for this row so that it can be retrieved again
         } else {
@@ -63,7 +64,7 @@ public class ScheduleListAdapter extends ArrayAdapter<ScheduleItem> {
 
         // load the views in the row with data
         ScheduleItem item = getItem(position);
-        holder.timeTextView.setText(Integer.toString(item.getTime()));
+        holder.timeTextView.setText(item.getTime());
         // load the image into the ImageView
         if(item.getIconURL() != null)
             picasso.load(item.getIconURL()).into(holder.iconImageView);
@@ -71,6 +72,7 @@ public class ScheduleListAdapter extends ArrayAdapter<ScheduleItem> {
         holder.titleTextView.setText(item.getEventName());
         holder.descriptionTextView.setText(item.getDescription());
         holder.roomTextView.setText(item.getRoomName() + " " + item.getRoomNumber());
+        holder.calendarTextView.setText(" Add");
 
         return rowView;
     }
@@ -87,6 +89,11 @@ public class ScheduleListAdapter extends ArrayAdapter<ScheduleItem> {
                 add(item); // add each item to the end of the list
             }
         }
+        else if(dataList == null){
+            for (ScheduleItem item : dataList) {
+                add(item); // add each item to the end of the list
+            }
+        }
     }
 
     /**
@@ -98,6 +105,7 @@ public class ScheduleListAdapter extends ArrayAdapter<ScheduleItem> {
         public TextView titleTextView;
         public TextView descriptionTextView;
         public TextView roomTextView;
+        public TextView calendarTextView;
     }
 
 }

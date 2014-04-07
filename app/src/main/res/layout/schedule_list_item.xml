@@ -15,7 +15,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginRight="2dp"
         android:layout_marginLeft="4dp"
-        android:textSize="17sp"
+        android:textSize="14sp"
         android:text="10:00 AM" />
 
     <ImageView

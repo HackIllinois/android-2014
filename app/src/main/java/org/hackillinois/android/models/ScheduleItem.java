@@ -1,5 +1,7 @@
 package org.hackillinois.android.models;
 
+import org.joda.time.DateTime;
+import org.joda.time.Period;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -69,11 +71,32 @@ public class ScheduleItem {
         return imageURL;
     }
 
-    public int getTime() {
-        return time;
+    public String getTime() {
+        return format_time(time);
     }
 
     public String getIconURL() {
         return iconURL;
+    }
+
+    private String format_time(int unixTime) {
+        DateTime time = new DateTime((long) unixTime*1000);
+        DateTime now = new DateTime();
+        Period diff = new Period(now, time);
+
+        if(diff.getYears() > 0)
+            return diff.getYears() + "years ago";
+        else if(diff.getMonths() > 0)
+            return diff.getMonths() + "months ago";
+        else if(diff.getWeeks() > 0)
+            return diff.getWeeks() + "w ago";
+        else if(diff.getDays() > 0)
+            return diff.getDays() + "d ago";
+        else if(diff.getHours() > 0)
+            return diff.getHours() + "h ago";
+        else if(diff.getMinutes() == 0)
+            return "just now";
+        else
+            return diff.getMinutes() + "m ago";
     }
 }
