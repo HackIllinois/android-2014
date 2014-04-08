@@ -29,7 +29,6 @@ public class NewsfeedListAdapter extends ArrayAdapter<NewsItem> {
         mLayoutInflater = activity.getLayoutInflater();
     }
 
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View rowView = convertView;

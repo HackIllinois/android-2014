@@ -34,7 +34,6 @@ public class NewsfeedFragment extends ListFragment
         }
     };
 
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -65,6 +64,7 @@ public class NewsfeedFragment extends ListFragment
         } else {
             setListShown(true);
         }
+        ((MainActivity) getActivity()).onSectionAttached(2);
     }
 
     @Override
@@ -80,7 +80,6 @@ public class NewsfeedFragment extends ListFragment
     @Override
     public void onLoadFinished(Loader<List<NewsItem>> loader, List<NewsItem> data) {
         mNewsfeedListAdapter.setData(data);
-
         if (isResumed()) {
             setListShown(true);
         } else {
@@ -95,7 +94,5 @@ public class NewsfeedFragment extends ListFragment
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        ((MainActivity) activity).onSectionAttached(2);
     }
-
 }

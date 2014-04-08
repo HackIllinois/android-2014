@@ -62,6 +62,7 @@ public class PeopleFragment extends ListFragment
         } else {
             setListShown(true);
         }
+        ((MainActivity) getActivity()).onSectionAttached(1);
     }
 
     @Override
@@ -94,7 +95,6 @@ public class PeopleFragment extends ListFragment
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         dataPasser = (OnDataPass) activity;
-        ((MainActivity) activity).onSectionAttached(1);
     }
 
     public interface OnDataPass {
