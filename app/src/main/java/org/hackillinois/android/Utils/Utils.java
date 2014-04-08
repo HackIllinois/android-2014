@@ -1,10 +1,16 @@
 package org.hackillinois.android.Utils;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.IntentFilter;
 import android.os.Build;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
 
 import com.readystatesoftware.systembartint.SystemBarTintManager;
+
+import org.hackillinois.android.R;
 
 public class Utils {
 
@@ -13,5 +19,9 @@ public class Utils {
         SystemBarTintManager tintManager = new SystemBarTintManager(context);
         SystemBarTintManager.SystemBarConfig config = tintManager.getConfig();
         view.setPadding(0, config.getPixelInsetTop(true), config.getPixelInsetRight(), config.getPixelInsetBottom());
+    }
+    public static void registerBroadcastReceiver(Context context, BroadcastReceiver broadcastReceiver) {
+        IntentFilter intentFilter = new IntentFilter(context.getString(R.string.broadcast_login));
+        LocalBroadcastManager.getInstance(context).registerReceiver(broadcastReceiver, intentFilter);
     }
 }

@@ -5,6 +5,7 @@
     <string name="title_section1">People</string>
     <string name="title_section2">Feed</string>
     <string name="title_section3">Schedule</string>
+
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_google_auth">GoogleAuthActivity</string>
     <string name="title_activity_help">Help Activity</string>
@@ -27,6 +28,6 @@
     <string name="pref_email">PREF_EMAIL</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="login">login</string>
-    <string name="title_section4">Account</string>
+    <string name="broadcast_login">LOGGED_IN</string>
 
 </resources>

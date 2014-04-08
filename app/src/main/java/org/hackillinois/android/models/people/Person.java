@@ -25,7 +25,9 @@ public abstract class Person {
     public Person(JSONObject jsonObject) throws JSONException {
         name = jsonObject.getString("name");
         email = jsonObject.getString("email");
-        homebase = jsonObject.getString("homebase");
+        if (jsonObject.has("homebase")) {
+            homebase = jsonObject.getString("homebase");
+        }
         JSONArray skillsArray = jsonObject.getJSONArray("skills");
         skills = new ArrayList<String>();
         for(int i = 0; i < skillsArray.length(); i++) {

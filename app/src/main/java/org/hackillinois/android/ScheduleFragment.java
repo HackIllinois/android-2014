@@ -1,6 +1,9 @@
 package org.hackillinois.android;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -8,6 +11,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -105,6 +109,16 @@ public class ScheduleFragment extends Fragment {
     public static class FridaySchedule extends ListFragment
             implements LoaderManager.LoaderCallbacks<List<ScheduleItem>> {
 
+        private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (getLoaderManager() != null) {
+                    getLoaderManager().initLoader(0, null, FridaySchedule.this).forceLoad();
+                    LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(this);
+                }
+            }
+        };
+
         private static final String SCHEDULE_URL = "http://www.hackillinois.org/mobile/schedule";
         private ScheduleListAdapter mListAdapter;
 
@@ -113,7 +127,7 @@ public class ScheduleFragment extends Fragment {
             super.onCreate(savedInstanceState);
             mListAdapter = new ScheduleListAdapter(getActivity());
             setListAdapter(mListAdapter);// set the list adapter to our custom list adapter
-            //setRetainInstance(true);
+            Utils.registerBroadcastReceiver(getActivity(), broadcastReceiver);
         }
 
         /**
@@ -136,7 +150,7 @@ public class ScheduleFragment extends Fragment {
         @Override
         public void onActivityCreated(Bundle savedInstanceState) {
             super.onActivityCreated(savedInstanceState);
-            setEmptyText("You're completely free!");
+            setEmptyText(getString(R.string.loading_data_error));
             setListShown(false);
             getListView().setBackgroundColor(getResources().getColor(R.color.background_grey));
         }
@@ -205,12 +219,22 @@ public class ScheduleFragment extends Fragment {
         private static final String SCHEDULE_URL = "http://www.hackillinois.org/mobile/schedule";
         private ScheduleListAdapter mListAdapter;
 
+        private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (getLoaderManager() != null) {
+                    getLoaderManager().initLoader(0, null, SaturdaySchedule.this).forceLoad();
+                    LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(this);
+                }
+            }
+        };
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             mListAdapter = new ScheduleListAdapter(getActivity());
             setListAdapter(mListAdapter);// set the list adapter to our custom list adapter
-            //setRetainInstance(true);
+            Utils.registerBroadcastReceiver(getActivity(), broadcastReceiver);
         }
 
         @Override
@@ -228,7 +252,7 @@ public class ScheduleFragment extends Fragment {
         @Override
         public void onActivityCreated(Bundle savedInstanceState) {
             super.onActivityCreated(savedInstanceState);
-            setEmptyText("You're completely free!");
+            setEmptyText(getString(R.string.loading_data_error));
             setListShown(false);
             getListView().setBackgroundColor(getResources().getColor(R.color.background_grey));
         }
@@ -272,12 +296,22 @@ public class ScheduleFragment extends Fragment {
         private static final String SCHEDULE_URL = "http://www.hackillinois.org/mobile/schedule";
         private ScheduleListAdapter mListAdapter;
 
+        private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (getLoaderManager() != null) {
+                    getLoaderManager().initLoader(0, null, SundaySchedule.this).forceLoad();
+                    LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(this);
+                }
+            }
+        };
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             mListAdapter = new ScheduleListAdapter(getActivity());
             setListAdapter(mListAdapter);// set the list adapter to our custom list adapter
-            //setRetainInstance(true);
+            Utils.registerBroadcastReceiver(getActivity(), broadcastReceiver);
         }
 
         @Override
@@ -293,7 +327,7 @@ public class ScheduleFragment extends Fragment {
         @Override
         public void onActivityCreated(Bundle savedInstanceState) {
             super.onActivityCreated(savedInstanceState);
-            setEmptyText("You're completely free!");
+            setEmptyText(getString(R.string.loading_data_error));
             setListShown(false);
             getListView().setBackgroundColor(getResources().getColor(R.color.background_grey));
         }

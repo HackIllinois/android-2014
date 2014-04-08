@@ -42,7 +42,7 @@ public class HttpUtils {
         try {
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
             String email = sharedPreferences.getString(mContext.getString(R.string.pref_email), "");
-            con.addRequestProperty("Email", email); //"jacob@hackillinois.org");
+            con.addRequestProperty("Email", email);
             con.setRequestMethod("GET");
             con.setRequestProperty("Content-Type", "application/json");
 

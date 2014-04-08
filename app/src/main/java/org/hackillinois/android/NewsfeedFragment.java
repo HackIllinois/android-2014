@@ -1,10 +1,14 @@
 package org.hackillinois.android;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.content.LocalBroadcastManager;
 import android.widget.ListView;
 
 import org.hackillinois.android.Utils.Utils;
@@ -19,6 +23,16 @@ public class NewsfeedFragment extends ListFragment
 
     private static final String NEWSFEED_JSON_URL = "http://www.hackillinois.org/mobile/newsfeed";
     private NewsfeedListAdapter mNewsfeedListAdapter;
+
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (getLoaderManager() != null) {
+                getLoaderManager().initLoader(0, null, NewsfeedFragment.this).forceLoad();
+                LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(this);
+            }
+        }
+    };
 
 
     @Override
@@ -39,6 +53,8 @@ public class NewsfeedFragment extends ListFragment
         super.onCreate(savedInstanceState);
         mNewsfeedListAdapter = new NewsfeedListAdapter(getActivity());
         setListAdapter(mNewsfeedListAdapter);
+        Utils.registerBroadcastReceiver(getActivity(), broadcastReceiver);
+
     }
 
     @Override

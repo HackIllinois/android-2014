@@ -1,13 +1,8 @@
 package org.hackillinois.android.models;
 
-import android.util.Log;
-
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeConstants;
-import org.joda.time.Period;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.PeriodFormatter;
 import org.json.JSONException;
 import org.json.JSONObject;
 

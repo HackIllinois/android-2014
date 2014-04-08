@@ -16,6 +16,7 @@ import android.view.MenuItem;
 
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
+import org.hackillinois.android.login.OAuthAccessFragment;
 import org.hackillinois.android.models.people.Person;
 
 import java.util.List;
@@ -27,11 +28,9 @@ public class MainActivity extends ActionBarActivity
     private static final String PEOPLE_TAG = "peopleFrag";
     private static final String NEWS_TAG = "newsFrag";
     private static final String SCHEDULE_TAG = "scheduleFrag";
-    private static final String LOGIN_TAG = "loginFrag";
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private List<Person> mPeople;
-    private SplashScreenDialogFragment mSplashFragment;
 
     private CharSequence mTitle;
 
@@ -41,20 +40,28 @@ public class MainActivity extends ActionBarActivity
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         final FragmentManager fm = getSupportFragmentManager();
-        mSplashFragment = (SplashScreenDialogFragment) fm.findFragmentByTag("splash");
+        SplashScreenDialogFragment splashFragment = (SplashScreenDialogFragment) fm.findFragmentByTag("splash");
+        OAuthAccessFragment oAuthAccessFragment = (OAuthAccessFragment) fm.findFragmentByTag("login");
         boolean viewed = sharedPreferences.getBoolean(getString(R.string.pref_splash_viewed), false);
+        String email = sharedPreferences.getString(getString(R.string.pref_email), "");
 
-        if (!viewed && mSplashFragment == null) {
+        if (email.length() == 0 && oAuthAccessFragment == null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            oAuthAccessFragment = new OAuthAccessFragment();
+            oAuthAccessFragment.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.Theme_AppCompat_Light_DarkActionBar);
+            oAuthAccessFragment.show(ft, "login");
+        }
+
+        if (!viewed && splashFragment == null) {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            mSplashFragment = new SplashScreenDialogFragment();
-            mSplashFragment.setRetainInstance(false);
-            mSplashFragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.Theme_Hackillinois_Launcher);
-            mSplashFragment.show(fragmentTransaction, "splash");
+            splashFragment = new SplashScreenDialogFragment();
+            splashFragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.Theme_Hackillinois_Launcher);
+            splashFragment.show(fragmentTransaction, "splash");
         }
 
         setContentView(R.layout.activity_main);
 
-        ActionBar actionBar = getSupportActionBar(); // || getActionBar();
+        ActionBar actionBar = getSupportActionBar();
         actionBar.setIcon(getResources().getDrawable(R.drawable.hackillinois_icon_white));
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
@@ -108,15 +115,6 @@ public class MainActivity extends ActionBarActivity
                         .replace(R.id.container, scheduleFragment, SCHEDULE_TAG).addToBackStack(null)
                         .commit();
                 break;
-            case 3:
-                Fragment loginFragment = fragmentManager.findFragmentByTag(LOGIN_TAG);
-                if (loginFragment == null) {
-                    loginFragment = new GoogleAuthFragment();
-                }
-                fragmentManager.beginTransaction()
-                        .replace(R.id.container, loginFragment, LOGIN_TAG).addToBackStack(null)
-                        .commit();
-                break;
         }
     }
 
@@ -130,9 +128,6 @@ public class MainActivity extends ActionBarActivity
                 break;
             case 3:
                 mTitle = getString(R.string.title_section3);
-                break;
-            case 4:
-                mTitle = getString(R.string.title_section4);
                 break;
         }
     }

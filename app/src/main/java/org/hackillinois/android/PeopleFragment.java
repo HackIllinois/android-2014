@@ -1,10 +1,15 @@
 package org.hackillinois.android;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.content.LocalBroadcastManager;
 
 import org.hackillinois.android.Utils.Utils;
 import org.hackillinois.android.models.people.Person;
@@ -20,6 +25,15 @@ public class PeopleFragment extends ListFragment
 
     private PeopleListAdapter mPeopleListAdapter;
     private OnDataPass dataPasser;
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (getLoaderManager() != null) {
+                getLoaderManager().initLoader(0, null, PeopleFragment.this).forceLoad();
+                LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(this);
+            }
+        }
+    };
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -36,7 +50,8 @@ public class PeopleFragment extends ListFragment
         setRetainInstance(true);
         mPeopleListAdapter = new PeopleListAdapter(getActivity());
         setListAdapter(mPeopleListAdapter);
-
+        IntentFilter intentFilter = new IntentFilter(getString(R.string.broadcast_login));
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver, intentFilter);
     }
 
     @Override
