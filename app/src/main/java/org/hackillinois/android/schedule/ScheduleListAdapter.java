@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import org.hackillinois.android.R;
+import org.hackillinois.android.RoundedTransformation;
 import org.hackillinois.android.models.ScheduleItem;
 
 import java.util.Calendar;
