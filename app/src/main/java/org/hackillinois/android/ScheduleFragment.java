@@ -1,5 +1,6 @@
 package org.hackillinois.android;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -40,14 +41,13 @@ public class ScheduleFragment extends Fragment {
         mSchedulePagerAdapter = new SchedulePagerAdapter(getChildFragmentManager());
         mViewPager.setAdapter(mSchedulePagerAdapter);
         mViewPager.setClipToPadding(false);
-        Utils.setInsets(getActivity(), mViewPager); // for the tinting
+        Utils.setInsets(getActivity(), mViewPager);
         return rootView;
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        ((MainActivity) getActivity()).onSectionAttached(3);
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
     }
 
     public class SchedulePagerAdapter extends FragmentPagerAdapter {

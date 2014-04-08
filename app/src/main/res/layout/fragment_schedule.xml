@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:paddingTop="?attr/actionBarSize"
     android:id="@+id/schedule_pager"
+    android:background="@color/background_grey"
     >
 
     <android.support.v4.view.PagerTitleStrip
@@ -14,7 +15,5 @@
         android:textColor="@android:color/white"
         android:background="@color/hackillinois_blue_trans"
         >
-
         </android.support.v4.view.PagerTitleStrip>
-
 </android.support.v4.view.ViewPager>

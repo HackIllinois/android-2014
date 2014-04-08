@@ -46,7 +46,6 @@ public class NewsfeedFragment extends ListFragment
         Utils.setInsets(getActivity(), list);
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
