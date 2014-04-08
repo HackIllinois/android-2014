@@ -22,6 +22,8 @@ public class ScheduleListAdapter extends ArrayAdapter<ScheduleItem> {
 
     private LayoutInflater mInflater;
     private Picasso picasso;
+    private RoundedTransformation mRoundedTransformation;
+
 
     /**
      * Constructor
@@ -32,6 +34,7 @@ public class ScheduleListAdapter extends ArrayAdapter<ScheduleItem> {
         super(context, R.layout.schedule_list_item, R.id.schedule_description);
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         picasso = Picasso.with(context);
+        mRoundedTransformation = new RoundedTransformation(100, 20, 0, 0);
     }
 
     /**
@@ -69,7 +72,7 @@ public class ScheduleListAdapter extends ArrayAdapter<ScheduleItem> {
         holder.timeTextView.setText(item.getTime());
         // load the image into the ImageView
         if(item.getIconURL() != null)
-            picasso.load(item.getIconURL()).into(holder.iconImageView);
+            picasso.load(item.getIconURL()).resize(200, 200).transform(mRoundedTransformation).centerCrop().into(holder.iconImageView);
 
         holder.titleTextView.setText(item.getEventName());
         holder.descriptionTextView.setText(item.getDescription());
