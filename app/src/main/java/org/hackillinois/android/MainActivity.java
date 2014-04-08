@@ -17,20 +17,19 @@ import android.view.MenuItem;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import org.hackillinois.android.login.OAuthAccessFragment;
-import org.hackillinois.android.models.people.Person;
-
-import java.util.List;
+import org.hackillinois.android.news.NewsfeedFragment;
+import org.hackillinois.android.people.PeopleFragment;
+import org.hackillinois.android.schedule.ScheduleFragment;
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks,
-        PeopleFragment.OnDataPass {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
+    private static final String PROFILE_TAG = "profileFrag";
     private static final String PEOPLE_TAG = "peopleFrag";
     private static final String NEWS_TAG = "newsFrag";
     private static final String SCHEDULE_TAG = "scheduleFrag";
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
-    private List<Person> mPeople;
 
     private CharSequence mTitle;
 
@@ -84,32 +83,41 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        // update the main content by replacing fragments
+        // update the people content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         switch (position){
             case 0:
+                Fragment profileFragment = fragmentManager.findFragmentByTag(PROFILE_TAG);
+                if (profileFragment == null) {
+                    profileFragment = ProfileFragment.newInstance(position + 1);
+                }
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, profileFragment, PROFILE_TAG).addToBackStack(null)
+                        .commit();
+                break;
+            case 1:
                 Fragment peopleFragment = fragmentManager.findFragmentByTag(PEOPLE_TAG);
                 if (peopleFragment == null) {
-                    peopleFragment = new PeopleFragment();
+                    peopleFragment = PeopleFragment.newInstance(position + 1);
                 }
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, peopleFragment, PEOPLE_TAG).addToBackStack(null)
                         .commit();
                 break;
-            case 1:
+            case 2:
                 Fragment newsFragment = fragmentManager.findFragmentByTag(NEWS_TAG);
                 if (newsFragment == null) {
-                    newsFragment = new NewsfeedFragment();
+                    newsFragment = NewsfeedFragment.newInstance(position + 1);
                 }
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, newsFragment, NEWS_TAG).addToBackStack(null)
                         .commit();
                 break;
-            case 2:
+            case 3:
                 Fragment scheduleFragment = fragmentManager.findFragmentByTag(SCHEDULE_TAG);
                 if (scheduleFragment == null) {
-                    scheduleFragment = new ScheduleFragment();
+                    scheduleFragment = ScheduleFragment.newInstance(position + 1);
                 }
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, scheduleFragment, SCHEDULE_TAG).addToBackStack(null)
@@ -129,6 +137,9 @@ public class MainActivity extends ActionBarActivity
             case 3:
                 mTitle = getString(R.string.title_section3);
                 break;
+            case 4:
+                mTitle = getString(R.string.title_section4);
+                break;
         }
     }
 
@@ -145,7 +156,7 @@ public class MainActivity extends ActionBarActivity
             // Only show items in the action bar relevant to this screen
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
-            getMenuInflater().inflate(R.menu.main, menu);
+            //getMenuInflater().inflate(R.menu.people, menu);
             restoreActionBar();
             return true;
         }
@@ -163,10 +174,4 @@ public class MainActivity extends ActionBarActivity
         }
         return super.onOptionsItemSelected(item);
     }
-
-    @Override
-    public void onDataPass(final List<Person> people) {
-        mPeople = people;
-    }
-
 }

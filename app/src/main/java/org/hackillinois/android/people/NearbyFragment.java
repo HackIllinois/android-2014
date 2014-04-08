@@ -1,4 +1,4 @@
-package org.hackillinois.android;
+package org.hackillinois.android.people;
 
 import android.annotation.TargetApi;
 import android.bluetooth.BluetoothAdapter;
@@ -13,14 +13,15 @@ import android.os.Handler;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 
-import org.hackillinois.android.Utils.AdRecord;
+import org.hackillinois.android.R;
+import org.hackillinois.android.utils.AdRecord;
 import org.hackillinois.android.models.people.Person;
 
 import java.util.List;
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class NearbyFragment extends ListFragment
-        implements BluetoothAdapter.LeScanCallback, PeopleFragment.OnDataPass {
+        implements BluetoothAdapter.LeScanCallback {
 
     private static final long SCAN_PERIOD = 10000;
     private static final String TAG = "NearbyFragment";
@@ -88,10 +89,5 @@ public class NearbyFragment extends ListFragment
         for (AdRecord adRecord : adRecords) {
             Log.i(TAG, AdRecord.getName(adRecord));
         }
-    }
-
-    @Override
-    public void onDataPass(final List<Person> people) {
-        mPeople = people;
     }
 }

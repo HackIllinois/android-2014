@@ -2,9 +2,10 @@
 <resources>
 
     <string name="app_name">HackIllinois</string>
-    <string name="title_section1">People</string>
-    <string name="title_section2">Feed</string>
-    <string name="title_section3">Schedule</string>
+    <string name="title_section1">Profile</string>
+    <string name="title_section2">People</string>
+    <string name="title_section3">Feed</string>
+    <string name="title_section4">Schedule</string>
 
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_google_auth">GoogleAuthActivity</string>

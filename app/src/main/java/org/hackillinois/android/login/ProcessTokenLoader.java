@@ -1,19 +1,17 @@
 package org.hackillinois.android.login;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.content.AsyncTaskLoader;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import org.hackillinois.android.R;
+import org.hackillinois.android.utils.HttpUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.net.URLDecoder;
-import java.util.ArrayList;
 
 public class ProcessTokenLoader extends AsyncTaskLoader<String> {
 
@@ -43,21 +41,22 @@ public class ProcessTokenLoader extends AsyncTaskLoader<String> {
                     String authorizationCode = extractCodeFromUrl(mUrl);
                     mOAuth2Helper.retrieveAndStoreAccessToken(authorizationCode);
 
-
+                    HttpUtils httpUtils = HttpUtils.getHttpUtils(getContext());
                     String apiCall = mOAuth2Helper.executeApiCall();
                     JSONObject response = new JSONObject(apiCall);
                     JSONArray array = response.getJSONArray("emails");
-                    ArrayList<String> emails = new ArrayList<String>();
-                    for (int i = 0; i < array.length(); i ++) {
-                        emails.add(array.getJSONObject(i).getString("value"));
-                    }
-                    //TODO check all the emails for the correct one
-                    SharedPreferences.Editor editor = mSharedPreferences.edit();
-                    editor.putString(getContext().getString(R.string.pref_email), emails.get(0));
-                    editor.commit();
 
-                    LocalBroadcastManager.getInstance(getContext()).sendBroadcast(new Intent("LOGGED_IN"));
-                    return emails.get(0);
+                    String userResponse = null;
+                    for (int i = 0; i < array.length(); i ++) {
+                        String email = array.getJSONObject(i).getString("value");
+                        userResponse = httpUtils.testEmail(email);
+                        if (!userResponse.equals("[]")) {
+                            SharedPreferences.Editor editor = mSharedPreferences.edit();
+                            editor.putString(getContext().getString(R.string.pref_email), email);
+                            editor.commit();
+                        }
+                    }
+                    return userResponse;
                 } else if (mUrl.contains("error=")) {
                     Log.i(TAG, "error is " + mUrl);
                 }

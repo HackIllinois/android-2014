@@ -1,4 +1,4 @@
-package org.hackillinois.android.Utils;
+package org.hackillinois.android.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -21,6 +21,8 @@ public class HttpUtils {
     private OkHttpClient client;
     private Context mContext;
 
+    private static final String EMAIL_URL = "http://www.hackillinois.org/mobile/login";
+
     public static HttpUtils getHttpUtils(Context context) throws IOException {
         if (httpUtils != null) {
             return httpUtils;
@@ -42,6 +44,25 @@ public class HttpUtils {
         try {
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
             String email = sharedPreferences.getString(mContext.getString(R.string.pref_email), "");
+            con.addRequestProperty("Email", email);
+            con.setRequestMethod("GET");
+            con.setRequestProperty("Content-Type", "application/json");
+
+            inputStream = con.getInputStream();
+
+            byte[] response = readFully(inputStream);
+            return new String(response);
+        } finally {
+            if (inputStream != null) {
+                inputStream.close();
+            }
+        }
+    }
+
+    public String testEmail(String email) throws IOException {
+        HttpURLConnection con = client.open(new URL(EMAIL_URL));
+        InputStream inputStream = null;
+        try {
             con.addRequestProperty("Email", email);
             con.setRequestMethod("GET");
             con.setRequestProperty("Content-Type", "application/json");

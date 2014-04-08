@@ -1,4 +1,4 @@
-package org.hackillinois.android.Utils;
+package org.hackillinois.android.utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package org.hackillinois.android;
+package org.hackillinois.android.news;
 
 import android.app.Activity;
 import android.content.res.Resources;
@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.hackillinois.android.R;
 import org.hackillinois.android.models.NewsItem;
 
 import java.util.List;

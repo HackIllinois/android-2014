@@ -1,6 +1,5 @@
-package org.hackillinois.android;
+package org.hackillinois.android.people;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,30 +9,54 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
-import org.hackillinois.android.Utils.Utils;
+import org.hackillinois.android.MainActivity;
+import org.hackillinois.android.R;
 import org.hackillinois.android.models.people.Person;
+import org.hackillinois.android.utils.Utils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
-public class PeopleFragment extends ListFragment
-        implements LoaderManager.LoaderCallbacks<List<Person>> {
+public class PeopleFragment extends ListFragment implements LoaderManager.LoaderCallbacks<List<Person>>{
 
     private static final String PEOPLE_URL = "http://hackillinois.org/mobile/person";
 
     private PeopleListAdapter mPeopleListAdapter;
-    private OnDataPass dataPasser;
+
+    public static PeopleFragment newInstance(int sectionNumber) {
+        Bundle args = new Bundle();
+        PeopleFragment fragment = new PeopleFragment();
+        args.putInt(Utils.ARG_SECTION_NUMBER, sectionNumber);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    private PeopleFragment() {}
+
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (getLoaderManager() != null) {
                 getLoaderManager().initLoader(0, null, PeopleFragment.this).forceLoad();
-                LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(this);
+                LocalBroadcastManager.getInstance(context).unregisterReceiver(this);
             }
         }
     };
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+        mPeopleListAdapter = new PeopleListAdapter(getActivity());
+        setListAdapter(mPeopleListAdapter);
+        IntentFilter intentFilter = new IntentFilter(getString(R.string.broadcast_login));
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver, intentFilter);
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -45,13 +68,9 @@ public class PeopleFragment extends ListFragment
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setRetainInstance(true);
-        mPeopleListAdapter = new PeopleListAdapter(getActivity());
-        setListAdapter(mPeopleListAdapter);
-        IntentFilter intentFilter = new IntentFilter(getString(R.string.broadcast_login));
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver, intentFilter);
+    public void onStart() {
+        super.onStart();
+        ((MainActivity) getActivity()).onSectionAttached(getArguments().getInt(Utils.ARG_SECTION_NUMBER));
     }
 
     @Override
@@ -62,7 +81,6 @@ public class PeopleFragment extends ListFragment
         } else {
             setListShown(true);
         }
-        ((MainActivity) getActivity()).onSectionAttached(1);
     }
 
     @Override
@@ -78,8 +96,6 @@ public class PeopleFragment extends ListFragment
     @Override
     public void onLoadFinished(Loader<List<Person>> loader, List<Person> data) {
         mPeopleListAdapter.setData(data);
-        dataPasser.onDataPass(data);
-
         if (isResumed()) {
             setListShown(true);
         } else {
@@ -92,12 +108,16 @@ public class PeopleFragment extends ListFragment
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        dataPasser = (OnDataPass) activity;
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+            inflater.inflate(R.menu.people, menu);
     }
 
-    public interface OnDataPass {
-        public void onDataPass(final List<Person> people);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

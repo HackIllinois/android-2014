@@ -1,9 +1,9 @@
-package org.hackillinois.android;
+package org.hackillinois.android.people;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
-import org.hackillinois.android.Utils.HttpUtils;
+import org.hackillinois.android.utils.HttpUtils;
 import org.hackillinois.android.models.people.Hacker;
 import org.hackillinois.android.models.people.Mentor;
 import org.hackillinois.android.models.people.Person;

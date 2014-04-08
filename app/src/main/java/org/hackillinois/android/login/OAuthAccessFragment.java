@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,8 +61,8 @@ public class OAuthAccessFragment extends DialogFragment implements LoaderManager
 
     @Override
     public void onLoadFinished(Loader<String> loader, String data) {
-        if (data != null) {
-            getActivity().sendBroadcast(new Intent("LOGGED_IN"));
+        if (data != null && !data.equals("[]")) {
+            LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(new Intent("LOGGED_IN"));
         }
     }
 

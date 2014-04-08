@@ -32,10 +32,6 @@
             android:label="@string/title_activity_help" >
         </activity>
 
-        <activity
-            android:name="org.hackillinois.android.SkillsActivity"
-            android:label="@string/title_activity_skills" >
-        </activity>
     </application>
 
 </manifest>

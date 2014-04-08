@@ -1,9 +1,9 @@
-package org.hackillinois.android;
+package org.hackillinois.android.news;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
-import org.hackillinois.android.Utils.HttpUtils;
+import org.hackillinois.android.utils.HttpUtils;
 import org.hackillinois.android.models.NewsItem;
 import org.json.JSONArray;
 import org.json.JSONException;

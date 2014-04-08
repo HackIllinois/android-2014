@@ -1,4 +1,4 @@
-package org.hackillinois.android;
+package org.hackillinois.android.news;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -11,7 +11,9 @@ import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
 import android.widget.ListView;
 
-import org.hackillinois.android.Utils.Utils;
+import org.hackillinois.android.MainActivity;
+import org.hackillinois.android.R;
+import org.hackillinois.android.utils.Utils;
 import org.hackillinois.android.models.NewsItem;
 
 import java.net.MalformedURLException;
@@ -33,6 +35,16 @@ public class NewsfeedFragment extends ListFragment
             }
         }
     };
+
+    public static NewsfeedFragment newInstance(int sectionNumber) {
+        Bundle args = new Bundle();
+        NewsfeedFragment fragment = new NewsfeedFragment();
+        args.putInt(Utils.ARG_SECTION_NUMBER, sectionNumber);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    private NewsfeedFragment () {}
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -56,6 +68,12 @@ public class NewsfeedFragment extends ListFragment
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        ((MainActivity) getActivity()).onSectionAttached(getArguments().getInt(Utils.ARG_SECTION_NUMBER));
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         if (mNewsfeedListAdapter.isEmpty()) {
@@ -63,7 +81,6 @@ public class NewsfeedFragment extends ListFragment
         } else {
             setListShown(true);
         }
-        ((MainActivity) getActivity()).onSectionAttached(2);
     }
 
     @Override

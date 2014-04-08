@@ -1,4 +1,4 @@
-package org.hackillinois.android.Utils;
+package org.hackillinois.android.utils;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -13,6 +13,7 @@ import com.readystatesoftware.systembartint.SystemBarTintManager;
 import org.hackillinois.android.R;
 
 public class Utils {
+    public static final String ARG_SECTION_NUMBER = "section_number";
 
     public static void setInsets(Activity context, View view) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) return;
