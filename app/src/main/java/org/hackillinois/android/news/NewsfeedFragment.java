@@ -1,6 +1,5 @@
 package org.hackillinois.android.news;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,22 +8,30 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ListView;
 
 import org.hackillinois.android.MainActivity;
 import org.hackillinois.android.R;
-import org.hackillinois.android.utils.Utils;
 import org.hackillinois.android.models.NewsItem;
+import org.hackillinois.android.utils.Utils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
 public class NewsfeedFragment extends ListFragment
-        implements LoaderManager.LoaderCallbacks<List<NewsItem>> {
+        implements LoaderManager.LoaderCallbacks<List<NewsItem>>, SwipeRefreshLayout.OnRefreshListener {
 
     private static final String NEWSFEED_JSON_URL = "http://www.hackillinois.org/mobile/newsfeed";
     private NewsfeedListAdapter mNewsfeedListAdapter;
+    private View mProgressContainer;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private boolean mListShown = false;
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -44,18 +51,28 @@ public class NewsfeedFragment extends ListFragment
         return fragment;
     }
 
-    private NewsfeedFragment () {}
+    private NewsfeedFragment() {
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setEmptyText(getString(R.string.loading_data_error));
+        //setEmptyText(getString(R.string.loading_data_error));
         ListView list = getListView();
         list.setBackgroundColor(getResources().getColor(R.color.background_grey));
         list.setDividerHeight(0);
         setListShown(false);
         list.setClipToPadding(false);
-        Utils.setInsets(getActivity(), list);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_news, null, false);
+        Utils.setInsets(getActivity(), v);
+        mProgressContainer = v.findViewById(R.id.progressContainer);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_container);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+        return v;
     }
 
     @Override
@@ -64,7 +81,6 @@ public class NewsfeedFragment extends ListFragment
         mNewsfeedListAdapter = new NewsfeedListAdapter(getActivity());
         setListAdapter(mNewsfeedListAdapter);
         Utils.registerBroadcastReceiver(getActivity(), broadcastReceiver);
-
     }
 
     @Override
@@ -96,6 +112,7 @@ public class NewsfeedFragment extends ListFragment
     @Override
     public void onLoadFinished(Loader<List<NewsItem>> loader, List<NewsItem> data) {
         mNewsfeedListAdapter.setData(data);
+        mSwipeRefreshLayout.setRefreshing(false);
         if (isResumed()) {
             setListShown(true);
         } else {
@@ -108,7 +125,40 @@ public class NewsfeedFragment extends ListFragment
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onRefresh() {
+        getLoaderManager().initLoader(0, null, this).forceLoad();
+    }
+
+    public void setListShown(boolean shown, boolean animate){
+        if (mListShown == shown) {
+            return;
+        }
+        mListShown = shown;
+        if (shown) {
+            if (animate) {
+                mProgressContainer.startAnimation(AnimationUtils.loadAnimation(
+                        getActivity(), android.R.anim.fade_out));
+                mSwipeRefreshLayout.startAnimation(AnimationUtils.loadAnimation(
+                        getActivity(), android.R.anim.fade_in));
+            }
+            mProgressContainer.setVisibility(View.GONE);
+            mSwipeRefreshLayout.setVisibility(View.VISIBLE);
+        } else {
+            if (animate) {
+                mProgressContainer.startAnimation(AnimationUtils.loadAnimation(
+                        getActivity(), android.R.anim.fade_in));
+                mSwipeRefreshLayout.startAnimation(AnimationUtils.loadAnimation(
+                        getActivity(), android.R.anim.fade_out));
+            }
+            mProgressContainer.setVisibility(View.VISIBLE);
+            mSwipeRefreshLayout.setVisibility(View.INVISIBLE);
+        }
+    }
+    public void setListShown(boolean shown){
+        setListShown(shown, true);
+    }
+    public void setListShownNoAnimation(boolean shown) {
+        setListShown(shown, false);
     }
 }
+
