@@ -1,6 +1,7 @@
 package org.hackillinois.android.people;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,12 +22,17 @@ import java.util.List;
 public class PeopleListAdapter extends ArrayAdapter<Person> {
 
     private LayoutInflater mLayoutInflater;
+    private RoundedTransformation mRoundedTransformation;
     Picasso picasso;
 
     public PeopleListAdapter(Context context) {
         super(context, R.layout.profile_list_item, R.id.profile_list_item_name);
         mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         picasso = Picasso.with(context);
+        Resources res = context.getResources();
+        mRoundedTransformation = new RoundedTransformation(100, 20,
+                res.getColor(R.color.hackillinois_blue),
+                res.getInteger(R.integer.people_image_border_width));
     }
 
     @Override
@@ -49,7 +55,7 @@ public class PeopleListAdapter extends ArrayAdapter<Person> {
         Person person = getItem(position);
         if (person != null) {
             String url = "https://graph.facebook.com/" + person.getFbID() + "/picture?type=large";
-            picasso.load(url).resize(200, 200).centerCrop().into(viewHolder.profileImageView);
+            picasso.load(url).resize(200, 200).transform(mRoundedTransformation).centerCrop().into(viewHolder.profileImageView);
 
             viewHolder.nameTextView.setText(person.getName());
             if (person instanceof Staff ) {
