@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.RequestCreator;
 
 import org.hackillinois.android.R;
 import org.hackillinois.android.RoundedTransformation;
@@ -23,7 +24,8 @@ import java.util.List;
 public class PeopleListAdapter extends ArrayAdapter<Person> {
 
     private LayoutInflater mLayoutInflater;
-    private RoundedTransformation mRoundedTransformation;
+    private RoundedTransformation mBlueTransformation;
+    private RoundedTransformation mRedTransform;
     Picasso picasso;
 
     public PeopleListAdapter(Context context) {
@@ -31,8 +33,11 @@ public class PeopleListAdapter extends ArrayAdapter<Person> {
         mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         picasso = Picasso.with(context);
         Resources res = context.getResources();
-        mRoundedTransformation = new RoundedTransformation(100, 20,
+        mBlueTransformation = new RoundedTransformation(100, 5,
                 res.getColor(R.color.hackillinois_blue),
+                res.getInteger(R.integer.people_image_border_width));
+        mRedTransform = new RoundedTransformation(100, 5,
+                res.getColor(R.color.hackillinois_red),
                 res.getInteger(R.integer.people_image_border_width));
     }
 
@@ -56,19 +61,23 @@ public class PeopleListAdapter extends ArrayAdapter<Person> {
         Person person = getItem(position);
         if (person != null) {
             String url = "https://graph.facebook.com/" + person.getFbID() + "/picture?type=large";
-            picasso.load(url).resize(200, 200).transform(mRoundedTransformation).centerCrop().into(viewHolder.profileImageView);
+            RequestCreator requestCreator = picasso.load(url).resize(200, 200);
 
             viewHolder.nameTextView.setText(person.getName());
             if (person instanceof Staff ) {
+                requestCreator = requestCreator.transform(mRedTransform);
                 viewHolder.companyTextView.setText(((Staff) person).getCompany());
                 viewHolder.jobTitleTextView.setText(((Staff) person).getJobTitle());
             } else if (person instanceof Mentor) {
+                requestCreator = requestCreator.transform(mRedTransform);
                 viewHolder.companyTextView.setText(((Mentor) person).getCompany());
                 viewHolder.jobTitleTextView.setText(((Mentor) person).getJobTitle());
             } else if (person instanceof Hacker) {
+                requestCreator = requestCreator.transform(mBlueTransformation);
                 viewHolder.companyTextView.setText(((Hacker) person).getSchool());
                 viewHolder.jobTitleTextView.setText(((Hacker) person).getYear());
             }
+            requestCreator.centerCrop().into(viewHolder.profileImageView);
             viewHolder.locationTextView.setText(person.getHomebase());
         }
         return convertView;
