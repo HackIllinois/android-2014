@@ -29,7 +29,6 @@ public class NewsfeedFragment extends ListFragment
 
     private static final String NEWSFEED_JSON_URL = "http://www.hackillinois.org/mobile/newsfeed";
     private NewsfeedListAdapter mNewsfeedListAdapter;
-    private View mProgressContainer;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private boolean mListShown = false;
 
@@ -57,7 +56,6 @@ public class NewsfeedFragment extends ListFragment
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //setEmptyText(getString(R.string.loading_data_error));
         ListView list = getListView();
         list.setBackgroundColor(getResources().getColor(R.color.background_grey));
         list.setDividerHeight(0);
@@ -69,9 +67,14 @@ public class NewsfeedFragment extends ListFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_news, null, false);
         Utils.setInsets(getActivity(), v);
-        mProgressContainer = v.findViewById(R.id.progressContainer);
         mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_container);
         mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout.setColorScheme(
+                R.color.hackillinois_blue,
+                R.color.hackillinois_blue_trans,
+                R.color.hackillinois_red,
+                R.color.hackillinois_red_trans
+        );
         return v;
     }
 
@@ -136,21 +139,15 @@ public class NewsfeedFragment extends ListFragment
         mListShown = shown;
         if (shown) {
             if (animate) {
-                mProgressContainer.startAnimation(AnimationUtils.loadAnimation(
-                        getActivity(), android.R.anim.fade_out));
                 mSwipeRefreshLayout.startAnimation(AnimationUtils.loadAnimation(
                         getActivity(), android.R.anim.fade_in));
             }
-            mProgressContainer.setVisibility(View.GONE);
             mSwipeRefreshLayout.setVisibility(View.VISIBLE);
         } else {
             if (animate) {
-                mProgressContainer.startAnimation(AnimationUtils.loadAnimation(
-                        getActivity(), android.R.anim.fade_in));
                 mSwipeRefreshLayout.startAnimation(AnimationUtils.loadAnimation(
                         getActivity(), android.R.anim.fade_out));
             }
-            mProgressContainer.setVisibility(View.VISIBLE);
             mSwipeRefreshLayout.setVisibility(View.INVISIBLE);
         }
     }
