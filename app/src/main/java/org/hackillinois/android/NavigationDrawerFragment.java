@@ -3,6 +3,7 @@ package org.hackillinois.android;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -18,8 +19,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.hackillinois.android.utils.Utils;
 
@@ -29,6 +31,9 @@ import org.hackillinois.android.utils.Utils;
  * design guidelines</a> for a complete explanation of the behaviors implemented here.
  */
 public class NavigationDrawerFragment extends Fragment {
+
+    int[] deselectedIcons = {R.drawable.ic_person_deselected, R.drawable.ic_people_tab_deselected, R.drawable.ic_feed_tab_deselected, R.drawable.ic_schedule_tab_deselected, R.drawable.ic_support_tab_deselected};
+    int[] selectedIcons = {R.drawable.ic_person_selected, R.drawable.ic_people_tab_selected, R.drawable.ic_feed_tab_selected, R.drawable.ic_schedule_tab_selected, R.drawable.ic_support_tab_selected};
 
     /**
      * Remember the position of the selected item.
@@ -96,19 +101,22 @@ public class NavigationDrawerFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectItem(position);
+                setNavDrawerItemNormal();
+                TextView textView = (TextView) view.findViewById(R.id.text);
+                textView.setTextColor(Color.WHITE);
+
+                ImageView imageView = (ImageView) view.findViewById(R.id.icon_drawer);
+                imageView.setImageResource(selectedIcons[position]);
             }
         });
-        mDrawerListView.setAdapter(new ArrayAdapter<String>(
-                getActionBar().getThemedContext(),
-                android.R.layout.simple_list_item_1,
-                android.R.id.text1,
-                new String[]{
-                        getString(R.string.title_section1),
-                        getString(R.string.title_section2),
-                        getString(R.string.title_section3),
-                        getString(R.string.title_section4)
-                }
-        ));
+        String[] values = new String[]{
+                getString(R.string.title_section1),
+                getString(R.string.title_section2),
+                getString(R.string.title_section3),
+                getString(R.string.title_section4),
+                getString(R.string.title_section5)
+        };
+        mDrawerListView.setAdapter(new NavigationDrawerAdapter(getActionBar().getThemedContext(),values));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         mDrawerListView.setClipToPadding(false);
         Utils.setInsets(getActivity(), mDrawerListView);
@@ -117,6 +125,19 @@ public class NavigationDrawerFragment extends Fragment {
 
     public boolean isDrawerOpen() {
         return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(mFragmentContainerView);
+    }
+
+    public void setNavDrawerItemNormal()
+    {
+        for (int i=0; i< mDrawerListView.getChildCount(); i++)
+        {
+            View v = mDrawerListView.getChildAt(i);
+            TextView textView = ((TextView) v.findViewById(R.id.text));
+            ImageView imageView = ((ImageView) v.findViewById(R.id.icon_drawer));
+            textView.setTextColor(Color.parseColor("#B3B3B3"));
+            String s = textView.getText().toString();
+            imageView.setImageResource(deselectedIcons[i]);
+        }
     }
 
     /**
