@@ -3,7 +3,7 @@ package org.hackillinois.android;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.Typeface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -100,9 +100,23 @@ public class NavigationDrawerFragment extends Fragment {
                 selectItem(position);
                 setNavDrawerItemNormal();
                 TextView textView = (TextView) view.findViewById(R.id.text);
-                textView.setTypeface(null, Typeface.BOLD);
+                textView.setTextColor(Color.WHITE);
+
                 ImageView imageView = (ImageView) view.findViewById(R.id.icon_drawer);
-                imageView.setImageResource(R.drawable.ic_feed_tab_selected150);
+                switch (position) {
+                    case 0:
+                        imageView.setImageResource(R.drawable.ic_person);
+                        break;
+                    case 1:
+                        imageView.setImageResource(R.drawable.ic_people_tab_deseleted);
+                        break;
+                    case 2:
+                        imageView.setImageResource(R.drawable.ic_feed_tab_deselected);
+                        break;
+                    case 3:
+                        imageView.setImageResource(R.drawable.ic_schedule_tab_deselected);
+                        break;
+                }
             }
         });
         String[] values = new String[]{
@@ -128,7 +142,23 @@ public class NavigationDrawerFragment extends Fragment {
         {
             View v = mDrawerListView.getChildAt(i);
             TextView txtview = ((TextView) v.findViewById(R.id.text));
-            txtview.setTypeface(null, Typeface.NORMAL);
+            ImageView imageView = ((ImageView) v.findViewById(R.id.icon_drawer));
+            txtview.setTextColor(Color.parseColor("#B3B3B3"));
+            String s = txtview.getText().toString();
+            switch (i) {
+                case 0:
+                    imageView.setImageResource(R.drawable.ic_person150);
+                    break;
+                case 1:
+                    imageView.setImageResource(R.drawable.ic_people_tab_deselected150);
+                    break;
+                case 2:
+                    imageView.setImageResource(R.drawable.ic_feed_tab_deselected150);
+                    break;
+                case 3:
+                    imageView.setImageResource(R.drawable.ic_schedule_tab_deselected150);
+                    break;
+            }
         }
     }
 

@@ -1,6 +1,6 @@
 package org.hackillinois.android;
 import android.content.Context;
-import android.graphics.Typeface;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,28 +31,27 @@ public class NavigationDrawerAdapter extends ArrayAdapter<String>{
             viewHolder = new ViewHolder();
             viewHolder.textView = (TextView) convertView.findViewById(R.id.text);
             viewHolder.iconImageView = (ImageView) convertView.findViewById(R.id.icon_drawer);
-            if (position == 0) { viewHolder.textView.setTypeface(null, Typeface.BOLD); }
+            if (position == 0) {
+                viewHolder.textView.setTextColor(Color.WHITE);
+                viewHolder.iconImageView.setImageResource(R.drawable.ic_person);
+            }
             convertView.setTag(viewHolder);
+            viewHolder.textView.setText(values[position]);
+
+            String s = values[position];
+            if(s.equals(context.getString(R.string.title_section2))) {
+                viewHolder.iconImageView.setImageResource(R.drawable.ic_people_tab_deselected150);
+            }
+            if(s.equals(context.getString(R.string.title_section3))) {
+                viewHolder.iconImageView.setImageResource(R.drawable.ic_feed_tab_deselected150);
+            }
+            if(s.equals(context.getString(R.string.title_section4))) {
+                viewHolder.iconImageView.setImageResource(R.drawable.ic_schedule_tab_deselected150);
+            }
         }
         else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        viewHolder.textView.setText(values[position]);
-
-        String s = values[position];
-        if(s.equals(context.getString(R.string.title_section1))) {
-            viewHolder.iconImageView.setImageResource(R.drawable.ic_person150_1);
-        }
-        if(s.equals(context.getString(R.string.title_section2))) {
-            viewHolder.iconImageView.setImageResource(R.drawable.ic_people_tab_delected150);
-        }
-        if(s.equals(context.getString(R.string.title_section3))) {
-            viewHolder.iconImageView.setImageResource(R.drawable.ic_feed_tab_delected150);
-        }
-        if(s.equals(context.getString(R.string.title_section4))) {
-            viewHolder.iconImageView.setImageResource(R.drawable.ic_schedule_tab_delected150);
-        }
-
 
         return convertView;
     }
