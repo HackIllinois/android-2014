@@ -12,10 +12,16 @@ import org.hackillinois.android.R;
 public class SchedulePagerAdapter extends FragmentPagerAdapter {
 
     private ScheduleFragment scheduleFragment;
+    private Fragment fridayFrag;
+    private Fragment saturdayFrag;
+    private Fragment sundayFrag;
 
     public SchedulePagerAdapter(ScheduleFragment scheduleFragment, FragmentManager fm) {
         super(fm);
         this.scheduleFragment = scheduleFragment;
+        fridayFrag = new FridaySchedule();
+        saturdayFrag = new SaturdaySchedule();
+        sundayFrag = new SundaySchedule();
     }
 
     /**
@@ -27,11 +33,11 @@ public class SchedulePagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new FridaySchedule();
+                return fridayFrag;
             case 1:
-                return new SaturdaySchedule();
+                return saturdayFrag;
             case 2:
-                return new SundaySchedule();
+                return sundayFrag;
         }
         return null;
     }
