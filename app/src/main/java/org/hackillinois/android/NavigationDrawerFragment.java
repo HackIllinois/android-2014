@@ -134,7 +134,7 @@ public class NavigationDrawerFragment extends Fragment {
             View v = mDrawerListView.getChildAt(i);
             TextView textView = ((TextView) v.findViewById(R.id.text));
             ImageView imageView = ((ImageView) v.findViewById(R.id.icon_drawer));
-            textView.setTextColor(Color.parseColor("#B3B3B3"));
+            textView.setTextColor(getResources().getColor(R.color.icon_grey));
             String s = textView.getText().toString();
             imageView.setImageResource(deselectedIcons[i]);
         }

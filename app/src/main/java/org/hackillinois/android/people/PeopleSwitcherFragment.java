@@ -4,14 +4,17 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.support.v4.view.PagerTitleStrip;
+import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import org.hackillinois.android.MainActivity;
 import org.hackillinois.android.R;
@@ -22,64 +25,57 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
-public class PeopleFragment extends ListFragment implements LoaderManager.LoaderCallbacks<List<Person>>{
+public class PeopleSwitcherFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Person>> {
 
     private static final String PEOPLE_URL = "http://hackillinois.org/mobile/person";
-
-    private PeopleListAdapter mPeopleListAdapter;
-
-    public static PeopleFragment newInstance(int sectionNumber) {
-        Bundle args = new Bundle();
-        PeopleFragment fragment = new PeopleFragment();
-        args.putInt(Utils.ARG_SECTION_NUMBER, sectionNumber);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    private PeopleFragment() {}
+    private PeoplePagerAdapter mSchedulePagerAdapter;
+    private ViewPager mViewPager;
+    private List<Person> mPeople;
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (getLoaderManager() != null) {
-                getLoaderManager().initLoader(0, null, PeopleFragment.this).forceLoad();
+                getLoaderManager().initLoader(0, null, PeopleSwitcherFragment.this).forceLoad();
                 LocalBroadcastManager.getInstance(context).unregisterReceiver(this);
             }
         }
     };
 
+    public static PeopleSwitcherFragment newInstance(int sectionNumber) {
+        Bundle args = new Bundle();
+        PeopleSwitcherFragment fragment = new PeopleSwitcherFragment();
+        args.putInt(Utils.ARG_SECTION_NUMBER, sectionNumber);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-        mPeopleListAdapter = new PeopleListAdapter(getActivity());
-        setListAdapter(mPeopleListAdapter);
         IntentFilter intentFilter = new IntentFilter(getString(R.string.broadcast_login));
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver, intentFilter);
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        setEmptyText(getString(R.string.loading_data_error));
-        setListShown(false);
-        getListView().setClipToPadding(false);
-        Utils.setInsets(getActivity(), getListView());
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_people_switcher, container, false);
+        mViewPager = (ViewPager) rootView.findViewById(R.id.people_pager);
+        PagerTitleStrip pagerTitleStrip = (PagerTitleStrip) rootView.findViewById(R.id.pager_strip);
+
+        mSchedulePagerAdapter = new PeoplePagerAdapter(this, getChildFragmentManager());
+        mViewPager.setAdapter(mSchedulePagerAdapter);
+        pagerTitleStrip.setClipToPadding(false);
+        Utils.setViewPagerInsets(getActivity(), pagerTitleStrip);
+        return rootView;
     }
 
     @Override
     public void onStart() {
         super.onStart();
         ((MainActivity) getActivity()).onSectionAttached(getArguments().getInt(Utils.ARG_SECTION_NUMBER));
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (mPeopleListAdapter.isEmpty()) {
+        if (mPeople == null) {
             getLoaderManager().initLoader(0, null, this).forceLoad();
-        } else {
-            setListShown(true);
         }
     }
 
@@ -95,11 +91,10 @@ public class PeopleFragment extends ListFragment implements LoaderManager.Loader
 
     @Override
     public void onLoadFinished(Loader<List<Person>> loader, List<Person> data) {
-        mPeopleListAdapter.setData(data);
-        if (isResumed()) {
-            setListShown(true);
-        } else {
-            setListShownNoAnimation(true);
+        if (data != null) {
+            mPeople = data;
+            ((MainActivity)getActivity()).setPeople(data);
+            mSchedulePagerAdapter.notifyDataReady();
         }
     }
 
@@ -107,17 +102,10 @@ public class PeopleFragment extends ListFragment implements LoaderManager.Loader
     public void onLoaderReset(Loader<List<Person>> loader) {
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-            inflater.inflate(R.menu.people, menu);
+    public void showResults(Cursor c, String query) {
+        int currentPage = mViewPager.getCurrentItem();
+        mSchedulePagerAdapter.showResults(c, query, currentPage);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_search:
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+
 }

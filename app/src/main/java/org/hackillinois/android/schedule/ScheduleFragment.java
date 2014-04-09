@@ -38,8 +38,6 @@ public class ScheduleFragment extends Fragment {
         return fragment;
     }
 
-    private ScheduleFragment () {}
-
     @Override
     public void onStart() {
         super.onResume();

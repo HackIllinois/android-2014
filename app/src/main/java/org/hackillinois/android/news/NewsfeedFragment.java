@@ -50,9 +50,6 @@ public class NewsfeedFragment extends ListFragment
         return fragment;
     }
 
-    private NewsfeedFragment() {
-    }
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);

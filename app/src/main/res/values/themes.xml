@@ -3,7 +3,6 @@
     <style name="Theme.HackIllinois" parent="@style/Theme.AppCompat.Light.DarkActionBar">
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
-        <item name="windowActionBarOverlay">true</item>
     </style>
 
     <!-- Blue action bar style -->

@@ -9,10 +9,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.hackillinois.android.models.people.Person;
 import org.hackillinois.android.utils.Utils;
 
 public class ProfileFragment extends Fragment implements LoaderManager.LoaderCallbacks<Object> {
@@ -32,17 +34,21 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
                 getLoaderManager().initLoader(0, null, ProfileFragment.this).forceLoad();
                 LocalBroadcastManager.getInstance(context).unregisterReceiver(this);
             }
+            Person person = (Person) intent.getSerializableExtra("Person");
+            if(person!=null) {
+                Log.e("blah", person.getName());
+            }
         }
     };
-
-    private ProfileFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_profile, null, false);
+        Utils.setInsets(getActivity(), v);
         IntentFilter intentFilter = new IntentFilter(getString(R.string.broadcast_login));
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver, intentFilter);
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        return v;
     }
 
     @Override
