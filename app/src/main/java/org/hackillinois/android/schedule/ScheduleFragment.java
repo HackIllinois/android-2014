@@ -14,7 +14,7 @@ import org.hackillinois.android.utils.Utils;
 /**
  * @author vishal
  *         <p/>
- *         The top level fragment for the Schedule. Has a view pager for Friday, Saturday, and Sunday
+ * The top level fragment for the Schedule. Has a view pager for Friday, Saturday, and Sunday
  */
 public class ScheduleFragment extends Fragment {
 
@@ -24,6 +24,7 @@ public class ScheduleFragment extends Fragment {
         ViewPager mViewPager = (ViewPager) rootView.findViewById(R.id.schedule_pager);
         SchedulePagerAdapter mSchedulePagerAdapter = new SchedulePagerAdapter(this, getChildFragmentManager());
         mViewPager.setAdapter(mSchedulePagerAdapter);
+        mViewPager.setPageTransformer(true, new DepthPageTransformer());
         mViewPager.setClipToPadding(false);
         Utils.setInsets(getActivity(), mViewPager);
         return rootView;

@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import org.hackillinois.android.R;
 
 /**
-* Created by nelson on 4/8/14.
+* Created by Vishal on 4/8/14.
 */
 public class SchedulePagerAdapter extends FragmentPagerAdapter {
 
