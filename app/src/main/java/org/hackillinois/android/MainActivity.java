@@ -1,6 +1,9 @@
 package org.hackillinois.android;
 
+import android.app.SearchManager;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -16,10 +19,14 @@ import android.view.MenuItem;
 
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
+import org.hackillinois.android.database.DatabaseTable;
 import org.hackillinois.android.login.OAuthAccessFragment;
+import org.hackillinois.android.models.people.Person;
 import org.hackillinois.android.news.NewsfeedFragment;
-import org.hackillinois.android.people.PeopleFragment;
+import org.hackillinois.android.people.PeopleSwitcherFragment;
 import org.hackillinois.android.schedule.ScheduleFragment;
+
+import java.util.List;
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -30,8 +37,10 @@ public class MainActivity extends ActionBarActivity
     private static final String SCHEDULE_TAG = "scheduleFrag";
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
-
     private CharSequence mTitle;
+    DatabaseTable db = new DatabaseTable(this);
+
+    private List<Person> mPeople;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +85,10 @@ public class MainActivity extends ActionBarActivity
             // Tint that shit!
             SystemBarTintManager tintManager = new SystemBarTintManager(this);
             tintManager.setStatusBarTintEnabled(true);
-            int actionBarColor = getResources().getColor(R.color.hackillinois_blue_trans);
+            int actionBarColor = getResources().getColor(R.color.hackillinois_blue);
             tintManager.setStatusBarTintColor(actionBarColor);
         }
+        handleIntent(getIntent());
     }
 
     @Override
@@ -99,7 +109,7 @@ public class MainActivity extends ActionBarActivity
             case 1:
                 Fragment peopleFragment = fragmentManager.findFragmentByTag(PEOPLE_TAG);
                 if (peopleFragment == null) {
-                    peopleFragment = PeopleFragment.newInstance(position + 1);
+                    peopleFragment = PeopleSwitcherFragment.newInstance(position + 1);
                 }
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, peopleFragment, PEOPLE_TAG).addToBackStack(null)
@@ -143,6 +153,14 @@ public class MainActivity extends ActionBarActivity
         }
     }
 
+    public List<Person> getPeople() {
+        return mPeople;
+    }
+
+    public void setPeople(List<Person> mPeople) {
+        this.mPeople = mPeople;
+    }
+
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
@@ -157,10 +175,40 @@ public class MainActivity extends ActionBarActivity
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
             //getMenuInflater().inflate(R.menu.people, menu);
+            // Associate searchable configuration with the SearchView
             restoreActionBar();
             return true;
         }
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent) {
+        if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+            //Intent viewIntent = new Intent(this, ProfileActivity.class);
+            //viewIntent.setData(intent.getData());
+            //startActivity(viewIntent);
+        } else if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            showResults(query);
+        }
+    }
+
+    private void showResults(String query) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        PeopleSwitcherFragment peopleFragment = (PeopleSwitcherFragment) fragmentManager.findFragmentByTag(PEOPLE_TAG);
+        if (peopleFragment != null) {
+            Cursor c = db.getWordMatches(query, null);
+            if (c != null) {
+                peopleFragment.showResults(c, query);
+            }
+        }
+
     }
 
     @Override

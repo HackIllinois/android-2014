@@ -21,6 +21,13 @@ public class Utils {
         SystemBarTintManager.SystemBarConfig config = tintManager.getConfig();
         view.setPadding(0, config.getPixelInsetTop(true), config.getPixelInsetRight(), config.getPixelInsetBottom());
     }
+
+    public static void setViewPagerInsets(Activity context, View view) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) return;
+        SystemBarTintManager tintManager = new SystemBarTintManager(context);
+        SystemBarTintManager.SystemBarConfig config = tintManager.getConfig();
+        view.setPadding(0, config.getPixelInsetTop(true), config.getPixelInsetRight(), 0);
+    }
     public static void registerBroadcastReceiver(Context context, BroadcastReceiver broadcastReceiver) {
         IntentFilter intentFilter = new IntentFilter(context.getString(R.string.broadcast_login));
         LocalBroadcastManager.getInstance(context).registerReceiver(broadcastReceiver, intentFilter);

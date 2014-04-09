@@ -22,8 +22,6 @@ import org.hackillinois.android.models.ScheduleItem;
 import java.util.Calendar;
 import java.util.List;
 
-import static android.support.v4.app.ActivityCompat.startActivity;
-
 /**
  * @author vishal
  */
@@ -32,28 +30,14 @@ public class ScheduleListAdapter extends ArrayAdapter<ScheduleItem> {
     private LayoutInflater mInflater;
     private Picasso picasso;
     private RoundedTransformation mRoundedTransformation;
-    private Context mContext;
 
-    /**
-     * Constructor
-     *
-     * @param context The current context.
-     */
     public ScheduleListAdapter(Context context) {
         super(context, R.layout.schedule_list_item, R.id.schedule_description);
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         picasso = Picasso.with(context);
         mRoundedTransformation = new RoundedTransformation(100, 20, 0, 0);
-        mContext = context;
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param position
-     * @param convertView
-     * @param parent
-     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View rowView = convertView;
@@ -114,11 +98,6 @@ public class ScheduleListAdapter extends ArrayAdapter<ScheduleItem> {
         return rowView;
     }
 
-    /**
-     * Makes a list of all the rows
-     *
-     * @param dataList data
-     */
     public void setData(List<ScheduleItem> dataList) {
         if (dataList != null) {
             clear();
@@ -128,9 +107,6 @@ public class ScheduleListAdapter extends ArrayAdapter<ScheduleItem> {
         }
     }
 
-    /**
-     * The views that are in one row of the list adapter
-     */
     static class ViewHolder {
         public TextView timeTextView;
         public ImageView iconImageView;

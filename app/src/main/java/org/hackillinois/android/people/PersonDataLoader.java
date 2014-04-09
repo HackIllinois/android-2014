@@ -3,11 +3,12 @@ package org.hackillinois.android.people;
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
-import org.hackillinois.android.utils.HttpUtils;
+import org.hackillinois.android.database.DatabaseTable;
 import org.hackillinois.android.models.people.Hacker;
 import org.hackillinois.android.models.people.Mentor;
 import org.hackillinois.android.models.people.Person;
 import org.hackillinois.android.models.people.Staff;
+import org.hackillinois.android.utils.HttpUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,11 +22,13 @@ public class PersonDataLoader extends AsyncTaskLoader<List<Person>> {
 
     private URL urlToLoad;
     private Context mContext;
+    private DatabaseTable databaseTable;
 
     public PersonDataLoader(Context context, URL url) {
         super(context);
         urlToLoad = url;
         mContext = context;
+        databaseTable = new DatabaseTable(getContext());
     }
 
     @Override
@@ -45,11 +48,17 @@ public class PersonDataLoader extends AsyncTaskLoader<List<Person>> {
                     JSONObject person = jsonArray.getJSONObject(i);
                     String type = person.getString("type");
                     if (type.equals("hacker")) {
-                        persons.add(new Hacker(person));
+                        Hacker hacker = new Hacker(person);
+                        databaseTable.addPerson(hacker);
+                        persons.add(hacker);
                     } else if (type.equals("staff")) {
-                        persons.add(new Staff(person));
+                        Staff staff = new Staff(person);
+                        databaseTable.addPerson(staff);
+                        persons.add(staff);
                     } else if (type.equals("mentor")) {
-                        persons.add(new Mentor(person));
+                        Mentor mentor = new Mentor(person);
+                        databaseTable.addPerson(mentor);
+                        persons.add(mentor);
                     }
                 }
                 return persons;

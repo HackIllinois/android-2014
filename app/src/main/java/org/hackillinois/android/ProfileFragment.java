@@ -35,8 +35,6 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         }
     };
 
-    private ProfileFragment() {}
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

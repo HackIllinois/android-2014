@@ -2,13 +2,13 @@
 <resources>
 
     <style name="ActionBar.Solid.Hackillinois_blue_actionbar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@color/hackillinois_blue_trans</item>
-        <item name="background">@color/hackillinois_blue_trans</item>
+        <item name="android:background">@color/hackillinois_blue</item>
+        <item name="background">@color/hackillinois_blue</item>
     </style>
 
     <style name="ActionBar.Solid.Hackillinois_red_actionbar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@color/hackillinois_red_trans</item>
-        <item name="background">@color/hackillinois_red_trans</item>
+        <item name="android:background">@color/hackillinois_red</item>
+        <item name="background">@color/hackillinois_red</item>
     </style>
 
     <style name="LauncherAnimation" parent="android:style/Animation.Activity">

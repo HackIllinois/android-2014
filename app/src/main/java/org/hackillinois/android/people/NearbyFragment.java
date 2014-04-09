@@ -13,9 +13,10 @@ import android.os.Handler;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 
+import org.hackillinois.android.MainActivity;
 import org.hackillinois.android.R;
-import org.hackillinois.android.utils.AdRecord;
 import org.hackillinois.android.models.people.Person;
+import org.hackillinois.android.utils.AdRecord;
 
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class NearbyFragment extends ListFragment
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setEmptyText("No peeps");
+        setEmptyText(getString(R.string.loading_data_error));
         setListShown(false);
     }
 
@@ -88,6 +89,20 @@ public class NearbyFragment extends ListFragment
         List<AdRecord> adRecords = AdRecord.parseScanRecord(scanRecord);
         for (AdRecord adRecord : adRecords) {
             Log.i(TAG, AdRecord.getName(adRecord));
+        }
+    }
+
+    public void notifyDataReady() {
+        getAndSetData();
+    }
+
+    private void getAndSetData() {
+        MainActivity mainActivity = (MainActivity) getActivity();
+        if (mainActivity != null) {
+            List<Person> people = mainActivity.getPeople();
+            if (people != null) {
+                mPeople = people;
+            }
         }
     }
 }
