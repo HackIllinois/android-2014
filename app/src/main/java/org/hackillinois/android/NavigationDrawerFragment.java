@@ -3,6 +3,7 @@ package org.hackillinois.android;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -11,7 +12,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -98,11 +98,11 @@ public class NavigationDrawerFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectItem(position);
+                setNavDrawerItemNormal();
                 TextView textView = (TextView) view.findViewById(R.id.text);
-                textView.setTextColor(R.color.hackillinois_blue);
-                ImageView imageView = (ImageView) view.findViewById(R.id.icon);
-                imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_calendar_schedule_icon));
-                Log.e("blah", "blah");
+                textView.setTypeface(null, Typeface.BOLD);
+                ImageView imageView = (ImageView) view.findViewById(R.id.icon_drawer);
+                imageView.setImageResource(R.drawable.ic_feed_tab_selected150);
             }
         });
         String[] values = new String[]{
@@ -120,6 +120,16 @@ public class NavigationDrawerFragment extends Fragment {
 
     public boolean isDrawerOpen() {
         return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(mFragmentContainerView);
+    }
+
+    public void setNavDrawerItemNormal()
+    {
+        for (int i=0; i< mDrawerListView.getChildCount(); i++)
+        {
+            View v = mDrawerListView.getChildAt(i);
+            TextView txtview = ((TextView) v.findViewById(R.id.text));
+            txtview.setTypeface(null, Typeface.NORMAL);
+        }
     }
 
     /**
