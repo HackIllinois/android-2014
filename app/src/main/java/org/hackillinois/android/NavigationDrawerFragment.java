@@ -32,6 +32,9 @@ import org.hackillinois.android.utils.Utils;
  */
 public class NavigationDrawerFragment extends Fragment {
 
+    int[] deselectedIcons = {R.drawable.ic_person_deselected, R.drawable.ic_people_tab_deselected, R.drawable.ic_feed_tab_deselected, R.drawable.ic_schedule_tab_deselected, R.drawable.ic_support_tab_deselected};
+    int[] selectedIcons = {R.drawable.ic_person_selected, R.drawable.ic_people_tab_selected, R.drawable.ic_feed_tab_selected, R.drawable.ic_schedule_tab_selected, R.drawable.ic_support_tab_selected};
+
     /**
      * Remember the position of the selected item.
      */
@@ -103,20 +106,7 @@ public class NavigationDrawerFragment extends Fragment {
                 textView.setTextColor(Color.WHITE);
 
                 ImageView imageView = (ImageView) view.findViewById(R.id.icon_drawer);
-                switch (position) {
-                    case 0:
-                        imageView.setImageResource(R.drawable.ic_person);
-                        break;
-                    case 1:
-                        imageView.setImageResource(R.drawable.ic_people_tab_deseleted);
-                        break;
-                    case 2:
-                        imageView.setImageResource(R.drawable.ic_feed_tab_deselected);
-                        break;
-                    case 3:
-                        imageView.setImageResource(R.drawable.ic_schedule_tab_deselected);
-                        break;
-                }
+                imageView.setImageResource(selectedIcons[position]);
             }
         });
         String[] values = new String[]{
@@ -124,6 +114,7 @@ public class NavigationDrawerFragment extends Fragment {
                 getString(R.string.title_section2),
                 getString(R.string.title_section3),
                 getString(R.string.title_section4),
+                getString(R.string.title_section5)
         };
         mDrawerListView.setAdapter(new NavigationDrawerAdapter(getActionBar().getThemedContext(),values));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
@@ -141,24 +132,11 @@ public class NavigationDrawerFragment extends Fragment {
         for (int i=0; i< mDrawerListView.getChildCount(); i++)
         {
             View v = mDrawerListView.getChildAt(i);
-            TextView txtview = ((TextView) v.findViewById(R.id.text));
+            TextView textView = ((TextView) v.findViewById(R.id.text));
             ImageView imageView = ((ImageView) v.findViewById(R.id.icon_drawer));
-            txtview.setTextColor(Color.parseColor("#B3B3B3"));
-            String s = txtview.getText().toString();
-            switch (i) {
-                case 0:
-                    imageView.setImageResource(R.drawable.ic_person150);
-                    break;
-                case 1:
-                    imageView.setImageResource(R.drawable.ic_people_tab_deselected150);
-                    break;
-                case 2:
-                    imageView.setImageResource(R.drawable.ic_feed_tab_deselected150);
-                    break;
-                case 3:
-                    imageView.setImageResource(R.drawable.ic_schedule_tab_deselected150);
-                    break;
-            }
+            textView.setTextColor(Color.parseColor("#B3B3B3"));
+            String s = textView.getText().toString();
+            imageView.setImageResource(deselectedIcons[i]);
         }
     }
 

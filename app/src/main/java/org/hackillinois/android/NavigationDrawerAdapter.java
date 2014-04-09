@@ -13,6 +13,8 @@ import android.widget.TextView;
 public class NavigationDrawerAdapter extends ArrayAdapter<String>{
     private final Context context;
     private final String[] values;
+    int[] deselectedIcons = {R.drawable.ic_person_selected, R.drawable.ic_people_tab_deselected, R.drawable.ic_feed_tab_deselected, R.drawable.ic_schedule_tab_deselected, R.drawable.ic_support_tab_deselected};
+
 
     public NavigationDrawerAdapter(Context context, String[] values) {
         super(context, R.layout.drawer_list_item, values);
@@ -27,27 +29,21 @@ public class NavigationDrawerAdapter extends ArrayAdapter<String>{
         if(convertView==null) {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
             convertView = inflater.inflate(R.layout.drawer_list_item, parent, false);
+
             viewHolder = new ViewHolder();
             viewHolder.textView = (TextView) convertView.findViewById(R.id.text);
             viewHolder.iconImageView = (ImageView) convertView.findViewById(R.id.icon_drawer);
+
             if (position == 0) {
                 viewHolder.textView.setTextColor(Color.WHITE);
-                viewHolder.iconImageView.setImageResource(R.drawable.ic_person);
             }
-            convertView.setTag(viewHolder);
-            viewHolder.textView.setText(values[position]);
 
-            String s = values[position];
-            if(s.equals(context.getString(R.string.title_section2))) {
-                viewHolder.iconImageView.setImageResource(R.drawable.ic_people_tab_deselected150);
-            }
-            if(s.equals(context.getString(R.string.title_section3))) {
-                viewHolder.iconImageView.setImageResource(R.drawable.ic_feed_tab_deselected150);
-            }
-            if(s.equals(context.getString(R.string.title_section4))) {
-                viewHolder.iconImageView.setImageResource(R.drawable.ic_schedule_tab_deselected150);
-            }
+            convertView.setTag(viewHolder);
+
+            viewHolder.textView.setText(values[position]);
+            viewHolder.iconImageView.setImageResource(deselectedIcons[position]);
         }
         else {
             viewHolder = (ViewHolder) convertView.getTag();

@@ -6,6 +6,7 @@
     <string name="title_section2">People</string>
     <string name="title_section3">Feed</string>
     <string name="title_section4">Schedule</string>
+    <string name="title_section5">Support</string>
 
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_google_auth">GoogleAuthActivity</string>
