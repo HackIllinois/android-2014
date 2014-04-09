@@ -1,6 +1,10 @@
 package org.hackillinois.android.models;
 
+import android.util.Log;
+
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONException;
@@ -36,7 +40,7 @@ public class ScheduleItem {
         roomName = location.getString("room_name");
         imageURL = location.getString("image_url");
 
-        time = jsonObject.getInt("time");
+        time = jsonObject.getInt("time") ;
         iconURL = jsonObject.getString("icon_url");
     }
 
@@ -87,21 +91,21 @@ public class ScheduleItem {
     }
 
     private String format_time(int unixTime) {
-        DateTime time = new DateTime((long) unixTime*1000);
-        //Log.i("poop", time.toString());
-        DateTimeFormatter formatter = DateTimeFormat.shortTime();
-        return time.toString(formatter);
+        LocalDateTime localTime = new LocalDateTime((long) unixTime*1000);
+        localTime.plusHours(5);
+        final DateTimeFormatter formatter = DateTimeFormat.shortTime();
+
+        return localTime.toString(formatter);
     }
 
     private int format_day(int unixTime){
         DateTime time = new DateTime((long) unixTime*1000);
-        //int fag = DateTimeConstants.MONDAY;
         return time.getDayOfMonth();
     }
 
     private int time_hour(int unixTime){
         DateTime time = new DateTime((long) unixTime*1000);
-        return time.getHourOfDay();
+        return time.getHourOfDay() + 5;
     }
 
     private int time_minute(int unixTime){

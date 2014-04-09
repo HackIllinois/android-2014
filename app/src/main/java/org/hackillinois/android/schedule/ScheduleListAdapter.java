@@ -1,6 +1,11 @@
 package org.hackillinois.android.schedule;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
+import android.provider.CalendarContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +22,8 @@ import org.hackillinois.android.models.ScheduleItem;
 import java.util.Calendar;
 import java.util.List;
 
+import static android.support.v4.app.ActivityCompat.startActivity;
+
 /**
  * @author vishal
  */
@@ -25,7 +32,7 @@ public class ScheduleListAdapter extends ArrayAdapter<ScheduleItem> {
     private LayoutInflater mInflater;
     private Picasso picasso;
     private RoundedTransformation mRoundedTransformation;
-
+    private Context mContext;
 
     /**
      * Constructor
@@ -37,6 +44,7 @@ public class ScheduleListAdapter extends ArrayAdapter<ScheduleItem> {
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         picasso = Picasso.with(context);
         mRoundedTransformation = new RoundedTransformation(100, 20, 0, 0);
+        mContext = context;
     }
 
     /**
@@ -73,7 +81,7 @@ public class ScheduleListAdapter extends ArrayAdapter<ScheduleItem> {
         final ScheduleItem item = getItem(position);
         holder.timeTextView.setText(item.getTime());
         // load the image into the ImageView
-        if(item.getIconURL() != null)
+        if (item.getIconURL() != null)
             picasso.load(item.getIconURL()).resize(200, 200).transform(mRoundedTransformation).centerCrop().into(holder.iconImageView);
 
         holder.titleTextView.setText(item.getEventName());
@@ -81,11 +89,22 @@ public class ScheduleListAdapter extends ArrayAdapter<ScheduleItem> {
         holder.roomTextView.setText(item.getRoomName() + " " + item.getRoomNumber());
         holder.calendarTextView.setText("Add");
 
+        Log.d("formatted time", item.getTime());
+
         final View.OnClickListener addToCalendar = new View.OnClickListener() {
+            @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
             @Override
             public void onClick(View v) {
                 Calendar beginTime = Calendar.getInstance();
-
+                beginTime.set(2014, Calendar.APRIL, item.getDay(), item.getHour(), item.getMinute());
+                Intent intent = new Intent(Intent.ACTION_INSERT)
+                        .setData(CalendarContract.Events.CONTENT_URI)
+                        .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.getTimeInMillis())
+                        .putExtra(CalendarContract.Events.TITLE, item.getEventName())
+                        .putExtra(CalendarContract.Events.DESCRIPTION, item.getDescription())
+                        .putExtra(CalendarContract.Events.EVENT_LOCATION, item.getRoomName() + " " + item.getRoomNumber())
+                        .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
+                getContext().startActivity(intent);
             }
         };
 

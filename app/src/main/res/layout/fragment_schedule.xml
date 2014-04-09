@@ -9,11 +9,11 @@
     android:background="@color/background_grey"
     >
 
-    <android.support.v4.view.PagerTitleStrip
+    <android.support.v4.view.PagerTabStrip
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@android:color/white"
-        android:background="@color/hackillinois_blue_trans"
-        >
-        </android.support.v4.view.PagerTitleStrip>
+        android:background="@color/hackillinois_blue_trans">
+        </android.support.v4.view.PagerTabStrip>
+
 </android.support.v4.view.ViewPager>
