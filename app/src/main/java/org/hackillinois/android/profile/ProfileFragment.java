@@ -1,5 +1,6 @@
 package org.hackillinois.android.profile;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import org.hackillinois.android.MainActivity;
@@ -22,7 +24,13 @@ import org.hackillinois.android.R;
 import org.hackillinois.android.models.people.Person;
 import org.hackillinois.android.utils.Utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ProfileFragment extends Fragment implements LoaderManager.LoaderCallbacks<Object> {
+
+    private TextView mNameTextView;
+    private SkillsAdapter mSkillsAdapter;
 
     public static ProfileFragment newInstance(int sectionNumber) {
         Bundle args = new Bundle();
@@ -46,6 +54,29 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
                 if (person.getSkills().isEmpty()) {
                     launchEditSkillsFragment();
                 }
+                else {
+                    List<String> skills = person.getSkills();
+
+                    ArrayList<List<String>> lists = new ArrayList<List<String>>();
+
+                    int i = 0;
+                    for(String skill : skills) {
+                        if(i % 4 == 0)
+                            lists.add( new ArrayList<String>() );
+                        lists.get(i/4).add(skill);
+                        i++;
+                    }
+
+                    for( ; i % 4 != 0; i++) { // fill in the rest of the 4-tuple with empty strings
+                        lists.get(i / 4).add("");
+                    }
+
+                    mSkillsAdapter.clear();
+                    for(List<String> list : lists)
+                        mSkillsAdapter.add(list);
+                    mSkillsAdapter.notifyDataSetChanged();
+
+                }
                 Log.e("profilefragment", person.getName());
             }
         }
@@ -65,11 +96,17 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_profile, null, false);
-        TextView mNameTextView = (TextView) v.findViewById(R.id.name_profile);
-        Utils.setInsets(getActivity(), v);
+        mNameTextView = (TextView) v.findViewById(R.id.name_profile);
+        Activity activity = getActivity();
+        Utils.setInsets(activity, v);
         IntentFilter intentFilter = new IntentFilter(getString(R.string.broadcast_login));
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver, intentFilter);
-        launchEditSkillsFragment();
+
+        ListView skillsList = (ListView) v.findViewById(R.id.profile_skills_list);
+        mSkillsAdapter = new SkillsAdapter(activity);
+        skillsList.setAdapter(mSkillsAdapter);
+
+        //launchEditSkillsFragment();
 
         return v;
     }
