@@ -1,6 +1,5 @@
 package org.hackillinois.android.people;
 
-import android.database.Cursor;
 import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,13 +11,16 @@ public class PeoplePagerAdapter extends FragmentPagerAdapter {
 
     private PeopleSwitcherFragment mPeopleSwitcherFragment;
     private HackersFragment mHackersFragment;
+    private MentorsFragment mMentorsFragment;
     private NearbyFragment mNearbyFragment;
 
     public PeoplePagerAdapter(PeopleSwitcherFragment peopleSwitcherFragment, FragmentManager fm) {
         super(fm);
         this.mPeopleSwitcherFragment = peopleSwitcherFragment;
         mHackersFragment = new HackersFragment();
+        mMentorsFragment = new MentorsFragment();
         mNearbyFragment = new NearbyFragment();
+
     }
 
     @Override
@@ -27,7 +29,7 @@ public class PeoplePagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return mHackersFragment;
             case 1:
-                return new HackersFragment();
+                return mMentorsFragment;
             case 2:
                 return mNearbyFragment;
         }
@@ -58,13 +60,16 @@ public class PeoplePagerAdapter extends FragmentPagerAdapter {
 
     public void notifyDataReady() {
         mHackersFragment.notifyDataReady();
+        mMentorsFragment.notifyDataReady();
         mNearbyFragment.notifyDataReady();
     }
 
-    public void showResults(Cursor c, String query, int currentPage) {
+    public void showResults(String query, int currentPage) {
         Fragment fragment = mPeopleSwitcherFragment.getChildFragmentManager().findFragmentByTag("android:switcher:" + R.id.people_pager + ":" + currentPage);
         if (fragment instanceof HackersFragment) {
-            ((HackersFragment) fragment).showResults(c, query);
+            ((HackersFragment) fragment).showResults(query);
+        } else if (fragment instanceof MentorsFragment) {
+            ((MentorsFragment) fragment).showResults(query);
         }
     }
 }

@@ -14,7 +14,6 @@ public class Staff extends Person {
         year = jsonObject.getString("year");
         company = jsonObject.getString("company");
         jobTitle = jsonObject.getString("job_title");
-
     }
 
     public String getYear() {

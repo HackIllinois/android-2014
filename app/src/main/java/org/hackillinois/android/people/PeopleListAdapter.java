@@ -84,7 +84,7 @@ public class PeopleListAdapter extends ArrayAdapter<Person> {
     }
 
 
-    public void setData(List<Person> data) {
+    public void setData(List<? extends Person> data) {
         if (data != null) {
             clear();
             for (Person person : data) {
