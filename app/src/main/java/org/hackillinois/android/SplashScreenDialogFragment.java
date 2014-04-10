@@ -14,10 +14,10 @@ import android.widget.ImageView;
 import android.widget.VideoView;
 
 /**
- * @author Vishal Disawar, Will Hennessy
- *         SplashScreenDialogFragment -- rocket ship VideoView in the background, with the I logo
- *         and Launch button overlayed.
- */
+* @author Vishal Disawar, Will Hennessy
+*         SplashScreenDialogFragment -- rocket ship VideoView in the background, with the I logo
+*         and Launch button overlayed.
+*/
 
 public class SplashScreenDialogFragment extends DialogFragment {
 

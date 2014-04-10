@@ -37,6 +37,7 @@ public class NewsfeedFragment extends ListFragment
         public void onReceive(Context context, Intent intent) {
             if (getLoaderManager() != null) {
                 getLoaderManager().initLoader(0, null, NewsfeedFragment.this).forceLoad();
+                mSwipeRefreshLayout.setRefreshing(true);
                 LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(this);
             }
         }
@@ -58,18 +59,19 @@ public class NewsfeedFragment extends ListFragment
         list.setDividerHeight(0);
         setListShown(false);
         list.setClipToPadding(false);
+        Utils.setInsetsBottom(getActivity(), list);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_news, null, false);
-        Utils.setInsets(getActivity(), v);
+        Utils.setViewPagerInsets(getActivity(), v);
         mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_container);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setColorScheme(
-                R.color.hackillinois_blue,
-                R.color.hackillinois_blue_trans,
                 R.color.hackillinois_red,
+                R.color.hackillinois_blue_trans,
+                R.color.hackillinois_blue,
                 R.color.hackillinois_red_trans
         );
         return v;
@@ -93,6 +95,7 @@ public class NewsfeedFragment extends ListFragment
     public void onResume() {
         super.onResume();
         if (mNewsfeedListAdapter.isEmpty()) {
+            mSwipeRefreshLayout.setRefreshing(true);
             getLoaderManager().initLoader(0, null, this).forceLoad();
         } else {
             setListShown(true);
