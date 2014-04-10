@@ -22,7 +22,8 @@
     </style>
 
     <!-- This isn't working :( -->
-    <style name="Theme.Hackillinois.Launcher" parent="@android:style/Theme.NoTitleBar.Fullscreen">
+    <!-- <style name="Theme.Hackillinois.Launcher" parent="@android:style/Theme.NoTitleBar.Fullscreen"> -->
+    <style name="Theme.Hackillinois.Launcher" parent="Theme.HackIllinois">
         <item name="android:windowAnimationStyle">@style/LauncherAnimation</item>
     </style>
 </resources>

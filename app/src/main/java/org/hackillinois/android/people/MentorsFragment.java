@@ -15,7 +15,8 @@ import android.view.MenuItem;
 import org.hackillinois.android.MainActivity;
 import org.hackillinois.android.R;
 import org.hackillinois.android.database.DatabaseTable;
-import org.hackillinois.android.models.people.Person;
+import org.hackillinois.android.models.people.Mentor;
+import org.hackillinois.android.utils.Utils;
 
 import java.util.List;
 
@@ -41,6 +42,8 @@ public class MentorsFragment extends ListFragment {
         super.onActivityCreated(savedInstanceState);
         setEmptyText(getString(R.string.loading_data_error));
         setListShown(false);
+        getListView().setClipToPadding(false);
+        Utils.setInsetsBottom(getActivity(), getListView());
     }
 
     @Override
@@ -89,7 +92,7 @@ public class MentorsFragment extends ListFragment {
 
     private void getAndSetData() {
         if (getActivity() != null) {
-            List<Person> people = ((MainActivity)getActivity()).getMentorsAndStaff();
+            List<Mentor> people = ((MainActivity)getActivity()).getMentorsAndStaff();
             if (people != null) {
                 mPeopleListAdapter.setData(people);
                 if (isResumed()) {
