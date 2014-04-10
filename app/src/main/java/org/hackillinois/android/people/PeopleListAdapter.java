@@ -83,7 +83,6 @@ public class PeopleListAdapter extends ArrayAdapter<Person> {
         return convertView;
     }
 
-
     public void setData(List<? extends Person> data) {
         if (data != null) {
             clear();
