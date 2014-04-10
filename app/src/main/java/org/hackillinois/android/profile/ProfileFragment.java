@@ -43,10 +43,11 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
             Person person = (Person) intent.getSerializableExtra("person");
             Log.i("profilefragment", "received broadcast");
             if (person != null) {
-                if(person.getSkills().isEmpty()){
+                if (person.getSkills().isEmpty()) {
                     launchEditSkillsFragment();
                 }
                 Log.e("blah", person.getName());
+            }
         }
     };
 
