@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
@@ -37,14 +39,24 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
                 LocalBroadcastManager.getInstance(context).unregisterReceiver(this);
             }
             Person person = (Person) intent.getSerializableExtra("Person");
-            if(person!=null) {
+            if(person != null) {
                 if(person.getSkills().isEmpty()){
-
+                    launchEditSkillsFragment();
                 }
                 Log.e("blah", person.getName());
             }
         }
     };
+
+
+    /** launch the DialogFragment to edit skills list **/
+    private void launchEditSkillsFragment() {
+        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+        SkillsDialogFragment fragment = new SkillsDialogFragment();
+        fragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.Theme_Hackillinois_Launcher);
+        fragment.show(fragmentTransaction, "skills");
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,6 +65,10 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         Utils.setInsets(getActivity(), v);
         IntentFilter intentFilter = new IntentFilter(getString(R.string.broadcast_login));
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver, intentFilter);
+
+        // @TODO remove this line before pushing
+        launchEditSkillsFragment();
+
         return v;
     }
 
