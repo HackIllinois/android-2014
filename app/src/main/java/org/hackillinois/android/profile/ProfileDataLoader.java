@@ -32,8 +32,11 @@ public class ProfileDataLoader extends AsyncTaskLoader<Person> {
         try {
             HttpUtils httpUtils = HttpUtils.getHttpUtils(mContext);
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
-            String email = sharedPreferences.getString(mContext.getString  (R.string.pref_email), "");
-            data = httpUtils.testEmail(email);
+            String email = sharedPreferences.getString(mContext.getString(R.string.pref_email), "");
+            if(email.equals(""))
+                data = null;
+            else
+                data = httpUtils.testEmail(email);
         } catch (IOException e) {
             e.printStackTrace();
         }

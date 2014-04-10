@@ -184,7 +184,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
                 mTextSchool.setText(((Hacker) person).getSchool());
             else if (person instanceof Mentor)
                 mTextSchool.setText(((Mentor) person).getCompany());
-            if (person.getHomebase().isEmpty())
+            if (person.getHomebase() == null || person.getHomebase().isEmpty())
                 mTextLocation.setText(R.string.set_location);
             else
                 mTextLocation.setText(person.getHomebase());
