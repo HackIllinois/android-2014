@@ -30,6 +30,7 @@ import org.hackillinois.android.models.people.Hacker;
 import org.hackillinois.android.models.people.Person;
 import org.hackillinois.android.news.NewsfeedFragment;
 import org.hackillinois.android.people.PeopleSwitcherFragment;
+import org.hackillinois.android.profile.ProfileFragment;
 import org.hackillinois.android.schedule.ScheduleFragment;
 
 import java.util.List;
