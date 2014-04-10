@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import org.hackillinois.android.MainActivity;
 import org.hackillinois.android.R;
+import org.hackillinois.android.models.people.Hacker;
 import org.hackillinois.android.models.people.Person;
 import org.hackillinois.android.utils.Utils;
 
@@ -127,6 +128,14 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
                 mSkillsAdapter.notifyDataSetChanged();
 
             }
+            TextView textName = (TextView) getView().findViewById(R.id.name_profile);
+            TextView textSchool = (TextView) getView().findViewById(R.id.school_profile);
+            TextView textLocation = (TextView) getView().findViewById(R.id.location_profile);
+            textName.setText(person.getName());
+            if(person instanceof Hacker){
+                textSchool.setText(((Hacker) person).getSchool());
+            }
+            textLocation.setText(person.getHomebase());
             Log.e("profilefragment", person.getName());
         }
     }
