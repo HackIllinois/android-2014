@@ -35,7 +35,7 @@ public class ScheduleFragment extends Fragment {
         mViewPager.setAdapter(mSchedulePagerAdapter);
         mViewPager.setPageTransformer(true, new DepthPageTransformer());
         mViewPager.setClipToPadding(false);
-        Utils.setInsets(getActivity(), mViewPager);
+        Utils.setViewPagerInsets(getActivity(), mViewPager);
         return rootView;
     }
 

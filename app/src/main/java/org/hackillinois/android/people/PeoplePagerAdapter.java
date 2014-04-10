@@ -19,8 +19,9 @@ public class PeoplePagerAdapter extends FragmentPagerAdapter {
         this.mPeopleSwitcherFragment = peopleSwitcherFragment;
         mHackersFragment = new HackersFragment();
         mMentorsFragment = new MentorsFragment();
-        mNearbyFragment = new NearbyFragment();
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            mNearbyFragment = new NearbyFragment();
+        }
     }
 
     @Override
@@ -61,7 +62,9 @@ public class PeoplePagerAdapter extends FragmentPagerAdapter {
     public void notifyDataReady() {
         mHackersFragment.notifyDataReady();
         mMentorsFragment.notifyDataReady();
-        mNearbyFragment.notifyDataReady();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            mNearbyFragment.notifyDataReady();
+        }
     }
 
     public void showResults(String query, int currentPage) {

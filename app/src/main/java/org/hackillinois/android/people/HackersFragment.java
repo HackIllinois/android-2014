@@ -16,6 +16,7 @@ import org.hackillinois.android.MainActivity;
 import org.hackillinois.android.R;
 import org.hackillinois.android.database.DatabaseTable;
 import org.hackillinois.android.models.people.Hacker;
+import org.hackillinois.android.utils.Utils;
 
 import java.util.List;
 
@@ -41,6 +42,8 @@ public class HackersFragment extends ListFragment {
         super.onActivityCreated(savedInstanceState);
         setEmptyText(getString(R.string.loading_data_error));
         setListShown(false);
+        getListView().setClipToPadding(false);
+        Utils.setInsetsBottom(getActivity(), getListView());
     }
 
     @Override
@@ -104,8 +107,11 @@ public class HackersFragment extends ListFragment {
 
     private void setSuggestionsAdapter(SearchView searchView, String query) {
         Cursor c = databaseTable.getHackerMatches(query, null);
-        SimpleCursorAdapter names = new SimpleCursorAdapter(getActivity(), R.layout.query_result_item, c, from, to, 0);
-        searchView.setSuggestionsAdapter(names);
+        if (getActivity() != null) {
+            SimpleCursorAdapter names = new SimpleCursorAdapter(getActivity(), R.layout.query_result_item, c, from, to, 0);
+            searchView.setSuggestionsAdapter(names);
+        }
+
     }
 
     public void showResults(String query) {

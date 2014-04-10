@@ -1,7 +1,8 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="org.hackillinois.android.profile.ProfileFragment">
 
 
@@ -11,7 +12,8 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:background="@color/hackillinois_blue"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:id="@+id/relativeLayout">
 
         <ImageView
             android:id="@+id/profile_list_item_image"
@@ -22,7 +24,6 @@
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
-
 
 
         <LinearLayout
@@ -80,6 +81,13 @@
                     android:id="@+id/location_profile" />
             </LinearLayout>
         </LinearLayout>
-
     </RelativeLayout>
-</RelativeLayout>
+
+    <ListView
+        android:id="@+id/profile_skills_list"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></ListView>
+
+</LinearLayout>

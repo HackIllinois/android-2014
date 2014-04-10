@@ -10,8 +10,10 @@
         android:text="OCaml"
         android:background="@drawable/skills_background"
         android:textColor="@color/white"
-        android:layout_margin="10dp"
-        android:id="@+id/skill_1"/>
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/skill_0"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -19,8 +21,10 @@
         android:text="Latex"
         android:background="@drawable/skills_background"
         android:textColor="@color/white"
-        android:layout_margin="10dp"
-        android:id="@+id/skill_2" />
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/skill_1" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -28,8 +32,10 @@
         android:text="Clojure"
         android:background="@drawable/skills_background"
         android:textColor="@color/white"
-        android:layout_margin="10dp"
-        android:id="@+id/skill_3" />
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/skill_2" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -37,6 +43,8 @@
         android:text="Assembly"
         android:background="@drawable/skills_background"
         android:textColor="@color/white"
-        android:layout_margin="10dp"
-        android:id="@+id/skill_4" />
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/skill_3" />
 </LinearLayout>

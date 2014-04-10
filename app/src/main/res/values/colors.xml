@@ -5,9 +5,9 @@
     <color name="background_grey">#F2F2F2</color>
     <color name="text_grey">#888888</color>
     <color name="hackillinois_red">#C34831</color>
-    <color name="hackillinois_red_trans">#DDC34831</color>
+    <color name="hackillinois_red_trans">#AAC34831</color>
     <color name="hackillinois_blue">#115E7B</color>
-    <color name="hackillinois_blue_trans">#DD115E7B</color>
+    <color name="hackillinois_blue_trans">#AA115E7B</color>
     <color name="icon_grey">#B3B3B3</color>
     <color name="skills_blue">#102F41</color>
 

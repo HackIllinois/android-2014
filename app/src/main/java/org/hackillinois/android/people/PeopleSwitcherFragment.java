@@ -18,19 +18,17 @@ import android.view.ViewGroup;
 
 import org.hackillinois.android.MainActivity;
 import org.hackillinois.android.R;
-import org.hackillinois.android.models.people.Person;
 import org.hackillinois.android.utils.Utils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
 
-public class PeopleSwitcherFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<List<? extends Person>>> {
+public class PeopleSwitcherFragment extends Fragment implements LoaderManager.LoaderCallbacks<PeopleDataHolder> {
 
     private static final String PEOPLE_URL = "http://hackillinois.org/mobile/person";
     private PeoplePagerAdapter mSchedulePagerAdapter;
     private ViewPager mViewPager;
-    private List<List<? extends Person>> mPeople;
+    private boolean loaded = false;
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -63,7 +61,7 @@ public class PeopleSwitcherFragment extends Fragment implements LoaderManager.Lo
         mViewPager = (ViewPager) rootView.findViewById(R.id.people_pager);
         PagerTitleStrip pagerTitleStrip = (PagerTitleStrip) rootView.findViewById(R.id.pager_strip);
 
-        mSchedulePagerAdapter = new PeoplePagerAdapter(this, getChildFragmentManager());
+        mSchedulePagerAdapter = new PeoplePagerAdapter(PeopleSwitcherFragment.this, getChildFragmentManager());
         mViewPager.setAdapter(mSchedulePagerAdapter);
         pagerTitleStrip.setClipToPadding(false);
         Utils.setViewPagerInsets(getActivity(), pagerTitleStrip);
@@ -74,13 +72,13 @@ public class PeopleSwitcherFragment extends Fragment implements LoaderManager.Lo
     public void onStart() {
         super.onStart();
         ((MainActivity) getActivity()).onSectionAttached(getArguments().getInt(Utils.ARG_SECTION_NUMBER));
-        if (mPeople == null) {
+        if (!loaded) {
             getLoaderManager().initLoader(0, null, this).forceLoad();
         }
     }
 
     @Override
-    public Loader<List<List<? extends Person>>> onCreateLoader(int id, Bundle args) {
+    public Loader<PeopleDataHolder> onCreateLoader(int id, Bundle args) {
         try {
             return new PersonDataLoader(getActivity(), new URL(PEOPLE_URL));
         } catch (MalformedURLException e) {
@@ -90,16 +88,16 @@ public class PeopleSwitcherFragment extends Fragment implements LoaderManager.Lo
     }
 
     @Override
-    public void onLoadFinished(Loader<List<List<? extends Person>>> loader, List<List<? extends Person>> data) {
+    public void onLoadFinished(Loader<PeopleDataHolder> loader, PeopleDataHolder data) {
         if (data != null) {
-            mPeople = data;
+            loaded = true;
             ((MainActivity)getActivity()).setPeople(data);
             mSchedulePagerAdapter.notifyDataReady();
         }
     }
 
     @Override
-    public void onLoaderReset(Loader<List<List<? extends Person>>> loader) {
+    public void onLoaderReset(Loader<PeopleDataHolder> loader) {
     }
 
     public void showResults(Cursor c, String query) {

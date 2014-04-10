@@ -33,11 +33,6 @@
                        android:resource="@xml/searchable"/>
         </activity>
 
-        <activity
-            android:name="org.hackillinois.android.HelpActivity"
-            android:label="@string/title_activity_help" >
-        </activity>
-
     </application>
 
 </manifest>
