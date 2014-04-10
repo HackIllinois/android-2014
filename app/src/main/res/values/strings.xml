@@ -27,6 +27,7 @@
     <string name="mentors_tab">Mentors</string>
     <string name="hackers_tab">Hackers</string>
     <string name="search_hint">Search for people</string>
+    <string name="add_your_skills_hint">Add Your Skills</string>
 
     <plurals name="search_results">
         <item quantity="one">%1$d result for \"%2$s\":</item>

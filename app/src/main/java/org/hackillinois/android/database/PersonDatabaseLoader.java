@@ -1,11 +1,10 @@
-package org.hackillinois.android.people;
+package org.hackillinois.android.database;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
 import org.hackillinois.android.models.people.Hacker;
 import org.hackillinois.android.models.people.Mentor;
-import org.hackillinois.android.models.people.Person;
 import org.hackillinois.android.models.people.Staff;
 import org.hackillinois.android.utils.HttpUtils;
 import org.json.JSONArray;
@@ -14,52 +13,46 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
-public class PersonDataLoader extends AsyncTaskLoader<List<List<? extends Person>>> {
+public class PersonDatabaseLoader extends AsyncTaskLoader<Void> {
+    private static final String PEOPLE_URL = "http://hackillinois.org/mobile/person";
 
-    private URL urlToLoad;
-    private Context mContext;
+    Context mContext;
+    DatabaseTable mDatabaseTable;
 
-    public PersonDataLoader(Context context, URL url) {
+    public PersonDatabaseLoader(Context context) {
         super(context);
-        urlToLoad = url;
         mContext = context;
+        mDatabaseTable = new DatabaseTable(context);
     }
 
     @Override
-    public List<List<? extends Person>> loadInBackground() {
+    public Void loadInBackground() {
         String data = null;
         try {
             HttpUtils httpUtils = HttpUtils.getHttpUtils(mContext);
-            data = httpUtils.loadData(urlToLoad);
+            data = httpUtils.loadData(new URL(PEOPLE_URL));
         } catch (IOException e) {
             e.printStackTrace();
         }
         if (data != null) {
-            // this backend is so hacky, also fuck java generics
-            List<Hacker> hackers = new ArrayList<Hacker>();
-            List<Staff> staff = new ArrayList<Staff>();
-            List<Mentor> mentors = new ArrayList<Mentor>();
-            List<List<? extends Person>> lists = new ArrayList<List<? extends Person>>();
-            lists.add(hackers);
-            lists.add(staff);
-            lists.add(mentors);
             try {
                 JSONArray jsonArray = new JSONArray(data);
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject person = jsonArray.getJSONObject(i);
                     String type = person.getString("type");
                     if (type.equals("hacker")) {
-                        hackers.add(new Hacker(person));
+                        Hacker hacker = new Hacker(person);
+                        mDatabaseTable.addHacker(hacker);
                     } else if (type.equals("staff")) {
-                        staff.add(new Staff(person));
+                        Staff staff = new Staff(person);
+                        mDatabaseTable.addStaff(staff);
                     } else if (type.equals("mentor")) {
-                        mentors.add(new Mentor(person));
+                        Mentor mentor = new Mentor(person);
+                        mDatabaseTable.addMentor(mentor);
                     }
                 }
-                return lists;
+                return null;
             } catch (JSONException e) {
                 e.printStackTrace();
             }

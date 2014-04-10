@@ -25,12 +25,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
-public class PeopleSwitcherFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Person>> {
+public class PeopleSwitcherFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<List<? extends Person>>> {
 
     private static final String PEOPLE_URL = "http://hackillinois.org/mobile/person";
     private PeoplePagerAdapter mSchedulePagerAdapter;
     private ViewPager mViewPager;
-    private List<Person> mPeople;
+    private List<List<? extends Person>> mPeople;
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -80,7 +80,7 @@ public class PeopleSwitcherFragment extends Fragment implements LoaderManager.Lo
     }
 
     @Override
-    public Loader<List<Person>> onCreateLoader(int id, Bundle args) {
+    public Loader<List<List<? extends Person>>> onCreateLoader(int id, Bundle args) {
         try {
             return new PersonDataLoader(getActivity(), new URL(PEOPLE_URL));
         } catch (MalformedURLException e) {
@@ -90,7 +90,7 @@ public class PeopleSwitcherFragment extends Fragment implements LoaderManager.Lo
     }
 
     @Override
-    public void onLoadFinished(Loader<List<Person>> loader, List<Person> data) {
+    public void onLoadFinished(Loader<List<List<? extends Person>>> loader, List<List<? extends Person>> data) {
         if (data != null) {
             mPeople = data;
             ((MainActivity)getActivity()).setPeople(data);
@@ -99,12 +99,12 @@ public class PeopleSwitcherFragment extends Fragment implements LoaderManager.Lo
     }
 
     @Override
-    public void onLoaderReset(Loader<List<Person>> loader) {
+    public void onLoaderReset(Loader<List<List<? extends Person>>> loader) {
     }
 
     public void showResults(Cursor c, String query) {
         int currentPage = mViewPager.getCurrentItem();
-        mSchedulePagerAdapter.showResults(c, query, currentPage);
+        mSchedulePagerAdapter.showResults(query, currentPage);
     }
 
 

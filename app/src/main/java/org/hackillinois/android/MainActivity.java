@@ -1,7 +1,10 @@
 package org.hackillinois.android;
 
 import android.app.SearchManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Build;
@@ -11,6 +14,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -20,10 +24,13 @@ import android.view.MenuItem;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import org.hackillinois.android.database.DatabaseTable;
+import org.hackillinois.android.database.PersonDatabaseLoader;
 import org.hackillinois.android.login.OAuthAccessFragment;
+import org.hackillinois.android.models.people.Hacker;
 import org.hackillinois.android.models.people.Person;
 import org.hackillinois.android.news.NewsfeedFragment;
 import org.hackillinois.android.people.PeopleSwitcherFragment;
+import org.hackillinois.android.profile.ProfileFragment;
 import org.hackillinois.android.schedule.ScheduleFragment;
 
 import java.util.List;
@@ -41,6 +48,18 @@ public class MainActivity extends ActionBarActivity
     DatabaseTable db = new DatabaseTable(this);
 
     private List<Person> mPeople;
+    private List<Hacker> mHackers;
+    private List<Person> mMentorsAndStaff;
+
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (getLoaderManager() != null) {
+                new PersonDatabaseLoader(MainActivity.this).forceLoad();
+                LocalBroadcastManager.getInstance(context).unregisterReceiver(this);
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +76,7 @@ public class MainActivity extends ActionBarActivity
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             oAuthAccessFragment = new OAuthAccessFragment();
             oAuthAccessFragment.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.Theme_AppCompat_Light_DarkActionBar);
+            oAuthAccessFragment.setCancelable(false);
             oAuthAccessFragment.show(ft, "login");
         }
 
@@ -89,6 +109,8 @@ public class MainActivity extends ActionBarActivity
             tintManager.setStatusBarTintColor(actionBarColor);
         }
         handleIntent(getIntent());
+        IntentFilter intentFilter = new IntentFilter(getString(R.string.broadcast_login));
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, intentFilter);
     }
 
     @Override
@@ -157,8 +179,21 @@ public class MainActivity extends ActionBarActivity
         return mPeople;
     }
 
-    public void setPeople(List<Person> mPeople) {
-        this.mPeople = mPeople;
+    public List<Hacker> getHackers() {
+        return mHackers;
+    }
+
+    public List<Person> getMentorsAndStaff() {
+        return mMentorsAndStaff;
+    }
+
+    public void setPeople(List<List<? extends Person>> people) {
+        mHackers = (List<Hacker>) people.get(0);
+        mMentorsAndStaff = (List<Person>) people.get(1);
+        mMentorsAndStaff.addAll(people.get(2));
+        mPeople = (List<Person>) people.get(0);
+        mPeople.addAll(people.get(1));
+        mPeople.addAll(people.get(2));
     }
 
     public void restoreActionBar() {
@@ -203,7 +238,7 @@ public class MainActivity extends ActionBarActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         PeopleSwitcherFragment peopleFragment = (PeopleSwitcherFragment) fragmentManager.findFragmentByTag(PEOPLE_TAG);
         if (peopleFragment != null) {
-            Cursor c = db.getWordMatches(query, null);
+            Cursor c = db.getHackerMatches(query, null);
             if (c != null) {
                 peopleFragment.showResults(c, query);
             }

@@ -1,11 +1,13 @@
-package org.hackillinois.android;
+package org.hackillinois.android.profile;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
@@ -13,11 +15,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import org.hackillinois.android.MainActivity;
+import org.hackillinois.android.R;
 import org.hackillinois.android.models.people.Person;
 import org.hackillinois.android.utils.Utils;
 
 public class ProfileFragment extends Fragment implements LoaderManager.LoaderCallbacks<Object> {
+    private TextView mNameTextView;
 
     public static ProfileFragment newInstance(int sectionNumber) {
         Bundle args = new Bundle();
@@ -31,20 +37,36 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         @Override
         public void onReceive(Context context, Intent intent) {
             if (getLoaderManager() != null) {
-                getLoaderManager().initLoader(0, null, ProfileFragment.this).forceLoad();
+                getLoaderManager().initLoader(0, null, ProfileFragment.this);
                 LocalBroadcastManager.getInstance(context).unregisterReceiver(this);
             }
-            Person person = (Person) intent.getSerializableExtra("Person");
-            if(person!=null) {
-                Log.e("blah", person.getName());
+
+            Person person = (Person) intent.getSerializableExtra("person");
+            Log.i("profilefragment", "received broadcast");
+            if (person != null) {
+                if (person.getSkills().isEmpty()) {
+                    launchEditSkillsFragment();
+                }
+                Log.e("profilefragment", person.getName());
             }
         }
     };
+
+
+    /** launch the DialogFragment to edit skills list **/
+    private void launchEditSkillsFragment() {
+        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+        SkillsDialogFragment fragment = new SkillsDialogFragment();
+        fragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.Theme_Hackillinois_Launcher);
+        fragment.show(fragmentTransaction, "skills");
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_profile, null, false);
+        mNameTextView = (TextView) v.findViewById(R.id.name_profile);
         Utils.setInsets(getActivity(), v);
         IntentFilter intentFilter = new IntentFilter(getString(R.string.broadcast_login));
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver, intentFilter);
