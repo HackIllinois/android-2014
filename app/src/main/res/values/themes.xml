@@ -1,33 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.HackIllinois" parent="@style/Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
     <!-- Blue action bar style -->
-    <style name="Theme.HackIllinois_blue_actionbar" parent="@style/Theme.HackIllinois">
+    <style name="Theme.HackIllinois_blue_actionbar" parent="@style/Theme.HackIllinois.Base">
         <item name="android:actionBarStyle">@style/ActionBar.Solid.Hackillinois_blue_actionbar</item>
         <item name="actionBarStyle">@style/ActionBar.Solid.Hackillinois_blue_actionbar</item>
     </style>
 
-    <!-- this is for transluscent bar compatibility-->
-    <style name="Theme.Hackillinois_blue_actionbar.transCompat" parent="@style/Theme.HackIllinois_blue_actionbar">
-    </style>
-
     <!-- Blue action bar style -->
-    <style name="Theme.HackIllinois_red_actionbar" parent="@style/Theme.HackIllinois">
+    <style name="Theme.HackIllinois_red_actionbar" parent="@style/Theme.HackIllinois.Base">
         <item name="android:actionBarStyle">@style/ActionBar.Solid.Hackillinois_red_actionbar</item>
         <item name="actionBarStyle">@style/ActionBar.Solid.Hackillinois_red_actionbar</item>
     </style>
 
     <!-- This isn't working :( -->
     <!-- <style name="Theme.Hackillinois.Launcher" parent="@android:style/Theme.NoTitleBar.Fullscreen"> -->
-    <style name="Theme.Hackillinois.Launcher" parent="Theme.HackIllinois">
+    <style name="Theme.Hackillinois.Launcher" parent="Theme.HackIllinois.Base">
         <item name="android:windowAnimationStyle">@style/LauncherAnimation</item>
     </style>
 
-    <style name="Theme.Hackillinois.Skills" parent="Theme.HackIllinois">
+    <style name="Theme.Hackillinois.Skills" parent="Theme.HackIllinois.Base">
         <item name="android:windowAnimationStyle">@style/SkillsAnimation</item>
     </style>
 </resources>

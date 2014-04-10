@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <style name="Theme.HackIllinois.Base" parent="Theme.HackIllinois">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
+
     <style name="Theme.Hackillinois.Launcher" parent="@android:style/Theme.Holo.NoActionBar.TranslucentDecor">
         <item name="android:windowAnimationStyle">@style/LauncherAnimation</item>
     </style>
