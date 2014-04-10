@@ -18,6 +18,7 @@ import org.hackillinois.android.MainActivity;
 import org.hackillinois.android.R;
 import org.hackillinois.android.models.people.Person;
 import org.hackillinois.android.utils.AdRecord;
+import org.hackillinois.android.utils.Utils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -46,6 +47,8 @@ public class NearbyFragment extends ListFragment
             setEmptyText(getString(R.string.ble_not_supported));
             setListShown(true);
         }
+        getListView().setClipToPadding(false);
+        Utils.setInsetsBottom(getActivity(), getListView());
     }
 
     @Override
