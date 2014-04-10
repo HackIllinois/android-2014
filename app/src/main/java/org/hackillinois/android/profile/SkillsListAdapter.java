@@ -72,7 +72,7 @@ public class SkillsListAdapter extends ArrayAdapter<Skill> implements Filterable
     @Override
     public Filter getFilter() {
 
-        Filter filter = new Filter() {
+        return new Filter() {
 
             @Override
             protected FilterResults performFiltering(CharSequence constraintParam) {
@@ -83,11 +83,8 @@ public class SkillsListAdapter extends ArrayAdapter<Skill> implements Filterable
                 // perform your search here using the searchConstraint String.
                 String constraint = constraintParam.toString().toLowerCase();
 
-                for (int i = 0; i < allSkills.size(); i++) {
-                    Skill skill = allSkills.get(i);
-                    if ( skill.isMatch(constraint) )  {
-                        filteredSkills.add(skill);
-                    }
+                for (Skill skill : allSkills) {
+                    if (skill.isMatch(constraint)) filteredSkills.add(skill);
                 }
 
                 results.count = filteredSkills.size();
@@ -96,17 +93,16 @@ public class SkillsListAdapter extends ArrayAdapter<Skill> implements Filterable
                 return results;
             }
 
-            @SuppressWarnings("unchecked")
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                currentFilteredSkills.clear();
-                currentFilteredSkills.addAll((ArrayList<Skill>) results.values);
-                notifyDataSetChanged();
+                if (results != null && results.values != null) {
+                    currentFilteredSkills.clear();
+                    currentFilteredSkills.addAll((ArrayList<Skill>) results.values);
+                    notifyDataSetChanged();
+                }
             }
 
         };
-
-        return filter;
     }
 
 }
