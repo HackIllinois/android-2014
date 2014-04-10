@@ -67,6 +67,25 @@
                     android:id="@+id/location_profile" />
             </LinearLayout>
         </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Skills"
+        android:paddingLeft="20sp"
+        android:paddingTop="10dp"
+        android:textSize="20sp"
+        android:textColor="#222"
+        android:textStyle="bold"
+        android:id="@+id/textView" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="2dip"
+        android:background="#222">
     </LinearLayout>
 
     <ListView
