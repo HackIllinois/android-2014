@@ -5,7 +5,6 @@
     tools:context="org.hackillinois.android.news.NewsfeedFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="?attr/actionBarSize"
     android:clipToPadding="false">
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_container"

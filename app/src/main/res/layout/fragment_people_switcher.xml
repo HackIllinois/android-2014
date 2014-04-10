@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/people_pager"
-    android:background="@color/background_grey"
     >
     <android.support.v4.view.PagerTitleStrip
         android:id="@+id/pager_strip"
