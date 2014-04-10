@@ -11,7 +11,7 @@
         <item name="background">@color/hackillinois_red</item>
     </style>
 
-    <style name="LauncherAnimation" parent="android:style/Animation.Activity">
+    <style name="LauncherAnimation">
         <item name="android:windowEnterAnimation">@anim/abc_fade_in</item>
         <item name="android:windowExitAnimation">@anim/slide_out_up</item>
     </style>

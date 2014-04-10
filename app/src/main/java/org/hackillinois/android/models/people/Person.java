@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Person implements Serializable {
+public abstract class Person implements Serializable, Comparable<Person> {
 
     private String name;
     private String email;
@@ -95,5 +95,10 @@ public abstract class Person implements Serializable {
 
     public void setRSSI(int RSSI) {
         this.RSSI = RSSI;
+    }
+
+    @Override
+    public int compareTo(Person another) {
+        return getName().compareTo(another.getName());
     }
 }

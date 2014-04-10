@@ -21,20 +21,17 @@ public class DatabaseTable {
 
     public static final String COL_NAME = SearchManager.SUGGEST_COLUMN_TEXT_1;
     public static final String COL_EMAIL = SearchManager.SUGGEST_COLUMN_TEXT_2;
-    public static final String COL_TYPE = "TYPE";
     public static final String COL_SCHOOL = "SCHOOL";
     public static final String COL_YEAR = "YEAR";
     public static final String COL_COMPANY = "COMPANY";
+    public static final String COL_JOB_TITLE = "JOB_TITLE";
 
     private static final String DATABASE_NAME = "PEOPLE";
-    private static final String STAFF_TABLE = "STAFF_TABLE";
-    private static final String MENTOR_TABLE = "MENTOR_TABLE";
-    private static final String HACKER_TABLE = "HACKER_TABLE";
     private static final String FTS_VIRTUAL_TABLE_STAFF = "FTS_STAFF";
     private static final String FTS_VIRTUAL_TABLE_MENTOR = "FTS_MENTOR";
     private static final String FTS_VIRTUAL_TABLE_HACKER = "FTS_HACKER";
 
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
 
     private final DatabaseOpenHelper mDatabaseOpenHelper;
     private static final HashMap<String,String> mColumnMap = buildColumnMap();
@@ -66,7 +63,10 @@ public class DatabaseTable {
                         " USING fts3 (" +
                         BaseColumns._ID + ", " +
                         COL_NAME + ", " +
-                        COL_EMAIL + ")";
+                        COL_EMAIL + ", " +
+                        COL_COMPANY + ", " +
+                        COL_JOB_TITLE + ", " +
+                        COL_YEAR + ")";
 
         private static final String FTS_TABLE_CREATE_HACKER =
                 "CREATE VIRTUAL TABLE " + FTS_VIRTUAL_TABLE_HACKER +
@@ -74,22 +74,17 @@ public class DatabaseTable {
                         BaseColumns._ID + ", " +
                         COL_NAME + ", " +
                         COL_EMAIL + ", " +
-                        COL_SCHOOL + ")";
+                        COL_SCHOOL + ", " +
+                        COL_YEAR + ")";
 
         private static final String FTS_TABLE_CREATE_MENTOR =
                 "CREATE VIRTUAL TABLE " + FTS_VIRTUAL_TABLE_MENTOR +
                         " USING fts3 (" +
                         BaseColumns._ID + ", " +
                         COL_NAME + ", " +
-                        COL_EMAIL + ")";
-
-        private static final String PEOPLE_TABLE_CREATE =
-                "CREATE TABLE " + HACKER_TABLE + "(" +
-                        BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + COL_NAME + " VARCHAR(100), "
-                + COL_EMAIL + " VARCHAR(100), "
-                + COL_TYPE + " VARCHAR(20));";
-
+                        COL_EMAIL + ", " +
+                        COL_JOB_TITLE + ", " +
+                        COL_COMPANY + ")";
 
         DatabaseOpenHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -111,7 +106,6 @@ public class DatabaseTable {
             db.execSQL("DROP TABLE IF EXISTS " + FTS_VIRTUAL_TABLE_STAFF);
             db.execSQL("DROP TABLE IF EXISTS " + FTS_VIRTUAL_TABLE_HACKER);
             db.execSQL("DROP TABLE IF EXISTS " + FTS_VIRTUAL_TABLE_MENTOR);
-            db.execSQL("DROP TABLE IF EXISTS " + HACKER_TABLE);
             onCreate(db);
         }
     }
@@ -122,6 +116,8 @@ public class DatabaseTable {
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_NAME, hacker.getName());
         contentValues.put(COL_EMAIL, hacker.getEmail());
+        contentValues.put(COL_SCHOOL, hacker.getSchool());
+        contentValues.put(COL_YEAR, hacker.getYear());
         return sqLiteDatabase.insertWithOnConflict(FTS_VIRTUAL_TABLE_HACKER, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
     }
 
@@ -131,6 +127,10 @@ public class DatabaseTable {
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_NAME, staff.getName());
         contentValues.put(COL_EMAIL, staff.getEmail());
+        contentValues.put(COL_YEAR, staff.getYear());
+        contentValues.put(COL_COMPANY, staff.getCompany());
+        contentValues.put(COL_JOB_TITLE, staff.getJobTitle());
+
         return sqLiteDatabase.insertWithOnConflict(FTS_VIRTUAL_TABLE_STAFF, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
     }
 
@@ -140,6 +140,8 @@ public class DatabaseTable {
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_NAME, mentor.getName());
         contentValues.put(COL_EMAIL, mentor.getEmail());
+        contentValues.put(COL_COMPANY, mentor.getCompany());
+        contentValues.put(COL_JOB_TITLE, mentor.getJobTitle());
         return sqLiteDatabase.insertWithOnConflict(FTS_VIRTUAL_TABLE_MENTOR, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
     }
 

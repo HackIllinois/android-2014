@@ -18,6 +18,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -27,12 +28,15 @@ import org.hackillinois.android.database.DatabaseTable;
 import org.hackillinois.android.database.PersonDatabaseLoader;
 import org.hackillinois.android.login.OAuthAccessFragment;
 import org.hackillinois.android.models.people.Hacker;
+import org.hackillinois.android.models.people.Mentor;
 import org.hackillinois.android.models.people.Person;
 import org.hackillinois.android.news.NewsfeedFragment;
+import org.hackillinois.android.people.PeopleDataHolder;
 import org.hackillinois.android.people.PeopleSwitcherFragment;
 import org.hackillinois.android.profile.ProfileFragment;
 import org.hackillinois.android.schedule.ScheduleFragment;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends ActionBarActivity
@@ -47,9 +51,10 @@ public class MainActivity extends ActionBarActivity
     private CharSequence mTitle;
     DatabaseTable db = new DatabaseTable(this);
 
-    private List<Person> mPeople;
     private List<Hacker> mHackers;
-    private List<Person> mMentorsAndStaff;
+    private List<Mentor> mMentorsAndStaff;
+    private HashMap<String, Person> androidLookup;
+    private SparseArray<Person> iOSLookup;
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -175,25 +180,27 @@ public class MainActivity extends ActionBarActivity
         }
     }
 
-    public List<Person> getPeople() {
-        return mPeople;
-    }
-
     public List<Hacker> getHackers() {
         return mHackers;
     }
 
-    public List<Person> getMentorsAndStaff() {
+    public List<Mentor> getMentorsAndStaff() {
         return mMentorsAndStaff;
     }
 
-    public void setPeople(List<List<? extends Person>> people) {
-        mHackers = (List<Hacker>) people.get(0);
-        mMentorsAndStaff = (List<Person>) people.get(1);
-        mMentorsAndStaff.addAll(people.get(2));
-        mPeople = (List<Person>) people.get(0);
-        mPeople.addAll(people.get(1));
-        mPeople.addAll(people.get(2));
+    public HashMap<String, Person> getAndroidLookup() {
+        return androidLookup;
+    }
+
+    public SparseArray<Person> getiOSLookup() {
+        return iOSLookup;
+    }
+
+    public void setPeople(PeopleDataHolder peopleDataHolder) {
+        mHackers = peopleDataHolder.getHackerList();
+        mMentorsAndStaff = peopleDataHolder.getMentorAndStaffList();
+        androidLookup = peopleDataHolder.getAndroidMap();
+        iOSLookup = peopleDataHolder.getiOSMap();
     }
 
     public void restoreActionBar() {
