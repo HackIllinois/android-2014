@@ -26,4 +26,8 @@
     <style name="Theme.Hackillinois.Launcher" parent="Theme.HackIllinois">
         <item name="android:windowAnimationStyle">@style/LauncherAnimation</item>
     </style>
+
+    <style name="Theme.Hackillinois.Skills" parent="Theme.HackIllinois">
+        <item name="android:windowAnimationStyle">@style/SkillsAnimation</item>
+    </style>
 </resources>

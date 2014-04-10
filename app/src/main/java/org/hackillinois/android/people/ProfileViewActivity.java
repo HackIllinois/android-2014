@@ -17,11 +17,11 @@ public class ProfileViewActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            // Tint that shit!
             SystemBarTintManager tintManager = new SystemBarTintManager(this);
             tintManager.setStatusBarTintEnabled(true);
-            int actionBarColor = getResources().getColor(R.color.hackillinois_blue);
+            int actionBarColor = getResources().getColor(R.color.hackillinois_red);
             tintManager.setStatusBarTintColor(actionBarColor);
         }
 

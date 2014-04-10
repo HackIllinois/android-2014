@@ -3,7 +3,9 @@ package org.hackillinois.android.models;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Status {
+import java.io.Serializable;
+
+public class Status implements Serializable {
     long date;
     String status;
 
