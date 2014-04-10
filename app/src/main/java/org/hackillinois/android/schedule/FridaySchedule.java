@@ -10,9 +10,6 @@ import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
@@ -49,6 +46,8 @@ public class FridaySchedule extends ListFragment
         mListAdapter = new ScheduleListAdapter(getActivity());
         setListAdapter(mListAdapter);// set the list adapter to our custom list adapter
         Utils.registerBroadcastReceiver(getActivity(), broadcastReceiver);
+
+
     }
 
     @Override
@@ -57,11 +56,14 @@ public class FridaySchedule extends ListFragment
         mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.friday_swipe_container);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setColorScheme(
-                R.color.hackillinois_blue,
-                R.color.hackillinois_blue_trans,
                 R.color.hackillinois_red,
-                R.color.hackillinois_red_trans
+                R.color.hackillinois_blue_trans,
+                R.color.hackillinois_red_trans,
+                R.color.hackillinois_blue
+
         );
+
+
         return rootView;
     }
 
@@ -69,6 +71,7 @@ public class FridaySchedule extends ListFragment
     public void onResume() {
         super.onResume();
         if (mListAdapter.isEmpty()) {
+            mSwipeRefreshLayout.setRefreshing(true);
             getLoaderManager().initLoader(0, null, FridaySchedule.this).forceLoad();
         } else {
             setListShown(true);
@@ -121,6 +124,7 @@ public class FridaySchedule extends ListFragment
     public void onLoadFinished(Loader<List<ScheduleItem>> loader, List<ScheduleItem> data) {
         // load data into the list
         mListAdapter.setData(data);
+        mSwipeRefreshLayout.setRefreshing(false);
         if (isResumed()) {
             setListShown(true); // show the list
         } else {
@@ -156,25 +160,24 @@ public class FridaySchedule extends ListFragment
         setListShown(shown, false);
     }
 
-    public void setListShown(boolean shown, boolean animate){
-        if(mListShown == shown){
+    public void setListShown(boolean shown, boolean animate) {
+        if (mListShown == shown) {
             return; //the list is already shown
         }
 
         mListShown = shown;
 
-        if(shown){
-            if(animate){
-                mSwipeRefreshLayout.startAnimation(AnimationUtils.loadAnimation(
-                        getActivity(), android.R.anim.fade_in));
-            }
+        if (shown) {
+//            if (animate) {
+//                mSwipeRefreshLayout.startAnimation(AnimationUtils.loadAnimation(
+//                        getActivity(), android.R.anim.fade_in));
+//            }
             mSwipeRefreshLayout.setVisibility(View.VISIBLE);
-        }
-        else{
-            if(animate){
-                mSwipeRefreshLayout.startAnimation(AnimationUtils.loadAnimation(
-                        getActivity(), android.R.anim.fade_out));
-            }
+        } else {
+//            if (animate) {
+//                mSwipeRefreshLayout.startAnimation(AnimationUtils.loadAnimation(
+//                        getActivity(), android.R.anim.fade_out));
+//            }
             mSwipeRefreshLayout.setVisibility(View.INVISIBLE);
         }
     }

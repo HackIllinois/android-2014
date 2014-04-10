@@ -23,7 +23,7 @@ public class HttpUtils {
 
     private static final String EMAIL_URL = "http://www.hackillinois.org/mobile/login";
 
-    public static HttpUtils getHttpUtils(Context context) throws IOException {
+    public static synchronized HttpUtils getHttpUtils(Context context) throws IOException {
         if (httpUtils != null) {
             return httpUtils;
         }
@@ -34,6 +34,7 @@ public class HttpUtils {
     private HttpUtils(Context context) throws IOException {
         client = new OkHttpClient();
         client.setOkResponseCache(new HttpResponseCache(context.getCacheDir(), 1024));
+
         URL.setURLStreamHandlerFactory(client);
         mContext = context;
     }

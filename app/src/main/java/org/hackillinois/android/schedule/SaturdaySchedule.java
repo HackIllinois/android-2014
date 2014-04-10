@@ -49,6 +49,8 @@ public class SaturdaySchedule extends ListFragment
         mListAdapter = new ScheduleListAdapter(getActivity());
         setListAdapter(mListAdapter);// set the list adapter to our custom list adapter
         Utils.registerBroadcastReceiver(getActivity(), broadcastReceiver);
+
+
     }
 
     @Override
@@ -57,11 +59,13 @@ public class SaturdaySchedule extends ListFragment
         mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.saturday_swipe_container);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setColorScheme(
-                R.color.hackillinois_blue,
-                R.color.hackillinois_blue_trans,
                 R.color.hackillinois_red,
-                R.color.hackillinois_red_trans
+                R.color.hackillinois_blue_trans,
+                R.color.hackillinois_red_trans,
+                R.color.hackillinois_blue
+
         );
+
         return rootView;
     }
 
@@ -69,6 +73,7 @@ public class SaturdaySchedule extends ListFragment
     public void onResume() {
         super.onResume();
         if (mListAdapter.isEmpty()) {
+            mSwipeRefreshLayout.setRefreshing(true);
             getLoaderManager().initLoader(0, null, SaturdaySchedule.this).forceLoad();
 
         } else {
@@ -104,6 +109,7 @@ public class SaturdaySchedule extends ListFragment
     public void onLoadFinished(Loader<List<ScheduleItem>> loader, List<ScheduleItem> data) {
         // load data into the list
         mListAdapter.setData(data);
+        mSwipeRefreshLayout.setRefreshing(false);
         if (isResumed()) {
             setListShown(true); // show the list
         } else {
@@ -139,17 +145,17 @@ public class SaturdaySchedule extends ListFragment
         mListShown = shown;
 
         if(shown){
-            if(animate){
-                mSwipeRefreshLayout.startAnimation(AnimationUtils.loadAnimation(
-                        getActivity(), android.R.anim.fade_in));
-            }
+//            if(animate){
+//                mSwipeRefreshLayout.startAnimation(AnimationUtils.loadAnimation(
+//                        getActivity(), android.R.anim.fade_in));
+//            }
             mSwipeRefreshLayout.setVisibility(View.VISIBLE);
         }
         else{
-            if(animate){
-                mSwipeRefreshLayout.startAnimation(AnimationUtils.loadAnimation(
-                        getActivity(), android.R.anim.fade_out));
-            }
+//            if(animate){
+//                mSwipeRefreshLayout.startAnimation(AnimationUtils.loadAnimation(
+//                        getActivity(), android.R.anim.fade_out));
+//            }
             mSwipeRefreshLayout.setVisibility(View.INVISIBLE);
         }
     }
