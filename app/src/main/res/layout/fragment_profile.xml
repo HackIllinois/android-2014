@@ -79,7 +79,7 @@
         android:textSize="20sp"
         android:textColor="#222"
         android:textStyle="bold"
-        android:id="@+id/textView" />
+        android:id="@+id/text_skills_header" />
 
     <LinearLayout
         android:orientation="vertical"

@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -67,7 +68,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
         SkillsDialogFragment fragment = new SkillsDialogFragment();
         fragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.Theme_Hackillinois_Launcher);
-//        fragment.show(fragmentTransaction, "skills");
+        fragment.show(fragmentTransaction, "skills");
     }
 
 
@@ -84,6 +85,20 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         ListView skillsList = (ListView) v.findViewById(R.id.profile_skills_list);
         mSkillsAdapter = new SkillsAdapter(activity);
         skillsList.setAdapter(mSkillsAdapter);
+        TextView textSkills = (TextView) v.findViewById(R.id.text_skills_header);
+        textSkills.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchEditSkillsFragment();
+            }
+        });
+        ListView listView = (ListView) v.findViewById(R.id.profile_skills_list);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                launchEditSkillsFragment();
+            }
+        });
 
         //launchEditSkillsFragment();
 
