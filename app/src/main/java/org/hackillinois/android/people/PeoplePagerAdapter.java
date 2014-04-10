@@ -66,13 +66,4 @@ public class PeoplePagerAdapter extends FragmentPagerAdapter {
             mNearbyFragment.notifyDataReady();
         }
     }
-
-    public void showResults(String query, int currentPage) {
-        Fragment fragment = mPeopleSwitcherFragment.getChildFragmentManager().findFragmentByTag("android:switcher:" + R.id.people_pager + ":" + currentPage);
-        if (fragment instanceof HackersFragment) {
-            ((HackersFragment) fragment).showResults(query);
-        } else if (fragment instanceof MentorsFragment) {
-            ((MentorsFragment) fragment).showResults(query);
-        }
-    }
 }

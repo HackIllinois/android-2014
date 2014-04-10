@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -18,7 +17,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,6 +32,8 @@ import org.hackillinois.android.models.people.Person;
 import org.hackillinois.android.news.NewsfeedFragment;
 import org.hackillinois.android.people.PeopleDataHolder;
 import org.hackillinois.android.people.PeopleSwitcherFragment;
+import org.hackillinois.android.people.ProfileViewActivity;
+import org.hackillinois.android.people.SearchResultsFragment;
 import org.hackillinois.android.profile.ProfileFragment;
 import org.hackillinois.android.schedule.ScheduleFragment;
 
@@ -51,7 +51,6 @@ public class MainActivity extends ActionBarActivity
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private CharSequence mTitle;
-    DatabaseTable db = new DatabaseTable(this);
 
     private List<Hacker> mHackers;
     private List<Mentor> mMentorsAndStaff;
@@ -234,10 +233,9 @@ public class MainActivity extends ActionBarActivity
 
     private void handleIntent(Intent intent) {
         if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-            Log.i(TAG, "action view");
-            //Intent viewIntent = new Intent(this, ProfileActivity.class);
-            //viewIntent.setData(intent.getData());
-            //startActivity(viewIntent);
+            Intent viewIntent = new Intent(this, ProfileViewActivity.class);
+            viewIntent.setData(intent.getData());
+            startActivity(viewIntent);
         } else if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             showResults(query);
@@ -246,13 +244,10 @@ public class MainActivity extends ActionBarActivity
 
     private void showResults(String query) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        PeopleSwitcherFragment peopleFragment = (PeopleSwitcherFragment) fragmentManager.findFragmentByTag(PEOPLE_TAG);
-        if (peopleFragment != null) {
-            Cursor c = db.getHackerMatches(query, null);
-            if (c != null) {
-                peopleFragment.showResults(c, query);
-            }
-        }
+        SearchResultsFragment peopleFragment = SearchResultsFragment.newInstance(query);
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, peopleFragment, "SEARCH_RESULTS").addToBackStack(null)
+                .commit();
     }
 
     @Override

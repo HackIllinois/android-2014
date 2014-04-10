@@ -8,6 +8,7 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.widget.SearchView;
+import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,18 +16,28 @@ import android.view.MenuItem;
 import org.hackillinois.android.MainActivity;
 import org.hackillinois.android.R;
 import org.hackillinois.android.database.DatabaseTable;
-import org.hackillinois.android.models.people.Hacker;
+import org.hackillinois.android.models.people.Person;
 import org.hackillinois.android.utils.Utils;
 
-import java.util.List;
+public class SearchResultsFragment extends ListFragment {
 
-public class HackersFragment extends ListFragment {
+    private static final String ARG_QUERY = "QUERY_ARG";
+    private static final String TAG = "SearchResultsFragment";
 
+    SparseArray<Person> personSparseArray;
     private PeopleListAdapter mPeopleListAdapter;
     private DatabaseTable databaseTable;
     String [] from = new String[] {DatabaseTable.COL_NAME,
             DatabaseTable.COL_EMAIL};
     int[] to = new int[] {R.id.name, R.id.email};
+
+    public static SearchResultsFragment newInstance(String query) {
+        Bundle args = new Bundle();
+        SearchResultsFragment fragment = new SearchResultsFragment();
+        args.putString(ARG_QUERY, query);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,21 +46,20 @@ public class HackersFragment extends ListFragment {
         mPeopleListAdapter = new PeopleListAdapter(getActivity());
         setListAdapter(mPeopleListAdapter);
         databaseTable = new DatabaseTable(getActivity());
+        personSparseArray = ((MainActivity) getActivity()).getiOSLookup();
+        String query = getArguments().getString(ARG_QUERY, "");
+        if (query != null && !query.isEmpty()) {
+            showResults(query);
+        }
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setEmptyText(getString(R.string.loading_data_error));
-        setListShown(false);
+        setListShown(true);
         getListView().setClipToPadding(false);
-        Utils.setInsetsBottom(getActivity(), getListView());
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        getAndSetData();
+        Utils.setInsets(getActivity(), getListView());
     }
 
     @Override
@@ -86,31 +96,23 @@ public class HackersFragment extends ListFragment {
         return super.onOptionsItemSelected(item);
     }
 
-    public void notifyDataReady() {
-        getAndSetData();
-    }
-
-    private void getAndSetData() {
-        if (getActivity() != null) {
-            List<Hacker> people = ((MainActivity)getActivity()).getHackers();
-            if (people != null) {
-                mPeopleListAdapter.setData(people);
-                if (isResumed()) {
-                    setListShown(true);
-                } else {
-                    setListShownNoAnimation(true);
-                }
-            }
-        }
-
-    }
-
     private void setSuggestionsAdapter(SearchView searchView, String query) {
         Cursor c = databaseTable.getHackerMatches(query, null);
         if (getActivity() != null) {
             SimpleCursorAdapter names = new SimpleCursorAdapter(getActivity(), R.layout.query_result_item, c, from, to, 0);
             searchView.setSuggestionsAdapter(names);
         }
+    }
 
+    private void showResults(String query) {
+        Cursor c = databaseTable.getHackerMatches(query, null);
+        if (c != null) {
+            while (!c.isAfterLast()) {
+                int key = c.getInt(0);
+                Person person = personSparseArray.get(key);
+                mPeopleListAdapter.add(person);
+                c.moveToNext();
+            }
+        }
     }
 }

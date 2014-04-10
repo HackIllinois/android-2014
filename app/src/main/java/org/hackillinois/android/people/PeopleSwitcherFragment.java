@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -98,11 +97,6 @@ public class PeopleSwitcherFragment extends Fragment implements LoaderManager.Lo
 
     @Override
     public void onLoaderReset(Loader<PeopleDataHolder> loader) {
-    }
-
-    public void showResults(Cursor c, String query) {
-        int currentPage = mViewPager.getCurrentItem();
-        mSchedulePagerAdapter.showResults(query, currentPage);
     }
 
     @Override
