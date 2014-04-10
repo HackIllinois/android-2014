@@ -13,11 +13,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import org.hackillinois.android.models.people.Person;
 import org.hackillinois.android.utils.Utils;
 
 public class ProfileFragment extends Fragment implements LoaderManager.LoaderCallbacks<Object> {
+    private TextView mNameTextView;
 
     public static ProfileFragment newInstance(int sectionNumber) {
         Bundle args = new Bundle();
@@ -31,12 +33,13 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         @Override
         public void onReceive(Context context, Intent intent) {
             if (getLoaderManager() != null) {
-                getLoaderManager().initLoader(0, null, ProfileFragment.this).forceLoad();
+                getLoaderManager().initLoader(0, null, ProfileFragment.this);
                 LocalBroadcastManager.getInstance(context).unregisterReceiver(this);
             }
-            Person person = (Person) intent.getSerializableExtra("Person");
-            if(person!=null) {
-                Log.e("blah", person.getName());
+            Person person = (Person) intent.getSerializableExtra("person");
+            Log.i("profilefragment", "received broadcast");
+            if (person != null) {
+                mNameTextView.setText(person.getName());
             }
         }
     };
@@ -45,6 +48,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_profile, null, false);
+        mNameTextView = (TextView) v.findViewById(R.id.name_profile);
         Utils.setInsets(getActivity(), v);
         IntentFilter intentFilter = new IntentFilter(getString(R.string.broadcast_login));
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver, intentFilter);
