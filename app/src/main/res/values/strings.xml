@@ -43,6 +43,9 @@
     <string name="refresh">Refresh</string>
     <string name="set_location">Set location</string>
     <string name="skills">Skills</string>
+    <string name="staff">Staff</string>
+    <string name="mentor">Mentor</string>
+    <string name="hacker">Hacker</string>
 
 
 </resources>

@@ -7,7 +7,10 @@ import android.support.v7.app.ActionBarActivity;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import org.hackillinois.android.R;
+import org.hackillinois.android.models.people.Hacker;
+import org.hackillinois.android.models.people.Mentor;
 import org.hackillinois.android.models.people.Person;
+import org.hackillinois.android.models.people.Staff;
 import org.hackillinois.android.profile.ProfileFragment;
 
 public class ProfileViewActivity extends ActionBarActivity {
@@ -26,8 +29,15 @@ public class ProfileViewActivity extends ActionBarActivity {
         }
 
         if (savedInstanceState == null) {
-            if (getIntent() != null) {
+            if (getIntent().getExtras() != null) {
                 Person person = (Person) getIntent().getExtras().getSerializable("person");
+                if (person instanceof Hacker) {
+                    getSupportActionBar().setTitle(getString(R.string.hacker));
+                } else if (person instanceof Staff) {
+                    getSupportActionBar().setTitle(getString(R.string.staff));
+                } else if (person instanceof Mentor) {
+                    getSupportActionBar().setTitle(getString(R.string.mentor));
+                }
                 ProfileFragment profileFragment = ProfileFragment.newViewInstance(person);
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.container, profileFragment)

@@ -165,7 +165,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         if (person != null) {
             if (person.getSkills().isEmpty()) {
                 // maybe launch skills fragment
-                //launchEditSkillsFragment();
+                // launchEditSkillsFragment();
             }
             else {
                 List<String> skills = person.getSkills();
@@ -205,7 +205,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
 
     private void setFields(Person person) {
         mNameTextView.setText(person.getName());
-        mPicasso.load(person.getImageURL()).resize(200, 200).into(mImageView);
+        mPicasso.load(person.getImageURL()).resize(200, 200).centerCrop().into(mImageView);
         if (person instanceof Hacker)
             mTextSchool.setText(((Hacker) person).getSchool());
         else if (person instanceof Mentor)
