@@ -2,6 +2,7 @@ package org.hackillinois.android.people;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -11,11 +12,14 @@ import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ListView;
 
 import org.hackillinois.android.MainActivity;
 import org.hackillinois.android.R;
 import org.hackillinois.android.database.DatabaseTable;
 import org.hackillinois.android.models.people.Hacker;
+import org.hackillinois.android.models.people.Person;
 import org.hackillinois.android.utils.Utils;
 
 import java.util.List;
@@ -102,7 +106,14 @@ public class HackersFragment extends ListFragment {
                 }
             }
         }
+    }
 
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        Person person = (Person) l.getItemAtPosition(position);
+        Intent intent = new Intent(getActivity(), ProfileViewActivity.class);
+        intent.putExtra("person", person);
+        startActivity(intent);
     }
 
     private void setSuggestionsAdapter(SearchView searchView, String query) {
