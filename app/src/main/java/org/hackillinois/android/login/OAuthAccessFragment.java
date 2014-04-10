@@ -79,9 +79,9 @@ public class OAuthAccessFragment extends DialogFragment implements LoaderManager
             });
         } else {
             //TODO fix bad login, add progress indicators
-            webview.clearCache(true);
-            String authorizationUrl = mOAuth2Helper.getAuthorizationUrl();
-            webview.loadUrl(authorizationUrl);
+            //webview.clearCache(true);
+            //String authorizationUrl = mOAuth2Helper.getAuthorizationUrl();
+            //webview.loadUrl(authorizationUrl);
         }
     }
 

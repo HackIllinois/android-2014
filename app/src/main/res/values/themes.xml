@@ -3,6 +3,9 @@
     <style name="Theme.HackIllinois" parent="@style/Theme.AppCompat.Light.DarkActionBar">
     </style>
 
+    <style name="Theme.HackIllinois.Base" parent="@style/Theme.HackIllinois">
+    </style>
+
     <!-- Blue action bar style -->
     <style name="Theme.HackIllinois_blue_actionbar" parent="@style/Theme.HackIllinois.Base">
         <item name="android:actionBarStyle">@style/ActionBar.Solid.Hackillinois_blue_actionbar</item>

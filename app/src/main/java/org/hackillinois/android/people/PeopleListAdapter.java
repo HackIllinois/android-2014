@@ -48,7 +48,7 @@ public class PeopleListAdapter extends ArrayAdapter<Person> {
         if (convertView == null) {
             convertView = mLayoutInflater.inflate(R.layout.profile_list_item, parent, false);
             viewHolder = new ViewHolder();
-            viewHolder.profileImageView = (ImageView) convertView.findViewById(R.id.profile_list_item_image);
+            viewHolder.profileImageView = (ImageView) convertView.findViewById(R.id.profile_image);
             viewHolder.nameTextView = (TextView) convertView.findViewById(R.id.profile_list_item_name);
             viewHolder.companyTextView = (TextView) convertView.findViewById(R.id.profile_list_item_company);
             viewHolder.jobTitleTextView = (TextView) convertView.findViewById(R.id.profile_list_item_job_title);
@@ -60,8 +60,8 @@ public class PeopleListAdapter extends ArrayAdapter<Person> {
 
         Person person = getItem(position);
         if (person != null) {
-            String url = "https://graph.facebook.com/" + person.getFbID() + "/picture?type=large";
-            RequestCreator requestCreator = picasso.load(url).resize(200, 200);
+
+            RequestCreator requestCreator = picasso.load(person.getImageURL()).resize(200, 200);
 
             viewHolder.nameTextView.setText(person.getName());
             if (person instanceof Staff ) {

@@ -5,10 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
@@ -17,8 +15,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import org.hackillinois.android.MainActivity;
 import org.hackillinois.android.R;
@@ -33,13 +34,17 @@ import java.util.List;
 
 public class ProfileFragment extends Fragment implements LoaderManager.LoaderCallbacks<Person> {
 
+    private static final String SKILLS_FRAG = "EDIT_SKILLS";
+    private static final String TAG = "ProfileFragment";
+
     private Person person;
+    private ImageView mImageView;
     private TextView mNameTextView;
     private TextView mTextSchool;
     private TextView mTextSkills;
     private TextView mTextLocation;
+    private Picasso mPicasso;
 
-    private static final String TAG = "ProfileFragment";
     private SkillsAdapter mSkillsAdapter;
     private StatusListAdapter mStatusAdapter;
 
@@ -63,7 +68,6 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         @Override
         public void onReceive(Context context, Intent intent) {
             if (getLoaderManager() != null) {
-                Log.i(TAG, "in broadcast receiver");
                 getLoaderManager().initLoader(0, null, ProfileFragment.this).forceLoad();
                 LocalBroadcastManager.getInstance(context).unregisterReceiver(this);
             }
@@ -72,10 +76,14 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
 
     /** launch the DialogFragment to edit skills list **/
     private void launchEditSkillsFragment() {
-        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-        SkillsDialogFragment fragment = new SkillsDialogFragment();
-        fragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.Theme_Hackillinois_Skills);
-        fragment.show(fragmentTransaction, "skills");
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        Fragment profileFragment = fragmentManager.findFragmentByTag(SKILLS_FRAG);
+        if (profileFragment == null) {
+            profileFragment = new SkillsDialogFragment();
+        }
+        fragmentManager.beginTransaction().replace(R.id.container, profileFragment, SKILLS_FRAG).addToBackStack(null)
+                .commit();
+        fragmentManager.executePendingTransactions();
     }
 
 
@@ -83,21 +91,22 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_profile, null, false);
+        assert v != null;
+        mImageView = (ImageView) v.findViewById(R.id.profile_image);
         mNameTextView = (TextView) v.findViewById(R.id.name_profile);
         mTextSchool = (TextView) v.findViewById(R.id.school_profile);
         mTextLocation = (TextView) v.findViewById(R.id.location_profile);
         mTextSkills = (TextView) v.findViewById(R.id.text_skills_header);
+        mPicasso = Picasso.with(getActivity());
+
         ListView skillsList = (ListView) v.findViewById(R.id.profile_skills_list);
         ListView statusList = (ListView) v.findViewById(R.id.status_list);
+
+
         Object object = getArguments().getSerializable("person");
         if (object != null) {
             person = (Person) object;
-            mNameTextView.setText(person.getName());
-            if (person instanceof Hacker) {
-                mTextSchool.setText(((Hacker)person).getSchool());
-            } else {
-                mTextSchool.setText(((Mentor)person).getCompany());
-            }
+            setFields(person);
         }
 
         Utils.setInsets(getActivity(), v);
@@ -113,13 +122,13 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         mTextSkills.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //launchEditSkillsFragment();
+                launchEditSkillsFragment();
             }
         });
         skillsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //launchEditSkillsFragment();
+                launchEditSkillsFragment();
             }
         });
         return v;
@@ -155,12 +164,8 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
     public void onLoadFinished(Loader<Person> loader, Person person) {
         if (person != null) {
             if (person.getSkills().isEmpty()) {
-                new Handler().post(new Runnable() {
-                    @Override
-                    public void run() {
-                        //launchEditSkillsFragment();
-                    }
-                });
+                // maybe launch skills fragment
+                //launchEditSkillsFragment();
             }
             else {
                 List<String> skills = person.getSkills();
@@ -194,21 +199,25 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
 
 
             }
-            mNameTextView.setText(person.getName());
-            if (person instanceof Hacker)
-                mTextSchool.setText(((Hacker) person).getSchool());
-            else if (person instanceof Mentor)
-                mTextSchool.setText(((Mentor) person).getCompany());
-            if (person.getHomebase() == null || person.getHomebase().isEmpty())
-                mTextLocation.setText(R.string.set_location);
-            else
-                mTextLocation.setText(person.getHomebase());
+            setFields(person);
         }
+    }
+
+    private void setFields(Person person) {
+        mNameTextView.setText(person.getName());
+        mPicasso.load(person.getImageURL()).resize(200, 200).into(mImageView);
+        if (person instanceof Hacker)
+            mTextSchool.setText(((Hacker) person).getSchool());
+        else if (person instanceof Mentor)
+            mTextSchool.setText(((Mentor) person).getCompany());
+        if (person.getHomebase() == null || person.getHomebase().isEmpty())
+            mTextLocation.setText(R.string.set_location);
+        else
+            mTextLocation.setText(person.getHomebase());
     }
 
     @Override
     public void onLoaderReset(Loader<Person> loader) {
-
     }
 
     @Override
