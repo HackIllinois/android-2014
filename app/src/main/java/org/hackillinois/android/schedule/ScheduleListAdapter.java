@@ -1,6 +1,7 @@
 package org.hackillinois.android.schedule;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -30,11 +31,13 @@ public class ScheduleListAdapter extends ArrayAdapter<ScheduleItem> {
     private LayoutInflater mInflater;
     private Picasso picasso;
     private RoundedTransformation mRoundedTransformation;
+    private Activity mActivity;
 
-    public ScheduleListAdapter(Context context) {
-        super(context, R.layout.schedule_list_item, R.id.schedule_description);
-        mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        picasso = Picasso.with(context);
+    public ScheduleListAdapter(Activity activity) {
+        super(activity, R.layout.schedule_list_item, R.id.schedule_description);
+        mInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        picasso = Picasso.with(activity);
+        mActivity = activity;
         mRoundedTransformation = new RoundedTransformation(100, 20, 0, 0);
     }
 
@@ -73,7 +76,7 @@ public class ScheduleListAdapter extends ArrayAdapter<ScheduleItem> {
         holder.roomTextView.setText(item.getRoomName() + " " + item.getRoomNumber());
         holder.calendarTextView.setText("Add");
 
-        Log.d("formatted time", item.getTime());
+        //Log.d("formatted time", item.getTime());
 
         final View.OnClickListener addToCalendar = new View.OnClickListener() {
             @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
@@ -88,7 +91,7 @@ public class ScheduleListAdapter extends ArrayAdapter<ScheduleItem> {
                         .putExtra(CalendarContract.Events.DESCRIPTION, item.getDescription())
                         .putExtra(CalendarContract.Events.EVENT_LOCATION, item.getRoomName() + " " + item.getRoomNumber())
                         .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
-                getContext().startActivity(intent);
+                mActivity.startActivityForResult(intent, 0);
             }
         };
 

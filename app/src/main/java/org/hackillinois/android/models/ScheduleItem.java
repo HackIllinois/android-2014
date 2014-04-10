@@ -1,7 +1,6 @@
 package org.hackillinois.android.models;
 
 import org.joda.time.DateTime;
-import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONException;
@@ -37,7 +36,7 @@ public class ScheduleItem {
         roomName = location.getString("room_name");
         imageURL = location.getString("image_url");
 
-        time = jsonObject.getInt("time") ;
+        time = jsonObject.getInt("time");
         iconURL = jsonObject.getString("icon_url");
     }
 
@@ -77,36 +76,40 @@ public class ScheduleItem {
         return format_time(time);
     }
 
-    public int getHour(){ return time_hour(time); }
+    public int getHour() {
+        return time_hour(time);
+    }
 
-    public int getMinute() { return time_minute(time); }
+    public int getMinute() {
+        return time_minute(time);
+    }
 
-    public int getDay() { return format_day(time); }
+    public int getDay() {
+        return format_day(time);
+    }
 
     public String getIconURL() {
         return iconURL;
     }
 
     private String format_time(int unixTime) {
-        LocalDateTime localTime = new LocalDateTime((long) unixTime*1000);
-        localTime.plusHours(5);
-        final DateTimeFormatter formatter = DateTimeFormat.shortTime();
-
+        DateTime localTime = new DateTime((long) unixTime * 1000);
+        DateTimeFormatter formatter = DateTimeFormat.shortTime();
         return localTime.toString(formatter);
     }
 
-    private int format_day(int unixTime){
-        DateTime time = new DateTime((long) unixTime*1000);
+    private int format_day(int unixTime) {
+        DateTime time = new DateTime((long) unixTime * 1000);
         return time.getDayOfMonth();
     }
 
-    private int time_hour(int unixTime){
-        DateTime time = new DateTime((long) unixTime*1000);
-        return time.getHourOfDay() + 5;
+    private int time_hour(int unixTime) {
+        DateTime time = new DateTime((long) unixTime * 1000);
+        return time.getHourOfDay();
     }
 
-    private int time_minute(int unixTime){
-        DateTime time = new DateTime((long) unixTime*1000);
+    private int time_minute(int unixTime) {
+        DateTime time = new DateTime((long) unixTime * 1000);
         return time.getMinuteOfHour();
     }
 }
