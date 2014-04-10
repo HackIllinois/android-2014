@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import org.hackillinois.android.MainActivity;
 import org.hackillinois.android.R;
+import org.hackillinois.android.models.Status;
 import org.hackillinois.android.models.people.Hacker;
 import org.hackillinois.android.models.people.Mentor;
 import org.hackillinois.android.models.people.Person;
@@ -40,6 +41,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
 
     private static final String TAG = "ProfileFragment";
     private SkillsAdapter mSkillsAdapter;
+    private StatusListAdapter mStatusAdapter;
 
     public static ProfileFragment newInstance(int sectionNumber) {
         Bundle args = new Bundle();
@@ -86,6 +88,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         mTextLocation = (TextView) v.findViewById(R.id.location_profile);
         mTextSkills = (TextView) v.findViewById(R.id.text_skills_header);
         ListView skillsList = (ListView) v.findViewById(R.id.profile_skills_list);
+        ListView statusList = (ListView) v.findViewById(R.id.status_list);
         Object object = getArguments().getSerializable("person");
         if (object != null) {
             person = (Person) object;
@@ -103,17 +106,20 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
 
         mSkillsAdapter = new SkillsAdapter(getActivity());
         skillsList.setAdapter(mSkillsAdapter);
+        mStatusAdapter = new StatusListAdapter(getActivity());
+        statusList.setAdapter(mStatusAdapter);
+
 
         mTextSkills.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launchEditSkillsFragment();
+                //launchEditSkillsFragment();
             }
         });
         skillsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                launchEditSkillsFragment();
+                //launchEditSkillsFragment();
             }
         });
         return v;
@@ -152,7 +158,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
                 new Handler().post(new Runnable() {
                     @Override
                     public void run() {
-                        launchEditSkillsFragment();
+                        //launchEditSkillsFragment();
                     }
                 });
             }
@@ -173,10 +179,19 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
                     lists.get(i / 4).add("");
                 }
 
+                List<Status> status_list = person.getStatuses();
+                mStatusAdapter.clear();
+                for(Status stat : status_list) {
+                    Log.e("adding status", stat.getStatus());
+                    mStatusAdapter.add(stat);
+                }
+                mStatusAdapter.notifyDataSetChanged();
+
                 mSkillsAdapter.clear();
                 for(List<String> list : lists)
                     mSkillsAdapter.add(list);
                 mSkillsAdapter.notifyDataSetChanged();
+
 
             }
             mNameTextView.setText(person.getName());
@@ -184,7 +199,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
                 mTextSchool.setText(((Hacker) person).getSchool());
             else if (person instanceof Mentor)
                 mTextSchool.setText(((Mentor) person).getCompany());
-            if (person.getHomebase().isEmpty())
+            if (person.getHomebase() == null || person.getHomebase().isEmpty())
                 mTextLocation.setText(R.string.set_location);
             else
                 mTextLocation.setText(person.getHomebase());

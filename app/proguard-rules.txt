@@ -17,3 +17,7 @@
 #}
 -dontwarn com.squareup.picasso.**
 -dontwarn com.squareup.okhttp.**
+-dontwarn com.google.api.**
+-dontwarn org.joda.time.**
+-keepattributes Deprecated
+-dontwarn org.hackillinois.android.login.**
