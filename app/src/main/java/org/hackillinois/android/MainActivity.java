@@ -189,8 +189,9 @@ public class MainActivity extends ActionBarActivity
         mHackers = (List<Hacker>) people.get(0);
         mMentorsAndStaff = (List<Person>) people.get(1);
         mMentorsAndStaff.addAll(people.get(2));
-        mPeople = mMentorsAndStaff;
-        mPeople.addAll(people.get(0));
+        mPeople = (List<Person>) people.get(0);
+        mPeople.addAll(people.get(1));
+        mPeople.addAll(people.get(2));
     }
 
     public void restoreActionBar() {
