@@ -1,7 +1,7 @@
 package org.hackillinois.android.profile;
 
-import android.support.v4.content.AsyncTaskLoader;
 import android.content.Context;
+import android.support.v4.content.AsyncTaskLoader;
 
 import org.hackillinois.android.models.Status;
 import org.hackillinois.android.utils.HttpUtils;
