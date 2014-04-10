@@ -158,6 +158,12 @@ public class DatabaseTable {
         return query(selection, selectionArgs, columns, table);
     }
 
+    public Cursor getUserByID(String id) {
+        String selection = BaseColumns._ID + " LIKE ?";
+        String[] selectionArgs = {String.valueOf(id)};
+        return query(selection, selectionArgs, null, FTS_VIRTUAL_TABLE_MENTOR);
+    }
+
     private Cursor query(String selection, String[] selectionArgs, String[] columns, String table) {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         builder.setTables(table);
