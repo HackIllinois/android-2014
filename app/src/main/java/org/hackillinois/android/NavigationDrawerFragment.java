@@ -97,6 +97,15 @@ public class NavigationDrawerFragment extends Fragment {
             Bundle savedInstanceState) {
         mDrawerListView = (ListView) inflater.inflate(
                 R.layout.fragment_navigation_drawer, container, false);
+        String[] values = new String[]{
+                getString(R.string.title_section1),
+                getString(R.string.title_section2),
+                getString(R.string.title_section3),
+                getString(R.string.title_section4),
+                getString(R.string.title_section5)
+        };
+        mDrawerListView.setAdapter(new NavigationDrawerAdapter(getActivity(),values, deselectedIcons));
+
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -113,14 +122,8 @@ public class NavigationDrawerFragment extends Fragment {
                 //imageView.setImageResource(deselectedIcons[position]);
             }
         });
-        String[] values = new String[]{
-                getString(R.string.title_section1),
-                getString(R.string.title_section2),
-                getString(R.string.title_section3),
-                getString(R.string.title_section4),
-                getString(R.string.title_section5)
-        };
-        mDrawerListView.setAdapter(new NavigationDrawerAdapter(getActionBar().getThemedContext(),values));
+
+
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         mDrawerListView.setClipToPadding(false);
         Utils.setInsets(getActivity(), mDrawerListView);
@@ -222,6 +225,7 @@ public class NavigationDrawerFragment extends Fragment {
         mCurrentSelectedPosition = position;
         if (mDrawerListView != null) {
             mDrawerListView.setItemChecked(position, true);
+
         }
         if (mDrawerLayout != null) {
             mDrawerLayout.closeDrawer(mFragmentContainerView);

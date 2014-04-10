@@ -15,13 +15,14 @@ public class NavigationDrawerAdapter extends ArrayAdapter<String> {
     private final Context context;
     private final String[] values;
     //int[] deselectedIcons = {R.drawable.ic_person_deselected, R.drawable.ic_people_tab_deselected, R.drawable.ic_feed_tab_deselected, R.drawable.ic_schedule_tab_deselected, R.drawable.ic_support_tab_deselected};
-    int[] deselectedIcons = {R.drawable.ic_person_deselected, R.drawable.ic_people_tab_deselected, R.drawable.ic_feed_tab_deselected, R.drawable.ic_schedule_tab_deselected, R.drawable.ic_support_tab_deselected};
+    //int[] deselectedIcons = {R.drawable.ic_person_deselected, R.drawable.ic_people_tab_deselected, R.drawable.ic_feed_tab_deselected, R.drawable.ic_schedule_tab_deselected, R.drawable.ic_support_tab_deselected};
+    int[] icons;
 
-
-    public NavigationDrawerAdapter(Context context, String[] values) {
+    public NavigationDrawerAdapter(Context context, String[] values, int[] icons) {
         super(context, R.layout.drawer_list_item, values);
         this.context = context;
         this.values = values;
+        this.icons = icons;
     }
 
     @Override
@@ -48,8 +49,8 @@ public class NavigationDrawerAdapter extends ArrayAdapter<String> {
 //        }
 
         viewHolder.textView.setText(values[position]);
-        //viewHolder.iconImageView.setImageResource(deselectedIcons[position]);
-
+        viewHolder.iconImageView.setImageResource(icons[position]);
+        viewHolder.iconImageView.invalidate();
         return convertView;
     }
 
