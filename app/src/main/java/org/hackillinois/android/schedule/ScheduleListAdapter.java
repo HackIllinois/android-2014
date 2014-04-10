@@ -73,7 +73,7 @@ public class ScheduleListAdapter extends ArrayAdapter<ScheduleItem> {
         holder.roomTextView.setText(item.getRoomName() + " " + item.getRoomNumber());
         holder.calendarTextView.setText("Add");
 
-        Log.d("formatted time", item.getTime());
+        //Log.d("formatted time", item.getTime());
 
         final View.OnClickListener addToCalendar = new View.OnClickListener() {
             @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
