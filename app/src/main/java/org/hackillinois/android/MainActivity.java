@@ -76,6 +76,7 @@ public class MainActivity extends ActionBarActivity
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             oAuthAccessFragment = new OAuthAccessFragment();
             oAuthAccessFragment.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.Theme_AppCompat_Light_DarkActionBar);
+            oAuthAccessFragment.setCancelable(false);
             oAuthAccessFragment.show(ft, "login");
         }
 

@@ -7,13 +7,16 @@ import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
 import org.hackillinois.android.R;
+import org.hackillinois.android.models.people.Hacker;
+import org.hackillinois.android.models.people.Person;
+import org.hackillinois.android.models.people.Staff;
 import org.hackillinois.android.utils.HttpUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.net.URLDecoder;
 
-public class ProcessTokenLoader extends AsyncTaskLoader<String> {
+public class ProcessTokenLoader extends AsyncTaskLoader<Person> {
 
     private String mUrl;
     private SharedPreferences mSharedPreferences;
@@ -34,7 +37,7 @@ public class ProcessTokenLoader extends AsyncTaskLoader<String> {
     }
 
     @Override
-    public String loadInBackground() {
+    public Person loadInBackground() {
         if (mUrl.startsWith(Oauth2Params.GOOGLE_PLUS.getRedirectUri())) {
             try {
                 if (mUrl.contains("code=")) {
@@ -46,17 +49,29 @@ public class ProcessTokenLoader extends AsyncTaskLoader<String> {
                     JSONObject response = new JSONObject(apiCall);
                     JSONArray array = response.getJSONArray("emails");
 
-                    String userResponse = null;
+                    Person resPerson = null;
                     for (int i = 0; i < array.length(); i ++) {
                         String email = array.getJSONObject(i).getString("value");
-                        userResponse = httpUtils.testEmail(email);
+                        String userResponse = httpUtils.testEmail(email);
                         if (!userResponse.equals("[]")) {
+                            JSONArray jsonArray = new JSONArray(userResponse);
+                            JSONObject person = jsonArray.getJSONObject(0);
+                            String type = person.getString("type");
+                            if (type.equals("hacker")) {
+                                resPerson = new Hacker(person);
+                            } else if (type.equals("staff")) {
+                                resPerson = new Staff(person);
+                            } else if (type.equals("mentor")) {
+                                resPerson = new Staff(person);
+                            }
                             SharedPreferences.Editor editor = mSharedPreferences.edit();
                             editor.putString(getContext().getString(R.string.pref_email), email);
                             editor.commit();
+                            Log.i(TAG, resPerson.getName());
+                            return resPerson;
                         }
                     }
-                    return userResponse;
+                    return resPerson;
                 } else if (mUrl.contains("error=")) {
                     Log.i(TAG, "error is " + mUrl);
                 }
