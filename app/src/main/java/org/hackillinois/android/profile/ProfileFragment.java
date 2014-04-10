@@ -131,4 +131,10 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
     public void onLoaderReset(Loader<Object> loader) {
 
     }
+
+    @Override
+    public void onDetach() {
+        getLoaderManager().destroyLoader(0);
+        super.onDetach();
+    }
 }
