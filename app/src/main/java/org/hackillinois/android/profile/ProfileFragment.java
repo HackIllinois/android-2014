@@ -1,4 +1,4 @@
-package org.hackillinois.android;
+package org.hackillinois.android.profile;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -14,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.hackillinois.android.MainActivity;
+import org.hackillinois.android.R;
 import org.hackillinois.android.models.people.Person;
 import org.hackillinois.android.utils.Utils;
 
@@ -36,6 +38,9 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
             }
             Person person = (Person) intent.getSerializableExtra("Person");
             if(person!=null) {
+                if(person.getSkills().isEmpty()){
+
+                }
                 Log.e("blah", person.getName());
             }
         }
