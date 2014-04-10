@@ -37,8 +37,13 @@
         </activity>
         <activity
             android:name="org.hackillinois.android.people.ProfileViewActivity"
+            android:theme="@style/Theme.HackIllinois_red_actionbar"
             android:label="@string/title_activity_profile_view"
+            android:parentActivityName=".MainActivity"
             android:icon="@drawable/ic_action_hackillinois_icon_white">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.hackillinois.android.MainActivity"/>
         </activity>
     </application>
 

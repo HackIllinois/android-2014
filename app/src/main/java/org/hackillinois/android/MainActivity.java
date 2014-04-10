@@ -245,7 +245,7 @@ public class MainActivity extends ActionBarActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         SearchResultsFragment peopleFragment = SearchResultsFragment.newInstance(query);
         fragmentManager.beginTransaction()
-                .replace(R.id.container, peopleFragment, "SEARCH_RESULTS")
+                .replace(R.id.container, peopleFragment, "SEARCH_RESULTS").addToBackStack(null)
                 .commit();
     }
 

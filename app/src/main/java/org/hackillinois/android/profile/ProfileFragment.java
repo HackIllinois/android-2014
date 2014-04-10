@@ -72,7 +72,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
     private void launchEditSkillsFragment() {
         FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
         SkillsDialogFragment fragment = new SkillsDialogFragment();
-        fragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.Theme_Hackillinois_Launcher);
+        fragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.Theme_Hackillinois_Skills);
         fragment.show(fragmentTransaction, "skills");
     }
 

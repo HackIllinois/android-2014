@@ -50,6 +50,12 @@ public class SearchResultsFragment extends ListFragment {
         mPeopleListAdapter = new PeopleListAdapter(getActivity());
         setListAdapter(mPeopleListAdapter);
         databaseTable = new DatabaseTable(getActivity());
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         personSparseArray = ((MainActivity) getActivity()).getiOSLookup();
         String query = getArguments().getString(ARG_QUERY, "");
         if (query != null && !query.isEmpty()) {
