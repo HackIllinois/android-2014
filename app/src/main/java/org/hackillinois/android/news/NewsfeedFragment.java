@@ -154,5 +154,11 @@ public class NewsfeedFragment extends ListFragment
     public void setListShownNoAnimation(boolean shown) {
         setListShown(shown, false);
     }
+
+    @Override
+    public void onDetach() {
+        getLoaderManager().destroyLoader(0);
+        super.onDetach();
+    }
 }
 

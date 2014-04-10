@@ -34,4 +34,5 @@
         <item quantity="other">%1$d results for \"%2$s\":</item>
     </plurals>
     <string name="no_results">No results found for \"%s\"</string>
+    <string name="refresh">Refresh</string>
 </resources>

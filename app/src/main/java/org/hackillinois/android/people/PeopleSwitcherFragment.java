@@ -107,5 +107,10 @@ public class PeopleSwitcherFragment extends Fragment implements LoaderManager.Lo
         mSchedulePagerAdapter.showResults(query, currentPage);
     }
 
+    @Override
+    public void onDetach() {
+        getLoaderManager().destroyLoader(0);
+        super.onDetach();
+    }
 
 }
