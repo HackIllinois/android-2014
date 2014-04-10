@@ -2,6 +2,7 @@ package org.hackillinois.android.people;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -12,6 +13,8 @@ import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ListView;
 
 import org.hackillinois.android.MainActivity;
 import org.hackillinois.android.R;
@@ -63,6 +66,14 @@ public class SearchResultsFragment extends ListFragment {
     }
 
     @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        Person person = (Person) l.getItemAtPosition(position);
+        Intent intent = new Intent(getActivity(), ProfileViewActivity.class);
+        intent.putExtra("person", person);
+        startActivity(intent);
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.people, menu);
         SearchManager searchManager =
@@ -97,10 +108,12 @@ public class SearchResultsFragment extends ListFragment {
     }
 
     private void setSuggestionsAdapter(SearchView searchView, String query) {
-        Cursor c = databaseTable.getHackerMatches(query, null);
-        if (getActivity() != null) {
-            SimpleCursorAdapter names = new SimpleCursorAdapter(getActivity(), R.layout.query_result_item, c, from, to, 0);
-            searchView.setSuggestionsAdapter(names);
+        if (databaseTable != null) {
+            Cursor c = databaseTable.getHackerMatches(query, null);
+            if (getActivity() != null) {
+                SimpleCursorAdapter names = new SimpleCursorAdapter(getActivity(), R.layout.query_result_item, c, from, to, 0);
+                searchView.setSuggestionsAdapter(names);
+            }
         }
     }
 

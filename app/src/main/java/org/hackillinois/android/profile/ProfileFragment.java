@@ -43,6 +43,14 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         return fragment;
     }
 
+    public static ProfileFragment newViewInstance(Person person) {
+        Bundle args = new Bundle();
+        ProfileFragment fragment = new ProfileFragment();
+        args.putSerializable("person", person);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -53,7 +61,6 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
             }
         }
     };
-
 
     /** launch the DialogFragment to edit skills list **/
     private void launchEditSkillsFragment() {
@@ -86,7 +93,9 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onStart() {
         super.onStart();
-        ((MainActivity) getActivity()).onSectionAttached(getArguments().getInt(Utils.ARG_SECTION_NUMBER));
+        Bundle args = getArguments();
+        if (args != null)
+        ((MainActivity) getActivity()).onSectionAttached(args.getInt(Utils.ARG_SECTION_NUMBER));
 
     }
 
@@ -136,10 +145,10 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
             textName.setText(person.getName());
             if(person instanceof Hacker)
                 textSchool.setText(((Hacker) person).getSchool());
-            else if (person instanceof Mentor)
-                textSchool.setText(((Mentor) person).getCompany());
             else if (person instanceof Staff)
                 textSchool.setText(((Staff) person).getCompany());
+            else if (person instanceof Mentor)
+                textSchool.setText(((Mentor) person).getCompany());
             if(person.getHomebase().isEmpty())
                 textLocation.setText("click to set location");
             else
