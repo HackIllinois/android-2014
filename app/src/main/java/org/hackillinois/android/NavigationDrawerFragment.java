@@ -102,11 +102,15 @@ public class NavigationDrawerFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectItem(position);
                 setNavDrawerItemNormal();
+
                 TextView textView = (TextView) view.findViewById(R.id.text);
                 textView.setTextColor(Color.WHITE);
 
                 ImageView imageView = (ImageView) view.findViewById(R.id.icon_drawer);
-                imageView.setImageResource(selectedIcons[position]);
+
+                imageView.setImageDrawable(getResources().getDrawable(selectedIcons[position]));
+                imageView.invalidate();
+                //imageView.setImageResource(deselectedIcons[position]);
             }
         });
         String[] values = new String[]{
