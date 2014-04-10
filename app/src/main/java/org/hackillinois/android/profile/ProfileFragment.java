@@ -5,9 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -97,14 +95,11 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
 
     @Override
     public Loader<Person> onCreateLoader(int id, Bundle args) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String email = sharedPreferences.getString(getString(R.string.pref_email), "");
-        return new ProfileDataLoader(getActivity(), email);
+        return new ProfileDataLoader(getActivity());
     }
 
     @Override
     public void onLoadFinished(Loader<Person> loader, Person person) {
-        Log.e("got here", "blah");
         if (person != null) {
             if (person.getSkills().isEmpty()) {
                 launchEditSkillsFragment();
