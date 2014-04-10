@@ -41,4 +41,23 @@ public class Skill {
     public void setAliases(ArrayList<String> aliases) {
         this.aliases = aliases;
     }
+
+    /** Given a string constraint, determine if this skill matches the constraint **/
+    public boolean isMatch(String constraint) {
+        // if the constraint is a prefix of the name
+        if(this.getName().toLowerCase().startsWith(constraint))
+            return true;
+
+        for(String tag : tags)
+            if(tag.toLowerCase().startsWith(constraint))
+                return true;
+
+        // if the constraint is a prefix of an alias
+        for(String alias : aliases)
+            if(alias.toLowerCase().startsWith(constraint))
+                return true;
+
+        return false;
+    }
+
 }
