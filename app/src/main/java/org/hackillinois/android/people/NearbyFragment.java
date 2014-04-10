@@ -26,6 +26,7 @@ public class NearbyFragment extends ListFragment
 
     private static final long SCAN_PERIOD = 10000;
     private static final String TAG = "NearbyFragment";
+    private boolean isSupported;
 
     private BluetoothAdapter mBluetoothAdapter;
     private PeopleListAdapter mPeopleListAdapter;
@@ -38,6 +39,10 @@ public class NearbyFragment extends ListFragment
         super.onActivityCreated(savedInstanceState);
         setEmptyText(getString(R.string.loading_data_error));
         setListShown(false);
+        if (!isSupported) {
+            setEmptyText(getString(R.string.ble_not_supported));
+            setListShown(true);
+        }
     }
 
     @Override
@@ -47,10 +52,8 @@ public class NearbyFragment extends ListFragment
         setListAdapter(mPeopleListAdapter);
         mHandler = new Handler();
         mScanning = false;
-        if (!getActivity().getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
-            setEmptyText(getString(R.string.ble_not_supported));
-            setListShown(true);
-        } else {
+        isSupported = getActivity().getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE);
+        if (isSupported) {
             final BluetoothManager bluetoothManager =
                     (BluetoothManager) getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
             mBluetoothAdapter = bluetoothManager.getAdapter();
