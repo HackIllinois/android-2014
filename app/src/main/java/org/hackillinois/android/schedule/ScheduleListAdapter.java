@@ -53,6 +53,7 @@ public class ScheduleListAdapter extends ArrayAdapter<ScheduleItem> {
             holder.titleTextView = (TextView) rowView.findViewById(R.id.schedule_title);
             holder.descriptionTextView = (TextView) rowView.findViewById(R.id.schedule_description);
             holder.roomTextView = (TextView) rowView.findViewById(R.id.schedule_room);
+            holder.roomImageView = (ImageView) rowView.findViewById(R.id.schedule_loc_icon);
             holder.calendarTextView = (TextView) rowView.findViewById(R.id.schedule_add_calendar);
             holder.calendarImageView = (ImageView) rowView.findViewById(R.id.schedule_add_calendar_icon);
 
@@ -73,8 +74,6 @@ public class ScheduleListAdapter extends ArrayAdapter<ScheduleItem> {
         holder.roomTextView.setText(item.getRoomName() + " " + item.getRoomNumber());
         holder.calendarTextView.setText("Add");
 
-        //Log.d("formatted time", item.getTime());
-
         final View.OnClickListener addToCalendar = new View.OnClickListener() {
             @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
             @Override
@@ -92,9 +91,17 @@ public class ScheduleListAdapter extends ArrayAdapter<ScheduleItem> {
             }
         };
 
+        final View.OnClickListener googleMaps = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        };
+
         holder.calendarTextView.setOnClickListener(addToCalendar);
         holder.calendarImageView.setOnClickListener(addToCalendar);
 
+        holder.roomTextView.setOnClickListener(googleMaps);
         return rowView;
     }
 
@@ -115,6 +122,7 @@ public class ScheduleListAdapter extends ArrayAdapter<ScheduleItem> {
         public TextView roomTextView;
         public TextView calendarTextView;
         public ImageView calendarImageView;
+        public ImageView roomImageView;
     }
 
 }
