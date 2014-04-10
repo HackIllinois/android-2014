@@ -1,11 +1,11 @@
 package org.hackillinois.android.profile;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -25,13 +25,18 @@ import org.hackillinois.android.R;
 import org.hackillinois.android.models.people.Hacker;
 import org.hackillinois.android.models.people.Mentor;
 import org.hackillinois.android.models.people.Person;
-import org.hackillinois.android.models.people.Staff;
 import org.hackillinois.android.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProfileFragment extends Fragment implements LoaderManager.LoaderCallbacks<Person> {
+
+    private Person person;
+    private TextView mNameTextView;
+    private TextView mTextSchool;
+    private TextView mTextSkills;
+    private TextView mTextLocation;
 
     private static final String TAG = "ProfileFragment";
     private SkillsAdapter mSkillsAdapter;
@@ -76,32 +81,41 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_profile, null, false);
-        TextView mNameTextView = (TextView) v.findViewById(R.id.name_profile);
-        Activity activity = getActivity();
-        Utils.setInsets(activity, v);
+        mNameTextView = (TextView) v.findViewById(R.id.name_profile);
+        mTextSchool = (TextView) v.findViewById(R.id.school_profile);
+        mTextLocation = (TextView) v.findViewById(R.id.location_profile);
+        mTextSkills = (TextView) v.findViewById(R.id.text_skills_header);
+        ListView skillsList = (ListView) v.findViewById(R.id.profile_skills_list);
+        Object object = getArguments().getSerializable("person");
+        if (object != null) {
+            person = (Person) object;
+            mNameTextView.setText(person.getName());
+            if (person instanceof Hacker) {
+                mTextSchool.setText(((Hacker)person).getSchool());
+            } else {
+                mTextSchool.setText(((Mentor)person).getCompany());
+            }
+        }
+
+        Utils.setInsets(getActivity(), v);
         IntentFilter intentFilter = new IntentFilter(getString(R.string.broadcast_login));
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver, intentFilter);
 
-        ListView skillsList = (ListView) v.findViewById(R.id.profile_skills_list);
-        mSkillsAdapter = new SkillsAdapter(activity);
+        mSkillsAdapter = new SkillsAdapter(getActivity());
         skillsList.setAdapter(mSkillsAdapter);
-        TextView textSkills = (TextView) v.findViewById(R.id.text_skills_header);
-        textSkills.setOnClickListener(new View.OnClickListener() {
+
+        mTextSkills.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 launchEditSkillsFragment();
             }
         });
-        ListView listView = (ListView) v.findViewById(R.id.profile_skills_list);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        skillsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 launchEditSkillsFragment();
             }
         });
-
-        //launchEditSkillsFragment();
-
         return v;
     }
 
@@ -109,15 +123,21 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
     public void onStart() {
         super.onStart();
         Bundle args = getArguments();
-        if (args != null)
-        ((MainActivity) getActivity()).onSectionAttached(args.getInt(Utils.ARG_SECTION_NUMBER));
+        if (args != null) {
+            if (args.getInt(Utils.ARG_SECTION_NUMBER) != 0) {
+                ((MainActivity) getActivity()).onSectionAttached(args.getInt(Utils.ARG_SECTION_NUMBER));
+            }
+        }
 
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        getLoaderManager().initLoader(0,null,this).forceLoad();
+        if (person == null) {
+            // This means this is the profile tab so we have to load the data
+            getLoaderManager().initLoader(0,null,this).forceLoad();
+        }
     }
 
     @Override
@@ -129,7 +149,12 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
     public void onLoadFinished(Loader<Person> loader, Person person) {
         if (person != null) {
             if (person.getSkills().isEmpty()) {
-                launchEditSkillsFragment();
+                new Handler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        launchEditSkillsFragment();
+                    }
+                });
             }
             else {
                 List<String> skills = person.getSkills();
@@ -154,20 +179,15 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
                 mSkillsAdapter.notifyDataSetChanged();
 
             }
-            TextView textName = (TextView) getView().findViewById(R.id.name_profile);
-            TextView textSchool = (TextView) getView().findViewById(R.id.school_profile);
-            TextView textLocation = (TextView) getView().findViewById(R.id.location_profile);
-            textName.setText(person.getName());
-            if(person instanceof Hacker)
-                textSchool.setText(((Hacker) person).getSchool());
-            else if (person instanceof Staff)
-                textSchool.setText(((Staff) person).getCompany());
+            mNameTextView.setText(person.getName());
+            if (person instanceof Hacker)
+                mTextSchool.setText(((Hacker) person).getSchool());
             else if (person instanceof Mentor)
-                textSchool.setText(((Mentor) person).getCompany());
-            if(person.getHomebase().isEmpty())
-                textLocation.setText("click to set location");
+                mTextSchool.setText(((Mentor) person).getCompany());
+            if (person.getHomebase().isEmpty())
+                mTextLocation.setText(R.string.set_location);
             else
-                textLocation.setText(person.getHomebase());
+                mTextLocation.setText(person.getHomebase());
         }
     }
 

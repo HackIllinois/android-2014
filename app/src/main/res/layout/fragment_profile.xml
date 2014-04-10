@@ -64,6 +64,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
                     android:layout_gravity="center_vertical"
+                    android:text="@string/set_location"
                     android:id="@+id/location_profile" />
             </LinearLayout>
         </LinearLayout>
@@ -73,7 +74,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Skills"
+        android:text="@string/skills"
         android:paddingLeft="20sp"
         android:paddingTop="10dp"
         android:textSize="20sp"
@@ -81,12 +82,10 @@
         android:textStyle="bold"
         android:id="@+id/text_skills_header" />
 
-    <LinearLayout
-        android:orientation="vertical"
+    <View
         android:layout_width="fill_parent"
-        android:layout_height="2dip"
-        android:background="#222">
-    </LinearLayout>
+        android:layout_height="1dip"
+        android:background="@color/background_grey"/>
 
     <ListView
         android:id="@+id/profile_skills_list"

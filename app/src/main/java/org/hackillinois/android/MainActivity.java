@@ -23,7 +23,6 @@ import android.view.MenuItem;
 
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
-import org.hackillinois.android.database.DatabaseTable;
 import org.hackillinois.android.database.PersonDatabaseLoader;
 import org.hackillinois.android.login.OAuthAccessFragment;
 import org.hackillinois.android.models.people.Hacker;
@@ -246,7 +245,7 @@ public class MainActivity extends ActionBarActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         SearchResultsFragment peopleFragment = SearchResultsFragment.newInstance(query);
         fragmentManager.beginTransaction()
-                .replace(R.id.container, peopleFragment, "SEARCH_RESULTS").addToBackStack(null)
+                .replace(R.id.container, peopleFragment, "SEARCH_RESULTS")
                 .commit();
     }
 
