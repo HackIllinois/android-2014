@@ -23,7 +23,6 @@ import org.hackillinois.android.models.people.Person;
 import org.hackillinois.android.utils.Utils;
 
 public class ProfileFragment extends Fragment implements LoaderManager.LoaderCallbacks<Object> {
-    private TextView mNameTextView;
 
     public static ProfileFragment newInstance(int sectionNumber) {
         Bundle args = new Bundle();
@@ -66,11 +65,10 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_profile, null, false);
-        mNameTextView = (TextView) v.findViewById(R.id.name_profile);
+        TextView mNameTextView = (TextView) v.findViewById(R.id.name_profile);
         Utils.setInsets(getActivity(), v);
         IntentFilter intentFilter = new IntentFilter(getString(R.string.broadcast_login));
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver, intentFilter);
-
         launchEditSkillsFragment();
 
         return v;

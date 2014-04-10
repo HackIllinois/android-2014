@@ -1,13 +1,11 @@
 package org.hackillinois.android.people;
 
-import android.annotation.TargetApi;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ListFragment;
@@ -23,9 +21,7 @@ import org.hackillinois.android.utils.Utils;
 import java.util.HashMap;
 import java.util.List;
 
-@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-public class NearbyFragment extends ListFragment
-        implements BluetoothAdapter.LeScanCallback {
+public class NearbyFragment extends ListFragment {
 
     private static final long SCAN_PERIOD = 5000;
     private static final String TAG = "NearbyFragment";
@@ -37,6 +33,7 @@ public class NearbyFragment extends ListFragment
     private boolean mScanning;
     private SparseArray<Person> iOSLookup;
     private HashMap<String, Person> androidLookup;
+    BluetoothAdapter.LeScanCallback leScanCallback;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -59,6 +56,25 @@ public class NearbyFragment extends ListFragment
         mHandler = new Handler();
         mScanning = true;
         mIsSupported = getActivity().getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE);
+        if (mIsSupported) {
+            leScanCallback = new BluetoothAdapter.LeScanCallback() {
+                @Override
+                public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
+                    Log.i(TAG, "ADDRESS IS " + device.getAddress());
+                    List<AdRecord> adRecords = AdRecord.parseScanRecord(scanRecord);
+                    for (AdRecord adRecord : adRecords) {
+                        String record = AdRecord.getName(adRecord);
+                        Log.i(TAG, "record is " + record);
+                        int key = Integer.parseInt(record);
+                        Person person = iOSLookup.get(key);
+                        mPeopleListAdapter.add(person);
+                        mPeopleListAdapter.notifyDataSetChanged();
+                        setListShown(true);
+                    }
+                }
+            };
+        }
+
 
     }
 
@@ -89,32 +105,17 @@ public class NearbyFragment extends ListFragment
                 public void run() {
                     mScanning = false;
                     Log.i(TAG, "stopping scan...");
-                    mBluetoothAdapter.stopLeScan(NearbyFragment.this);
+                    mBluetoothAdapter.stopLeScan(leScanCallback);
                 }
             }, SCAN_PERIOD);
 
             mScanning = true;
             Log.i(TAG, "starting scan...");
-            mBluetoothAdapter.startLeScan(NearbyFragment.this);
+            mBluetoothAdapter.startLeScan(leScanCallback);
         } else {
             mScanning = false;
             Log.i(TAG, "stopping scan...");
-            mBluetoothAdapter.stopLeScan(NearbyFragment.this);
-        }
-    }
-
-    @Override
-    public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
-        Log.i(TAG, "ADDRESS IS " + device.getAddress());
-        List<AdRecord> adRecords = AdRecord.parseScanRecord(scanRecord);
-        for (AdRecord adRecord : adRecords) {
-            String record = AdRecord.getName(adRecord);
-            Log.i(TAG, "record is " + record);
-            int key = Integer.parseInt(record);
-            Person person = iOSLookup.get(key);
-            mPeopleListAdapter.add(person);
-            mPeopleListAdapter.notifyDataSetChanged();
-            setListShown(true);
+            mBluetoothAdapter.stopLeScan(leScanCallback);
         }
     }
 
