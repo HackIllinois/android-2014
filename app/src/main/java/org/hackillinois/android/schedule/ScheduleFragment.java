@@ -2,11 +2,9 @@ package org.hackillinois.android.schedule;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.PagerTitleStrip;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -30,12 +28,16 @@ public class ScheduleFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_schedule, container, false);
+
         ViewPager mViewPager = (ViewPager) rootView.findViewById(R.id.schedule_pager);
         SchedulePagerAdapter mSchedulePagerAdapter = new SchedulePagerAdapter(this, getChildFragmentManager());
         mViewPager.setAdapter(mSchedulePagerAdapter);
         mViewPager.setPageTransformer(true, new DepthPageTransformer());
+
+        PagerTitleStrip mStrip = (PagerTitleStrip) rootView.findViewById(R.id.schedule_pager_title_strip);
+
         mViewPager.setClipToPadding(false);
-        Utils.setViewPagerInsets(getActivity(), mViewPager);
+        Utils.setViewPagerInsets(getActivity(), rootView);
         return rootView;
     }
 
