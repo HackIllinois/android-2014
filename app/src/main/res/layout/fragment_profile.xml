@@ -28,7 +28,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sarah Lindholm"
                 android:id="@+id/name_profile"
                 android:textSize="20sp"
                 android:textColor="@color/white"
@@ -38,7 +37,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="University of Illinois"
                 android:id="@+id/school_profile"
                 android:textSize="14sp"
                 android:singleLine="true"
@@ -64,12 +62,30 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="SC 4405"
                     android:textColor="@color/white"
                     android:layout_gravity="center_vertical"
                     android:id="@+id/location_profile" />
             </LinearLayout>
         </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Skills"
+        android:paddingLeft="20sp"
+        android:paddingTop="10dp"
+        android:textSize="20sp"
+        android:textColor="#222"
+        android:textStyle="bold"
+        android:id="@+id/textView" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="2dip"
+        android:background="#222">
     </LinearLayout>
 
     <ListView

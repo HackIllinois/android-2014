@@ -22,7 +22,9 @@ import android.widget.TextView;
 import org.hackillinois.android.MainActivity;
 import org.hackillinois.android.R;
 import org.hackillinois.android.models.people.Hacker;
+import org.hackillinois.android.models.people.Mentor;
 import org.hackillinois.android.models.people.Person;
+import org.hackillinois.android.models.people.Staff;
 import org.hackillinois.android.utils.Utils;
 
 import java.util.ArrayList;
@@ -132,11 +134,16 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
             TextView textSchool = (TextView) getView().findViewById(R.id.school_profile);
             TextView textLocation = (TextView) getView().findViewById(R.id.location_profile);
             textName.setText(person.getName());
-            if(person instanceof Hacker){
+            if(person instanceof Hacker)
                 textSchool.setText(((Hacker) person).getSchool());
-            }
-            textLocation.setText(person.getHomebase());
-            Log.e("profilefragment", person.getName());
+            else if (person instanceof Mentor)
+                textSchool.setText(((Mentor) person).getCompany());
+            else if (person instanceof Staff)
+                textSchool.setText(((Staff) person).getCompany());
+            if(person.getHomebase().isEmpty())
+                textLocation.setText("click to set location");
+            else
+                textLocation.setText(person.getHomebase());
         }
     }
 
