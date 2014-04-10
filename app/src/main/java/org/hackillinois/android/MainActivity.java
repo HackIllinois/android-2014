@@ -18,6 +18,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,6 +47,7 @@ public class MainActivity extends ActionBarActivity
     private static final String PEOPLE_TAG = "peopleFrag";
     private static final String NEWS_TAG = "newsFrag";
     private static final String SCHEDULE_TAG = "scheduleFrag";
+    private static final String TAG = "MainActivity";
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private CharSequence mTitle;
@@ -232,6 +234,7 @@ public class MainActivity extends ActionBarActivity
 
     private void handleIntent(Intent intent) {
         if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+            Log.i(TAG, "action view");
             //Intent viewIntent = new Intent(this, ProfileActivity.class);
             //viewIntent.setData(intent.getData());
             //startActivity(viewIntent);
@@ -250,7 +253,6 @@ public class MainActivity extends ActionBarActivity
                 peopleFragment.showResults(c, query);
             }
         }
-
     }
 
     @Override

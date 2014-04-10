@@ -199,7 +199,7 @@ public class ScheduleListAdapter extends ArrayAdapter<ScheduleItem> {
                 }
 
                 String uriBegin = "geo:" + lat + "," + lng;
-                String query = lat + "," + lng + "(" + item.getEventName() + ")";
+                String query = lat + "," + lng + "(" + item.getEventName() + " " + room + ")";
                 String encodedQuery = Uri.encode(query);
                 String uriString = uriBegin + "?q=" + encodedQuery + "&z=19";
                 Uri uri = Uri.parse(uriString);
