@@ -70,6 +70,9 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         Utils.setInsets(getActivity(), v);
         IntentFilter intentFilter = new IntentFilter(getString(R.string.broadcast_login));
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver, intentFilter);
+
+        launchEditSkillsFragment();
+
         return v;
     }
 
