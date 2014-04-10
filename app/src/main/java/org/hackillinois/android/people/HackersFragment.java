@@ -88,15 +88,18 @@ public class HackersFragment extends ListFragment {
     }
 
     private void getAndSetData() {
-        List<Hacker> people = ((MainActivity)getActivity()).getHackers();
-        if (people != null) {
-            mPeopleListAdapter.setData(people);
-            if (isResumed()) {
-                setListShown(true);
-            } else {
-                setListShownNoAnimation(true);
+        if (getActivity() != null) {
+            List<Hacker> people = ((MainActivity)getActivity()).getHackers();
+            if (people != null) {
+                mPeopleListAdapter.setData(people);
+                if (isResumed()) {
+                    setListShown(true);
+                } else {
+                    setListShownNoAnimation(true);
+                }
             }
         }
+
     }
 
     private void setSuggestionsAdapter(SearchView searchView, String query) {

@@ -88,15 +88,18 @@ public class MentorsFragment extends ListFragment {
     }
 
     private void getAndSetData() {
-        List<Person> people = ((MainActivity)getActivity()).getMentorsAndStaff();
-        if (people != null) {
-            mPeopleListAdapter.setData(people);
-            if (isResumed()) {
-                setListShown(true);
-            } else {
-                setListShownNoAnimation(true);
+        if (getActivity() != null) {
+            List<Person> people = ((MainActivity)getActivity()).getMentorsAndStaff();
+            if (people != null) {
+                mPeopleListAdapter.setData(people);
+                if (isResumed()) {
+                    setListShown(true);
+                } else {
+                    setListShownNoAnimation(true);
+                }
             }
         }
+
     }
 
     private void setSuggestionsAdapter(SearchView searchView, String query) {
