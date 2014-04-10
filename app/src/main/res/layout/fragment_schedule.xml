@@ -36,10 +36,6 @@
             android:background="@color/hackillinois_blue_trans" >
             </android.support.v4.view.PagerTitleStrip>
 
-        <!--<ImageView-->
-            <!--android:layout_width="30dp"-->
-            <!--android:layout_height="30dp"-->
-            <!--android:id="@+id/pager_strip_rocket"/>-->
 
     </android.support.v4.view.ViewPager>
 
