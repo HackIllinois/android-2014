@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
@@ -80,13 +81,17 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
     /** launch the DialogFragment to edit skills list **/
     private void launchEditSkillsFragment() {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        Fragment profileFragment = fragmentManager.findFragmentByTag(SKILLS_FRAG);
-        if (profileFragment == null) {
-            profileFragment = new SkillsDialogFragment();
-        }
-        fragmentManager.beginTransaction().replace(R.id.container, profileFragment, SKILLS_FRAG).addToBackStack(null)
-                .commit();
-        fragmentManager.executePendingTransactions();
+
+        DialogFragment skillsFragment = SkillsDialogFragment.newInstance(null);
+        skillsFragment.show(fragmentManager, SKILLS_FRAG);
+
+//        Fragment profileFragment = fragmentManager.findFragmentByTag(SKILLS_FRAG);
+//        if (profileFragment == null) {
+//            profileFragment = new SkillsDialogFragment();
+//        }
+//        fragmentManager.beginTransaction().replace(R.id.container, profileFragment, SKILLS_FRAG).addToBackStack(null)
+//                .commit();
+//        fragmentManager.executePendingTransactions();
     }
 
     private void updateStatus() {
