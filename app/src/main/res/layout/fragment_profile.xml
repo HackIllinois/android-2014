@@ -73,7 +73,8 @@
     </LinearLayout>
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:listSelector="@android:color/transparent"
+        android:layout_height="152dp"
         android:id="@+id/status_list"
         android:divider="@null"/>
 
@@ -96,6 +97,7 @@
     <ListView
         android:id="@+id/profile_skills_list"
         android:divider="@null"
+        android:listSelector="@android:color/transparent"
         android:dividerHeight="0dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

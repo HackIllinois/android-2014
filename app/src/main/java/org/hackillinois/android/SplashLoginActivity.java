@@ -39,7 +39,7 @@ public class SplashLoginActivity extends Activity {
             public void onClick(View v) {
 
                 startActivity(new Intent(SplashLoginActivity.this, AuthActivity.class));
-                overridePendingTransition(R.anim.abc_fade_out, R.anim.slide_out_up);
+                overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
                 finish();
             }
         });

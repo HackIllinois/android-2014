@@ -5,14 +5,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -24,7 +20,6 @@ import android.view.MenuItem;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import org.hackillinois.android.database.PersonDatabaseLoader;
-import org.hackillinois.android.login.OAuthAccessFragment;
 import org.hackillinois.android.models.people.Hacker;
 import org.hackillinois.android.models.people.Mentor;
 import org.hackillinois.android.models.people.Person;
@@ -34,8 +29,8 @@ import org.hackillinois.android.people.PeopleSwitcherFragment;
 import org.hackillinois.android.people.ProfileViewActivity;
 import org.hackillinois.android.people.SearchResultsFragment;
 import org.hackillinois.android.profile.ProfileFragment;
-import org.hackillinois.android.support.SupportFragment;
 import org.hackillinois.android.schedule.ScheduleFragment;
+import org.hackillinois.android.support.SupportFragment;
 
 import java.util.HashMap;
 import java.util.List;
@@ -72,47 +67,6 @@ public class MainActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-//        final boolean viewed = sharedPreferences.getBoolean(getString(R.string.pref_splash_viewed), false);
-//        final String email = sharedPreferences.getString(getString(R.string.pref_email), "");
-//        final FragmentManager fm = getSupportFragmentManager();
-//
-//        SplashScreenDialogFragment splashFragment = (SplashScreenDialogFragment) fm.findFragmentByTag("splash");
-//        OAuthAccessFragment oAuthAccessFragment = (OAuthAccessFragment) fm.findFragmentByTag("login");
-//
-//        if (email.length() == 0 && oAuthAccessFragment == null) {
-//            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-//            oAuthAccessFragment = new OAuthAccessFragment();
-//            oAuthAccessFragment.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.Theme_AppCompat_Light_DarkActionBar);
-//            oAuthAccessFragment.setCancelable(false);
-//            oAuthAccessFragment.show(ft, "login");
-//        }
-
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        final boolean viewed = sharedPreferences.getBoolean(getString(R.string.pref_splash_viewed), false);
-        final String email = sharedPreferences.getString(getString(R.string.pref_email), "");
-        final FragmentManager fm = getSupportFragmentManager();
-
-        SplashScreenDialogFragment splashFragment = (SplashScreenDialogFragment) fm.findFragmentByTag("splash");
-        OAuthAccessFragment oAuthAccessFragment = (OAuthAccessFragment) fm.findFragmentByTag("login");
-
-        if (email.length() == 0 && oAuthAccessFragment == null) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            oAuthAccessFragment = new OAuthAccessFragment();
-            oAuthAccessFragment.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.Theme_AppCompat_Light_DarkActionBar);
-            oAuthAccessFragment.setCancelable(false);
-            oAuthAccessFragment.show(ft, "login");
-        }
-
-        if (!viewed && splashFragment == null) {
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            splashFragment = new SplashScreenDialogFragment();
-            splashFragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.Theme_Hackillinois_Launcher);
-            splashFragment.show(fragmentTransaction, "splash");
-        }
-
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setIcon(getResources().getDrawable(R.drawable.ic_action_hackillinois_icon_white));
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);

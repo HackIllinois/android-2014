@@ -18,7 +18,7 @@
     <string name="ble_not_supported">BLE is not supported on this device</string>
     <string name="pref_splash_viewed">PREF_SPLASH_VIEWED</string>
     <string name="pref_email">PREF_EMAIL</string>
-    <string name="login">login</string>
+    <string name="login">Login</string>
     <string name="broadcast_login">LOGGED_IN</string>
     <string name="nearby_tab">Nearby</string>
     <string name="mentors_tab">Mentors</string>
@@ -43,5 +43,7 @@
     <string name="title_activity_splash_login">SplashLoginActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_auth">HackIllinois Login</string>
+    <string name="title_activity_loggogogogogog">Loggogogogogog</string>
+    <string name="try_again">Please try again with the email you used to register for HackIllinois</string>
 
 </resources>

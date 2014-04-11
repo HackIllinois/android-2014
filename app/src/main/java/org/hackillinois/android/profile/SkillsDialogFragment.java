@@ -30,7 +30,7 @@ public class SkillsDialogFragment extends DialogFragment {
 
     public static SkillsDialogFragment newInstance(Person person) {
         SkillsDialogFragment fragment = new SkillsDialogFragment();
-        fragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.Theme_Hackillinois_Launcher);
+        fragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.Theme_Hackillinois_Skills);
         Log.e("HI", "newinstance");
         return fragment;
     }
