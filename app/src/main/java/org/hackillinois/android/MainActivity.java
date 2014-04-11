@@ -9,9 +9,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.Menu;
-import android.view.MenuItem;
 
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
@@ -22,7 +22,6 @@ import org.hackillinois.android.models.people.Person;
 import org.hackillinois.android.news.NewsfeedFragment;
 import org.hackillinois.android.people.PeopleDataHolder;
 import org.hackillinois.android.people.PeopleSwitcherFragment;
-import org.hackillinois.android.people.ProfileViewActivity;
 import org.hackillinois.android.people.SearchResultsFragment;
 import org.hackillinois.android.profile.ProfileFragment;
 import org.hackillinois.android.schedule.ScheduleFragment;
@@ -202,11 +201,10 @@ public class MainActivity extends ActionBarActivity
 
     private void handleIntent(Intent intent) {
         if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-            Intent viewIntent = new Intent(this, ProfileViewActivity.class);
-            viewIntent.setData(intent.getData());
-            startActivity(viewIntent);
+            Log.i(TAG, "got intent action view");
         } else if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
+            Log.i(TAG, "query " + query);
             showResults(query);
         }
     }
@@ -217,17 +215,5 @@ public class MainActivity extends ActionBarActivity
         fragmentManager.beginTransaction()
                 .replace(R.id.container, peopleFragment, "SEARCH_RESULTS").addToBackStack(null)
                 .commit();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

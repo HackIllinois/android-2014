@@ -21,6 +21,7 @@ public class DatabaseTable {
 
     public static final String COL_NAME = SearchManager.SUGGEST_COLUMN_TEXT_1;
     public static final String COL_EMAIL = SearchManager.SUGGEST_COLUMN_TEXT_2;
+    public static final String COL_ID_MINE = "MY_ID";
     public static final String COL_SCHOOL = "SCHOOL";
     public static final String COL_YEAR = "YEAR";
     public static final String COL_COMPANY = "COMPANY";
@@ -44,6 +45,7 @@ public class DatabaseTable {
         HashMap<String,String> map = new HashMap<String,String>();
         map.put(COL_NAME, COL_NAME);
         map.put(COL_EMAIL, COL_EMAIL);
+        map.put(COL_ID_MINE, COL_ID_MINE);
         map.put(BaseColumns._ID, "rowid AS " +
                 BaseColumns._ID);
         map.put(SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID, "rowid AS " +
@@ -61,7 +63,7 @@ public class DatabaseTable {
         private static final String FTS_TABLE_CREATE_STAFF =
                 "CREATE VIRTUAL TABLE " + FTS_VIRTUAL_TABLE_STAFF +
                         " USING fts3 (" +
-                        BaseColumns._ID + ", " +
+                        COL_ID_MINE + ", " +
                         COL_NAME + ", " +
                         COL_EMAIL + ", " +
                         COL_COMPANY + ", " +
@@ -71,7 +73,7 @@ public class DatabaseTable {
         private static final String FTS_TABLE_CREATE_HACKER =
                 "CREATE VIRTUAL TABLE " + FTS_VIRTUAL_TABLE_HACKER +
                         " USING fts3 (" +
-                        BaseColumns._ID + ", " +
+                        COL_ID_MINE + ", " +
                         COL_NAME + ", " +
                         COL_EMAIL + ", " +
                         COL_SCHOOL + ", " +
@@ -80,7 +82,7 @@ public class DatabaseTable {
         private static final String FTS_TABLE_CREATE_MENTOR =
                 "CREATE VIRTUAL TABLE " + FTS_VIRTUAL_TABLE_MENTOR +
                         " USING fts3 (" +
-                        BaseColumns._ID + ", " +
+                        COL_ID_MINE + ", " +
                         COL_NAME + ", " +
                         COL_EMAIL + ", " +
                         COL_JOB_TITLE + ", " +
@@ -114,35 +116,52 @@ public class DatabaseTable {
         SQLiteDatabase sqLiteDatabase = mDatabaseOpenHelper.getWritableDatabase();
         assert sqLiteDatabase != null;
         ContentValues contentValues = new ContentValues();
+        String where = COL_ID_MINE + "=" + hacker.getDatabaseKey();
+        contentValues.put(COL_ID_MINE, hacker.getDatabaseKey());
         contentValues.put(COL_NAME, hacker.getName());
         contentValues.put(COL_EMAIL, hacker.getEmail());
         contentValues.put(COL_SCHOOL, hacker.getSchool());
         contentValues.put(COL_YEAR, hacker.getYear());
-        return sqLiteDatabase.insertWithOnConflict(FTS_VIRTUAL_TABLE_HACKER, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+        if (sqLiteDatabase.update(FTS_VIRTUAL_TABLE_HACKER, contentValues, where, null) == 0) {
+            return sqLiteDatabase.insert(FTS_VIRTUAL_TABLE_HACKER, null, contentValues);
+        } else {
+            return 1;
+        }
     }
 
     public long addStaff(Staff staff) {
         SQLiteDatabase sqLiteDatabase = mDatabaseOpenHelper.getWritableDatabase();
         assert sqLiteDatabase != null;
+        String where = COL_ID_MINE + "=" + staff.getDatabaseKey();
         ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_ID_MINE, staff.getDatabaseKey());
         contentValues.put(COL_NAME, staff.getName());
         contentValues.put(COL_EMAIL, staff.getEmail());
         contentValues.put(COL_YEAR, staff.getYear());
         contentValues.put(COL_COMPANY, staff.getCompany());
         contentValues.put(COL_JOB_TITLE, staff.getJobTitle());
-
-        return sqLiteDatabase.insertWithOnConflict(FTS_VIRTUAL_TABLE_STAFF, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+        if (sqLiteDatabase.update(FTS_VIRTUAL_TABLE_STAFF, contentValues, where, null) == 0) {
+            return sqLiteDatabase.insert(FTS_VIRTUAL_TABLE_STAFF, null, contentValues);
+        } else {
+            return 1;
+        }
     }
 
     public long addMentor(Mentor mentor) {
         SQLiteDatabase sqLiteDatabase = mDatabaseOpenHelper.getWritableDatabase();
         assert sqLiteDatabase != null;
+        String where = COL_ID_MINE + "=" + mentor.getDatabaseKey();
         ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_ID_MINE, mentor.getDatabaseKey());
         contentValues.put(COL_NAME, mentor.getName());
         contentValues.put(COL_EMAIL, mentor.getEmail());
         contentValues.put(COL_COMPANY, mentor.getCompany());
         contentValues.put(COL_JOB_TITLE, mentor.getJobTitle());
-        return sqLiteDatabase.insertWithOnConflict(FTS_VIRTUAL_TABLE_MENTOR, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+        if (sqLiteDatabase.update(FTS_VIRTUAL_TABLE_MENTOR, contentValues, where, null) == 0) {
+            return sqLiteDatabase.insert(FTS_VIRTUAL_TABLE_MENTOR, null, contentValues);
+        } else {
+            return 1;
+        }
     }
 
     public Cursor getHackerMatches(String query, String[] columns) {
@@ -170,7 +189,6 @@ public class DatabaseTable {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         builder.setTables(table);
         builder.setProjectionMap(mColumnMap);
-
         Cursor cursor = builder.query(mDatabaseOpenHelper.getReadableDatabase(),
                 columns, selection, selectionArgs, null, null, null);
 

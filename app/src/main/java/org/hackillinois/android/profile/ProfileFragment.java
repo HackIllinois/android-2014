@@ -213,7 +213,9 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         super.onResume();
         Bundle args = getArguments();
         if (args != null) {
-            ((MainActivity) getActivity()).onSectionAttached(args.getInt(Utils.ARG_SECTION_NUMBER));
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).onSectionAttached(args.getInt(Utils.ARG_SECTION_NUMBER));
+            }
         }
         if (mPerson == null) {
             // This means this is the profile tab so we have to load the data
@@ -321,7 +323,6 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
 
         @Override
         protected Integer doInBackground(String... s) {
-
             try {
                 HttpUtils httpUtils = HttpUtils.getHttpUtils(mContext);
 
