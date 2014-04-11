@@ -1,12 +1,12 @@
 package org.hackillinois.android.profile;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -28,6 +28,7 @@ import com.squareup.picasso.Picasso;
 
 import org.hackillinois.android.MainActivity;
 import org.hackillinois.android.R;
+import org.hackillinois.android.RoundedTransformation;
 import org.hackillinois.android.models.Status;
 import org.hackillinois.android.models.people.Hacker;
 import org.hackillinois.android.models.people.Mentor;
@@ -82,20 +83,11 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         }
     };
 
-    /** launch the DialogFragment to edit skills list **/
+    /** Launch the DialogFragment to edit skills list. Give it the Person object **/
     private void launchEditSkillsFragment() {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-
-        DialogFragment skillsFragment = SkillsDialogFragment.newInstance(null);
+        DialogFragment skillsFragment = SkillsDialogFragment.newInstance(mPerson);
         skillsFragment.show(fragmentManager, SKILLS_FRAG);
-
-//        Fragment profileFragment = fragmentManager.findFragmentByTag(SKILLS_FRAG);
-//        if (profileFragment == null) {
-//            profileFragment = new SkillsDialogFragment();
-//        }
-//        fragmentManager.beginTransaction().replace(R.id.container, profileFragment, SKILLS_FRAG).addToBackStack(null)
-//                .commit();
-//        fragmentManager.executePendingTransactions();
     }
 
     private void updateStatusDialog() {
@@ -107,10 +99,9 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
                     public void onClick(DialogInterface dialog, int which) {
                         // The 'which' argument contains the index position
                         // of the selected item
-                        Activity activity = getActivity();
                         switch (which) {
                             case 0:
-                                updateStatus("Hacker");
+                                updateStatus("Hacking");
                                 break;
                             case 1:
                                 updateStatus("Available");
@@ -130,16 +121,20 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
 
     private void updateStatus(String status){
         DateTime date = new DateTime();
-        String statusArray = mPerson.getStatusArray().toString();
+        String statusArray = mPerson.getStatusArray();
         Log.e("status array", statusArray.substring(1));
-        String body = "[{\"status\": \"" + status + "\", \"date\": " + date.getMillis() + "}";
+        String body = "[{\"status\": \"" + status + "\", \"date\": " + date.getMillis()/1000 + "}";
         if(statusArray.length() <= 2)
             body = body + "]";
         else
             body = body + ", " + statusArray.substring(1);
         PostTask postTask = new PostTask(getActivity(), "status", mPerson.getType(), body);
         postTask.execute();
+    }
 
+    public void setLocation(String location) {
+        mTextLocation.setText(location);
+        //getLoaderManager().initLoader(0,null,this).forceLoad();
     }
 
     @Override
@@ -155,8 +150,8 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         mPicasso = Picasso.with(getActivity());
 
         ListView skillsList = (ListView) v.findViewById(R.id.profile_skills_list);
+        View viewClick = v.findViewById(R.id.skills_click);
         ListView statusList = (ListView) v.findViewById(R.id.status_list);
-
 
         Object object = getArguments().getSerializable("person");
         if (object != null) {
@@ -174,6 +169,13 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         statusList.setAdapter(mStatusAdapter);
 
 
+        mTextLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchSetLocation();
+            }
+        });
+
         mTextSkills.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -183,7 +185,14 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         skillsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                  launchEditSkillsFragment();
+            }
+        });
+        viewClick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 launchEditSkillsFragment();
+
             }
         });
         statusList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -195,21 +204,17 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         return v;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        Bundle args = getArguments();
-        if (args != null) {
-            if (args.getInt(Utils.ARG_SECTION_NUMBER) != 0) {
-                ((MainActivity) getActivity()).onSectionAttached(args.getInt(Utils.ARG_SECTION_NUMBER));
-            }
-        }
-
+    private void launchSetLocation() {
+        new LocationFragment().show(getFragmentManager(), "poop");
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        Bundle args = getArguments();
+        if (args != null) {
+            ((MainActivity) getActivity()).onSectionAttached(args.getInt(Utils.ARG_SECTION_NUMBER));
+        }
         if (mPerson == null) {
             // This means this is the profile tab so we have to load the data
             getLoaderManager().initLoader(0,null,this).forceLoad();
@@ -230,51 +235,52 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onLoadFinished(Loader<Person> loader, Person person) {
         if (person != null) {
-            if (person.getSkills().isEmpty()) {
-                // maybe launch skills fragment
-                // launchEditSkillsFragment();
+            List<String> skills = person.getSkills();
+
+            ArrayList<List<String>> lists = new ArrayList<List<String>>();
+
+            int i = 0;
+            for(String skill : skills) {
+                if(i % 4 == 0)
+                    lists.add( new ArrayList<String>() );
+                lists.get(i/4).add(skill);
+                i++;
             }
-            else {
-                List<String> skills = person.getSkills();
 
-                ArrayList<List<String>> lists = new ArrayList<List<String>>();
-
-                int i = 0;
-                for(String skill : skills) {
-                    if(i % 4 == 0)
-                        lists.add( new ArrayList<String>() );
-                    lists.get(i/4).add(skill);
-                    i++;
-                }
-
-                for( ; i % 4 != 0; i++) { // fill in the rest of the 4-tuple with empty strings
-                    lists.get(i / 4).add("");
-                }
-
-                List<Status> status_list = person.getStatuses();
-                mStatusAdapter.clear();
-                for(Status stat : status_list) {
-                    mStatusAdapter.add(stat);
-                }
-                mStatusAdapter.notifyDataSetChanged();
-
-                mSkillsAdapter.clear();
-                for(List<String> list : lists)
-                    mSkillsAdapter.add(list);
-                mSkillsAdapter.notifyDataSetChanged();
-
-
+            for( ; i % 4 != 0; i++) { // fill in the rest of the 4-tuple with empty strings
+                lists.get(i / 4).add("");
             }
+
+            List<Status> status_list = person.getStatuses();
+            mStatusAdapter.clear();
+            for(Status stat : status_list) {
+                mStatusAdapter.add(stat);
+            }
+            mStatusAdapter.notifyDataSetChanged();
+
+            mSkillsAdapter.clear();
+            for(List<String> list : lists)
+                mSkillsAdapter.add(list);
+            mSkillsAdapter.notifyDataSetChanged();
+
+
             setFields(person);
             mPerson = person;
             if(person.getStatuses().isEmpty())
                 updateStatus("Hacking");
+
         }
     }
 
     private void setFields(Person person) {
         mNameTextView.setText(person.getName());
-        mPicasso.load(person.getImageURL()).resize(200, 200).centerCrop().into(mImageView);
+
+        Resources res = getResources();
+        RoundedTransformation mBlueTransformation = new RoundedTransformation(100, 5,
+                res.getColor(R.color.hackillinois_blue_trans), 0);
+        mPicasso.load(person.getImageURL()).resize(200, 200).centerCrop()
+                .transform(mBlueTransformation).into(mImageView);
+
         if (person instanceof Hacker)
             mTextSchool.setText(((Hacker) person).getSchool());
         else if (person instanceof Mentor)
@@ -295,7 +301,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         super.onDetach();
     }
 
-    private class PostTask extends AsyncTask<String, Integer, Integer> {
+    public class PostTask extends AsyncTask<String, Integer, Integer> {
 
         private Context mContext;
         private String body;
@@ -335,5 +341,9 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
             super.onPostExecute(integer);
             getLoaderManager().initLoader(0,null,ProfileFragment.this).forceLoad();
         }
+    }
+
+    public Person getmPerson() {
+        return mPerson;
     }
 }

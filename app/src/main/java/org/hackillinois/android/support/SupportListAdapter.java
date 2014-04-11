@@ -9,7 +9,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import org.hackillinois.android.R;
-import org.hackillinois.android.models.Support;
+import org.hackillinois.android.models.Support.Support;
 
 import java.util.List;
 

@@ -31,7 +31,7 @@ public class DatabaseTable {
     private static final String FTS_VIRTUAL_TABLE_MENTOR = "FTS_MENTOR";
     private static final String FTS_VIRTUAL_TABLE_HACKER = "FTS_HACKER";
 
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
 
     private final DatabaseOpenHelper mDatabaseOpenHelper;
     private static final HashMap<String,String> mColumnMap = buildColumnMap();
