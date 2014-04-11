@@ -29,6 +29,7 @@ import com.squareup.picasso.Picasso;
 import org.hackillinois.android.MainActivity;
 import org.hackillinois.android.R;
 import org.hackillinois.android.RoundedTransformation;
+import org.hackillinois.android.models.Skill;
 import org.hackillinois.android.models.Status;
 import org.hackillinois.android.models.people.Hacker;
 import org.hackillinois.android.models.people.Mentor;
@@ -208,7 +209,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         }
 
         Utils.setInsets(getActivity(), v);
-        IntentFilter intentFilter = new IntentFilter(getString(R.string.broadcast_login));
+        IntentFilter intentFilter = new IntentFilter("get_skills");
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver, intentFilter);
 
         mSkillsAdapter = new SkillsAdapter(getActivity());
