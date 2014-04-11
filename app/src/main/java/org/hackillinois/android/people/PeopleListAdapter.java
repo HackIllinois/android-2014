@@ -53,6 +53,7 @@ public class PeopleListAdapter extends ArrayAdapter<Person> {
             viewHolder.companyTextView = (TextView) convertView.findViewById(R.id.profile_list_item_company);
             viewHolder.jobTitleTextView = (TextView) convertView.findViewById(R.id.profile_list_item_job_title);
             viewHolder.locationTextView = (TextView) convertView.findViewById(R.id.profile_list_item_job_title);
+            viewHolder.initialsTextView = (TextView) convertView.findViewById(R.id.profile_initials);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -61,25 +62,44 @@ public class PeopleListAdapter extends ArrayAdapter<Person> {
         Person person = getItem(position);
         if (person != null) {
 
+            viewHolder.nameTextView.setText(person.getName());
+            viewHolder.locationTextView.setText(person.getHomebase());
+
             RequestCreator requestCreator = picasso.load(person.getImageURL()).resize(200, 200);
 
-            viewHolder.nameTextView.setText(person.getName());
-            if (person instanceof Staff ) {
+            if (person instanceof Staff) {
                 requestCreator = requestCreator.transform(mRedTransform);
                 viewHolder.companyTextView.setText(((Staff) person).getCompany());
                 viewHolder.jobTitleTextView.setText(((Staff) person).getJobTitle());
+                viewHolder.initialsTextView.setTextColor(getContext().getResources().getColor(R.color.hackillinois_red));
+
             } else if (person instanceof Mentor) {
                 requestCreator = requestCreator.transform(mRedTransform);
                 viewHolder.companyTextView.setText(((Mentor) person).getCompany());
                 viewHolder.jobTitleTextView.setText(((Mentor) person).getJobTitle());
+                viewHolder.initialsTextView.setTextColor(getContext().getResources().getColor(R.color.hackillinois_red));
             } else if (person instanceof Hacker) {
                 requestCreator = requestCreator.transform(mBlueTransformation);
                 viewHolder.companyTextView.setText(((Hacker) person).getSchool());
                 viewHolder.jobTitleTextView.setText(((Hacker) person).getYear());
+                viewHolder.initialsTextView.setTextColor(getContext().getResources().getColor(R.color.hackillinois_blue));
             }
-            requestCreator.centerCrop().into(viewHolder.profileImageView);
-            viewHolder.locationTextView.setText(person.getHomebase());
+
+            if (!person.getFbID().isEmpty())
+                requestCreator.centerCrop().into(viewHolder.profileImageView);
+            else{ // put in initials for the image view
+                viewHolder.profileImageView.setVisibility(View.INVISIBLE);
+                viewHolder.initialsTextView.setVisibility(View.VISIBLE);
+                String parseThisShit = person.getName();
+                int space = parseThisShit.indexOf(" ");
+                String firstName = parseThisShit.substring(0, 1);
+                String lastName = parseThisShit.substring(space + 1, space + 2);
+                String initials = firstName.toUpperCase() + lastName.toUpperCase();
+                viewHolder.initialsTextView.setText(initials);
+            }
+
         }
+
         return convertView;
     }
 
@@ -98,5 +118,6 @@ public class PeopleListAdapter extends ArrayAdapter<Person> {
         public TextView companyTextView;
         public TextView jobTitleTextView;
         public TextView locationTextView;
+        public TextView initialsTextView;
     }
 }

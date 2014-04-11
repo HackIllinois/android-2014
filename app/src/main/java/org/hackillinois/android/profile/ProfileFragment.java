@@ -54,6 +54,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
     private TextView mTextSchool;
     private TextView mTextSkills;
     private TextView mTextLocation;
+    private TextView mInitials;
     private Picasso mPicasso;
 
     private SkillsAdapter mSkillsAdapter;
@@ -83,28 +84,30 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
             ArrayList<List<String>> lists = new ArrayList<List<String>>();
             List<String> updatedSkills = new ArrayList<String>();
             int i = 0;
-            for(Skill skill : skills) {
+            for (Skill skill : skills) {
                 updatedSkills.add(skill.getName());
-                if(i % 4 == 0)
-                    lists.add( new ArrayList<String>() );
-                lists.get(i/4).add(skill.getName());
+                if (i % 4 == 0)
+                    lists.add(new ArrayList<String>());
+                lists.get(i / 4).add(skill.getName());
                 i++;
             }
 
             mPerson.setSkills(updatedSkills);
 
-            for( ; i % 4 != 0; i++) { // fill in the rest of the 4-tuple with empty strings
+            for (; i % 4 != 0; i++) { // fill in the rest of the 4-tuple with empty strings
                 lists.get(i / 4).add("");
             }
 
             mSkillsAdapter.clear();
-            for(List<String> list : lists)
+            for (List<String> list : lists)
                 mSkillsAdapter.add(list);
             mSkillsAdapter.notifyDataSetChanged();
         }
     };
 
-    /** Launch the DialogFragment to edit skills list. Give it the Person object **/
+    /**
+     * Launch the DialogFragment to edit skills list. Give it the Person object *
+     */
     private void launchEditSkillsFragment() {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         DialogFragment skillsFragment = SkillsDialogFragment.newInstance(mPerson);
@@ -114,7 +117,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
     private void updateStatusDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Update Hacker Status");
-        if(mPerson instanceof Staff) {
+        if (mPerson instanceof Staff) {
             builder.setItems(new CharSequence[]
                             {"Hacking", "Available", "Taking A Break", "Pooping"},
                     new DialogInterface.OnClickListener() {
@@ -139,8 +142,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
                     }
             );
             builder.create().show();
-        }
-        else{
+        } else {
             builder.setItems(new CharSequence[]
                             {"Hacking", "Available", "Taking A Break", "Do Not Disturb"},
                     new DialogInterface.OnClickListener() {
@@ -168,12 +170,12 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         }
     }
 
-    private void updateStatus(String status){
+    private void updateStatus(String status) {
         DateTime date = new DateTime();
         String statusArray = mPerson.getStatusArray();
         Log.e("status array", statusArray.substring(1));
-        String body = "[{\"status\": \"" + status + "\", \"date\": " + date.getMillis()/1000 + "}";
-        if(statusArray.length() <= 2)
+        String body = "[{\"status\": \"" + status + "\", \"date\": " + date.getMillis() / 1000 + "}";
+        if (statusArray.length() <= 2)
             body = body + "]";
         else
             body = body + ", " + statusArray.substring(1);
@@ -186,7 +188,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         //getLoaderManager().initLoader(0,null,this).forceLoad();
     }
 
-    public void setSkills(ArrayList<Skill> skillList){
+    public void setSkills(ArrayList<Skill> skillList) {
 
     }
 
@@ -200,6 +202,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         mTextSchool = (TextView) v.findViewById(R.id.school_profile);
         mTextLocation = (TextView) v.findViewById(R.id.location_profile);
         mTextSkills = (TextView) v.findViewById(R.id.text_skills_header);
+        mInitials = (TextView) v.findViewById(R.id.profile_other_initials);
         mPicasso = Picasso.with(getActivity());
 
         ListView skillsList = (ListView) v.findViewById(R.id.profile_skills_list);
@@ -274,7 +277,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         }
         if (mPerson == null) {
             // This means this is the profile tab so we have to load the data
-            getLoaderManager().initLoader(0,null,this).forceLoad();
+            getLoaderManager().initLoader(0, null, this).forceLoad();
         }
     }
 
@@ -297,33 +300,33 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
             ArrayList<List<String>> lists = new ArrayList<List<String>>();
 
             int i = 0;
-            for(String skill : skills) {
-                if(i % 4 == 0)
-                    lists.add( new ArrayList<String>() );
-                lists.get(i/4).add(skill);
+            for (String skill : skills) {
+                if (i % 4 == 0)
+                    lists.add(new ArrayList<String>());
+                lists.get(i / 4).add(skill);
                 i++;
             }
 
-            for( ; i % 4 != 0; i++) { // fill in the rest of the 4-tuple with empty strings
+            for (; i % 4 != 0; i++) { // fill in the rest of the 4-tuple with empty strings
                 lists.get(i / 4).add("");
             }
 
             List<Status> status_list = person.getStatuses();
             mStatusAdapter.clear();
-            for(Status stat : status_list) {
+            for (Status stat : status_list) {
                 mStatusAdapter.add(stat);
             }
             mStatusAdapter.notifyDataSetChanged();
 
             mSkillsAdapter.clear();
-            for(List<String> list : lists)
+            for (List<String> list : lists)
                 mSkillsAdapter.add(list);
             mSkillsAdapter.notifyDataSetChanged();
 
 
             setFields(person);
             mPerson = person;
-            if(person.getStatuses().isEmpty())
+            if (person.getStatuses().isEmpty())
                 updateStatus("Hacking");
 
         }
@@ -335,8 +338,19 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         Resources res = getResources();
         RoundedTransformation mBlueTransformation = new RoundedTransformation(100, 5,
                 res.getColor(R.color.hackillinois_blue_trans), 0);
-        mPicasso.load(person.getImageURL()).resize(200, 200).centerCrop()
-                .transform(mBlueTransformation).into(mImageView);
+        if (!person.getFbID().isEmpty())
+            mPicasso.load(person.getImageURL()).resize(200, 200).centerCrop()
+                    .transform(mBlueTransformation).into(mImageView);
+        else {
+            mImageView.setVisibility(View.INVISIBLE);
+            mInitials.setVisibility(View.VISIBLE);
+            String parseThisShit = person.getName();
+            int space = parseThisShit.indexOf(" ");
+            String firstName = parseThisShit.substring(0, 1);
+            String lastName = parseThisShit.substring(space + 1, space + 2);
+            String initials = firstName.toUpperCase() + lastName.toUpperCase();
+            mInitials.setText(initials);
+        }
 
         if (person instanceof Hacker)
             mTextSchool.setText(((Hacker) person).getSchool());
@@ -395,7 +409,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         @Override
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
-            getLoaderManager().initLoader(0,null,ProfileFragment.this).forceLoad();
+            getLoaderManager().initLoader(0, null, ProfileFragment.this).forceLoad();
         }
     }
 
