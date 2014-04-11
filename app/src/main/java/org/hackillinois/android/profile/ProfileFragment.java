@@ -136,7 +136,10 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
             body = body + ", " + statusArray.substring(1);
         PostTask postTask = new PostTask(getActivity(), "status", mPerson.getType(), body);
         postTask.execute();
+    }
 
+    public void setLocation() {
+        getLoaderManager().initLoader(0,null,this).forceLoad();
     }
 
     @Override
@@ -303,7 +306,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         super.onDetach();
     }
 
-    private class PostTask extends AsyncTask<String, Integer, Integer> {
+    public class PostTask extends AsyncTask<String, Integer, Integer> {
 
         private Context mContext;
         private String body;
@@ -343,5 +346,9 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
             super.onPostExecute(integer);
             getLoaderManager().initLoader(0,null,ProfileFragment.this).forceLoad();
         }
+    }
+
+    public Person getmPerson() {
+        return mPerson;
     }
 }
