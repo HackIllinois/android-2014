@@ -334,9 +334,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
 
     @Override
     public void onLoadFinished(Loader<Person> loader, Person person) {
-        if (progressDialog != null && progressDialog.isShowing()) {
-            progressDialog.dismiss();
-        }
+
         if (person != null) {
             List<String> skills = person.getSkills();
 
@@ -373,7 +371,9 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
                 updateStatus("Hacking");
 
         }
-        progressDialog.dismiss();
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
 
     }
 
