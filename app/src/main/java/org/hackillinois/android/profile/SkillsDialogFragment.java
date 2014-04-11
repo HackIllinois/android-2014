@@ -40,7 +40,6 @@ public class SkillsDialogFragment extends DialogFragment implements LoaderManage
     public static SkillsDialogFragment newInstance(Person person) {
         SkillsDialogFragment fragment = new SkillsDialogFragment();
         fragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.Theme_Hackillinois_Skills);
-
         Bundle args = new Bundle();
         args.putSerializable("person", person);
         fragment.setArguments(args);
@@ -51,7 +50,6 @@ public class SkillsDialogFragment extends DialogFragment implements LoaderManage
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_pick_skills, container, false);
-
         person = (Person) getArguments().getSerializable("person");
 
         Utils.setInsetsBottom(getActivity(), rootView);

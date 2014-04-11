@@ -2,6 +2,7 @@
 
     <color name="black_overlay">#66000000</color>
     <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
     <color name="background_grey">#D4D4D4</color>
     <color name="background_grey_trans">#E4E4E4</color>
     <color name="text_grey">#888888</color>

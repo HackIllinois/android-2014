@@ -1,4 +1,4 @@
-package org.hackillinois.android.models;
+package org.hackillinois.android.models.Support;
 
 public class Support {
 

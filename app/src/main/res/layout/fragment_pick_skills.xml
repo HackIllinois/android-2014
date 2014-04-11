@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:gravity="top"
     android:background="@color/hackillinois_red"
-    android:clipToPadding="false">
+    >
 
 
     <LinearLayout
@@ -47,11 +47,10 @@
 
     <ListView
         android:id="@+id/pick_skills_list"
+        android:clipToPadding="false"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@null"
-        android:dividerHeight="0dp"
-        android:layout_below="@id/pick_skills_edittext"
-        android:layout_above="@id/pick_skills_done"/>
+        android:dividerHeight="0dp"/>
 
 </LinearLayout>
