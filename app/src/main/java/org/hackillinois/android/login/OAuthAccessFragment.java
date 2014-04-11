@@ -17,7 +17,9 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import org.hackillinois.android.MainActivity;
 import org.hackillinois.android.R;
+import org.hackillinois.android.SplashLoginActivity;
 import org.hackillinois.android.models.people.Person;
 
 /**
@@ -94,6 +96,11 @@ public class OAuthAccessFragment extends DialogFragment implements LoaderManager
             if (progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean(getString(R.string.pref_splash_viewed), true);
+            editor.commit();
+
             Intent intent = new Intent("LOGGED_IN");
             intent.putExtra("person", data);
             LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
@@ -103,6 +110,9 @@ public class OAuthAccessFragment extends DialogFragment implements LoaderManager
                     dismiss();
                 }
             });
+
+            startActivity(new Intent(getActivity(), MainActivity.class));
+            getActivity().finish();
         } else {
             //TODO fix bad login
             //webview.clearCache(true);

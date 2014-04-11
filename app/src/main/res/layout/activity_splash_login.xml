@@ -1,0 +1,57 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="org.hackillinois.android.SplashScreenDialogFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/hackillinois_blue_trans"
+    >
+
+    <VideoView
+        android:id="@+id/videoView_activity"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        />
+
+    <ImageView
+        android:id="@+id/splash_image_activity"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/vid_splash"
+        android:scaleType="centerCrop"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        >
+
+        <ImageView
+            android:id="@+id/logo_activity"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:padding="20dp"
+            android:src="@drawable/hackillinois_icon_white"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <ImageView
+            android:id="@+id/launchbutton_activity"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:padding="20dp"
+            android:src="@drawable/launch_button_selector"
+            android:clickable="true"/>
+    </LinearLayout>
+</RelativeLayout>

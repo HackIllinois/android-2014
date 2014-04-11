@@ -82,7 +82,7 @@ public class FridaySchedule extends ListFragment
         super.onActivityCreated(savedInstanceState);
         //setEmptyText(getString(R.string.loading_data_error));
         setListShown(false);
-        getListView().setBackgroundColor(getResources().getColor(R.color.background_grey));
+        getListView().setBackgroundColor(getResources().getColor(R.color.background_grey_trans));
     }
 
     @Override

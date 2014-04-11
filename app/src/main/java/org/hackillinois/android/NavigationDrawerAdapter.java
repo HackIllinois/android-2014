@@ -48,18 +48,20 @@ public class NavigationDrawerAdapter extends ArrayAdapter<String> {
             wasNull = false;
         }
 
-        if(wasNull){
+        if (wasNull) {
             viewHolder.textView.setText(values[position]);
-            if(position == 0){
+            if (position == 0) {
                 viewHolder.textView.setTextColor(Color.WHITE);
                 viewHolder.iconImageView.setImageResource(icons[position]);
                 viewHolder.iconImageView.setImageResource(selectedIcons[0]);
             } else
-            viewHolder.iconImageView.setImageResource(icons[position]);
-
+                viewHolder.iconImageView.setImageResource(icons[position]);
         }
-        //viewHolder.iconImageView.setImageResource(icons[position]);
-        //viewHolder.iconImageView.invalidate();
+//        } else {
+//            viewHolder.textView.setText(values[position]);
+//            viewHolder.iconImageView.setImageResource(icons[position]);
+//        }
+
         return convertView;
     }
 
