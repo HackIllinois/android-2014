@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import org.hackillinois.android.R;
@@ -26,6 +27,7 @@ public class SkillsListAdapter extends ArrayAdapter<Skill> implements Filterable
     private LayoutInflater mLayoutInflater;
     private ArrayList<Skill> allSkills;                 // a read-only reference to all the skills
     private ArrayList<Skill> currentFilteredSkills;     // an edited list of skills to display currently
+    private ListView mListView;
 
     /** Constructor **/
     public SkillsListAdapter(Activity activity, ArrayList<Skill> allSkills) {
@@ -35,6 +37,8 @@ public class SkillsListAdapter extends ArrayAdapter<Skill> implements Filterable
         this.allSkills = new ArrayList<Skill>();         // allSkills is a separate copy of the list. It does not affect listview content
         for(Skill skill : allSkills)
             allSkills.add(skill);
+
+        mListView = (ListView) activity.findViewById(R.id.pick_skills_list);
     }
 
 
@@ -134,6 +138,8 @@ public class SkillsListAdapter extends ArrayAdapter<Skill> implements Filterable
                     currentFilteredSkills.clear();
                     currentFilteredSkills.addAll((ArrayList<Skill>) results.values);
                     notifyDataSetChanged();
+                    if(mListView != null)
+                        mListView.setSelection(0); // jump back to top of the list
                 }
             }
 
