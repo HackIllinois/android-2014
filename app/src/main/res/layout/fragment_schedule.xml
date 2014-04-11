@@ -4,11 +4,17 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/rocket_container"
         android:background="@color/hackillinois_blue_trans">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/schedule_stars"/>
 
         <ImageView
             android:layout_width="36dp"
@@ -18,7 +24,7 @@
             android:layout_marginRight="10dp"
             android:src="@drawable/ic_rocket2x"
             android:layout_gravity="bottom"/>
-    </FrameLayout>
+    </RelativeLayout>
 
     <android.support.v4.view.ViewPager
         android:layout_width="match_parent"
@@ -31,9 +37,9 @@
         <android.support.v4.view.PagerTitleStrip
             android:id="@+id/schedule_pager_title_strip"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="22dp"
             android:textColor="@android:color/white"
-            android:background="@color/hackillinois_blue_trans" >
+            android:background="@drawable/schedule_stars" >
             </android.support.v4.view.PagerTitleStrip>
 
 
