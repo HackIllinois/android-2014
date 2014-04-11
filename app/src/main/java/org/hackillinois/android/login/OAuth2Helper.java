@@ -74,7 +74,9 @@ public class OAuth2Helper {
 	}
 
 	public void clearCredentials() throws IOException {
-        flow.getCredentialDataStore().delete(oauth2Params.getUserId());
+        if (flow.getCredentialDataStore() != null && oauth2Params.getUserId() != null) {
+            flow.getCredentialDataStore().delete(oauth2Params.getUserId());
+        }
 	}
 	
 	private Collection<String> convertScopesToString(String scopesConcat) {
