@@ -57,6 +57,14 @@ public class SkillsListAdapter extends ArrayAdapter<Skill> implements Filterable
         notifyDataSetChanged();
     }
 
+    public ArrayList<Skill> getSelectedSkills() {
+        ArrayList<Skill> selected = new ArrayList<Skill>();
+        for(Skill skill : allSkills)
+            if(skill.isSelected())
+                selected.add(skill);
+        return selected;
+    }
+
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {

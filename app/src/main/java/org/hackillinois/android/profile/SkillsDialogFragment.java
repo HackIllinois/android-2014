@@ -13,6 +13,8 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import org.hackillinois.android.R;
 import org.hackillinois.android.models.Skill;
@@ -59,12 +61,24 @@ public class SkillsDialogFragment extends DialogFragment implements LoaderManage
         mSkillsListAdapter = new SkillsListAdapter(getActivity(), new ArrayList<Skill>());
         skillsList.setAdapter(mSkillsListAdapter);
 
+        // Set the list OnItemClickListener
         skillsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mSkillsListAdapter.notifyListItemClick(position);
             }
         });
+
+        // Set the Done TextView onClickListener
+        TextView done = (TextView) rootView.findViewById(R.id.pick_skills_done);
+        done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<Skill> selected = mSkillsListAdapter.getSelectedSkills();
+                Toast.makeText(getActivity(), "You selected " + selected.get(0).getName() + " and stuff!", Toast.LENGTH_LONG).show();
+            }
+        });
+
 
         EditText input = (EditText) rootView.findViewById(R.id.pick_skills_edittext);
         input.addTextChangedListener(new TextWatcher() {
