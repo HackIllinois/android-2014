@@ -1,6 +1,7 @@
 package org.hackillinois.android.profile;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -56,6 +57,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
     private TextView mTextLocation;
     private TextView mInitials;
     private Picasso mPicasso;
+    private ProgressDialog progressDialog;
 
     private SkillsAdapter mSkillsAdapter;
     private StatusListAdapter mStatusAdapter;
@@ -203,6 +205,11 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         ImageView skillsPlusImage = (ImageView) v.findViewById(R.id.profile_skills_plus);
         mPicasso = Picasso.with(getActivity());
 
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage(getString(R.string.loading));
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
         ListView skillsList = (ListView) v.findViewById(R.id.profile_skills_list);
         ListView statusList = (ListView) v.findViewById(R.id.status_list);
 
@@ -327,6 +334,9 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
 
     @Override
     public void onLoadFinished(Loader<Person> loader, Person person) {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
         if (person != null) {
             List<String> skills = person.getSkills();
 
@@ -363,6 +373,8 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
                 updateStatus("Hacking");
 
         }
+        progressDialog.dismiss();
+
     }
 
     private void setFields(Person person) {
