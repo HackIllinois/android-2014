@@ -2,7 +2,6 @@ package org.hackillinois.android.profile;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
-import android.util.Log;
 
 import org.hackillinois.android.models.Skill;
 import org.hackillinois.android.utils.HttpUtils;
@@ -50,7 +49,7 @@ public class SkillsDataLoader extends AsyncTaskLoader<ArrayList<Skill>> {
                     JSONObject skill = jsonArray.getJSONObject(i);
                     skills.add(new Skill(skill));
                 }
-                Log.e("skilldataload", "received " + data);
+
                 return skills;
             } catch (JSONException e) {
                 e.printStackTrace();
