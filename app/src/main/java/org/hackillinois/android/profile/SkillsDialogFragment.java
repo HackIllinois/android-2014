@@ -1,7 +1,7 @@
 package org.hackillinois.android.profile;
 
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
  *         SkillsDialogFragment -- edit the user profile skills list
  */
 
-public class SkillsDialogFragment extends DialogFragment {
+public class SkillsDialogFragment extends Fragment {
 
     private SkillsListAdapter mSkillsListAdapter;
 
@@ -41,7 +41,6 @@ public class SkillsDialogFragment extends DialogFragment {
         skills.add(new Skill("Android", null, null));
 
         mSkillsListAdapter = new SkillsListAdapter(getActivity(), skills);
-
 
         ListView skillsList = (ListView) rootView.findViewById(R.id.pick_skills_list);
         skillsList.setAdapter(mSkillsListAdapter);

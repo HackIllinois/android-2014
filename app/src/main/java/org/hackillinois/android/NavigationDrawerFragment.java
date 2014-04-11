@@ -97,18 +97,6 @@ public class NavigationDrawerFragment extends Fragment {
             Bundle savedInstanceState) {
         mDrawerListView = (ListView) inflater.inflate(
                 R.layout.fragment_navigation_drawer, container, false);
-        mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectItem(position);
-                setNavDrawerItemNormal();
-                TextView textView = (TextView) view.findViewById(R.id.text);
-                textView.setTextColor(Color.WHITE);
-
-                ImageView imageView = (ImageView) view.findViewById(R.id.icon_drawer);
-                imageView.setImageResource(selectedIcons[position]);
-            }
-        });
         String[] values = new String[]{
                 getString(R.string.title_section1),
                 getString(R.string.title_section2),
@@ -116,7 +104,26 @@ public class NavigationDrawerFragment extends Fragment {
                 getString(R.string.title_section4),
                 getString(R.string.title_section5)
         };
-        mDrawerListView.setAdapter(new NavigationDrawerAdapter(getActionBar().getThemedContext(),values));
+        mDrawerListView.setAdapter(new NavigationDrawerAdapter(getActivity(),values, deselectedIcons));
+
+        mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectItem(position);
+                setNavDrawerItemNormal();
+
+                TextView textView = (TextView) view.findViewById(R.id.text);
+                textView.setTextColor(Color.WHITE);
+
+                ImageView imageView = (ImageView) view.findViewById(R.id.icon_drawer);
+
+                imageView.setImageDrawable(getResources().getDrawable(selectedIcons[position]));
+                imageView.invalidate();
+                //imageView.setImageResource(deselectedIcons[position]);
+            }
+        });
+
+
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         mDrawerListView.setClipToPadding(false);
         Utils.setInsets(getActivity(), mDrawerListView);
@@ -218,6 +225,7 @@ public class NavigationDrawerFragment extends Fragment {
         mCurrentSelectedPosition = position;
         if (mDrawerListView != null) {
             mDrawerListView.setItemChecked(position, true);
+
         }
         if (mDrawerLayout != null) {
             mDrawerLayout.closeDrawer(mFragmentContainerView);

@@ -49,11 +49,11 @@ public class ProcessTokenLoader extends AsyncTaskLoader<Person> {
                     JSONObject response = new JSONObject(apiCall);
                     JSONArray array = response.getJSONArray("emails");
 
-                    Person resPerson = null;
                     for (int i = 0; i < array.length(); i ++) {
                         String email = array.getJSONObject(i).getString("value");
                         String userResponse = httpUtils.testEmail(email);
                         if (!userResponse.equals("[]")) {
+                            Person resPerson = null;
                             JSONArray jsonArray = new JSONArray(userResponse);
                             JSONObject person = jsonArray.getJSONObject(0);
                             String type = person.getString("type");
@@ -67,11 +67,10 @@ public class ProcessTokenLoader extends AsyncTaskLoader<Person> {
                             SharedPreferences.Editor editor = mSharedPreferences.edit();
                             editor.putString(getContext().getString(R.string.pref_email), email);
                             editor.commit();
-                            Log.i(TAG, resPerson.getName());
                             return resPerson;
                         }
                     }
-                    return resPerson;
+                    return null;
                 } else if (mUrl.contains("error=")) {
                     Log.i(TAG, "error is " + mUrl);
                 }

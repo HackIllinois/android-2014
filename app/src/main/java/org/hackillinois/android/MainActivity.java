@@ -69,13 +69,15 @@ public class MainActivity extends ActionBarActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        final boolean viewed = sharedPreferences.getBoolean(getString(R.string.pref_splash_viewed), false);
+        final String email = sharedPreferences.getString(getString(R.string.pref_email), "");
         final FragmentManager fm = getSupportFragmentManager();
+
         SplashScreenDialogFragment splashFragment = (SplashScreenDialogFragment) fm.findFragmentByTag("splash");
         OAuthAccessFragment oAuthAccessFragment = (OAuthAccessFragment) fm.findFragmentByTag("login");
-        boolean viewed = sharedPreferences.getBoolean(getString(R.string.pref_splash_viewed), false);
-        String email = sharedPreferences.getString(getString(R.string.pref_email), "");
 
         if (email.length() == 0 && oAuthAccessFragment == null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -91,8 +93,6 @@ public class MainActivity extends ActionBarActivity
             splashFragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.Theme_Hackillinois_Launcher);
             splashFragment.show(fragmentTransaction, "splash");
         }
-
-        setContentView(R.layout.activity_main);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setIcon(getResources().getDrawable(R.drawable.ic_action_hackillinois_icon_white));

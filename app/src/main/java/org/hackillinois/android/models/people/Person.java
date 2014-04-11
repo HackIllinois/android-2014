@@ -71,6 +71,10 @@ public abstract class Person implements Serializable, Comparable<Person> {
         return fbID;
     }
 
+    public String getImageURL() {
+        return "https://graph.facebook.com/" + fbID + "/picture?type=large";
+    }
+
     public List<Status> getStatuses() {
         return statuses;
     }

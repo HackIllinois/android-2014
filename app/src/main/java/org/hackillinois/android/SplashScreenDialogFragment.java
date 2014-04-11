@@ -28,6 +28,7 @@ public class SplashScreenDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_splash, container, false);
+        assert rootView != null;
         splash = (ImageView) rootView.findViewById(R.id.splash_image);
         final ImageView button = (ImageView) rootView.findViewById(R.id.launchbutton);
         video = (VideoView) rootView.findViewById(R.id.videoView);
