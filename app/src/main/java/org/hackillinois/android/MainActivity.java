@@ -51,6 +51,7 @@ public class MainActivity extends ActionBarActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        handleIntent(getIntent());
         setContentView(R.layout.activity_main);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
@@ -69,7 +70,7 @@ public class MainActivity extends ActionBarActivity
             int actionBarColor = getResources().getColor(R.color.hackillinois_blue);
             tintManager.setStatusBarTintColor(actionBarColor);
         }
-        handleIntent(getIntent());
+
         if (savedInstanceState == null) {
             new PersonDatabaseLoader(MainActivity.this).forceLoad();
         }
@@ -204,7 +205,9 @@ public class MainActivity extends ActionBarActivity
             Log.i(TAG, "got intent action view");
         } else if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
-            Log.i(TAG, "query " + query);
+            if (query == null) {
+                finish();
+            }
             showResults(query);
         }
     }
