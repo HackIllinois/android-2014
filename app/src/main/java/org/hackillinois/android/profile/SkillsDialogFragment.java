@@ -71,8 +71,9 @@ public class SkillsDialogFragment extends DialogFragment implements LoaderManage
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // do you need to do something with this?
                 ArrayList<Skill> selected = mSkillsListAdapter.getSelectedSkills();
+                Toast.makeText(getActivity(), "You selected " + selected.get(0).getName() + " and stuff!", Toast.LENGTH_LONG).show();
+                dismiss();
             }
         });
 
