@@ -29,7 +29,9 @@ public class ScheduleFragment extends Fragment implements ViewPager.OnPageChange
 
     private int mScrollState;
     private int mScreenWidth;
+    private boolean rotated;
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +42,8 @@ public class ScheduleFragment extends Fragment implements ViewPager.OnPageChange
         Point point = new Point();
         display.getSize(point);
         mScreenWidth =  point.x;
+
+        rotated = false;
     }
 
     @Override
@@ -85,20 +89,27 @@ public class ScheduleFragment extends Fragment implements ViewPager.OnPageChange
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        // TODO rotate rocket and move stars
 
         if(positionOffset <= 0 || positionOffset >= 1)
             return;
 
         ImageView view = (ImageView) getActivity().findViewById(R.id.rocketship);
+
         ViewPropertyAnimator animate = view.animate();
-        if(animate != null && mScrollState == ViewPager.SCROLL_STATE_DRAGGING){
-            if(positionOffset > 0.5f){ // move to the right
-                animate.x(mScreenWidth/3);
-            } else { // move to the left
-                animate.x(-mScreenWidth/3);
+        if(animate != null && mScrollState == ViewPager.SCROLL_STATE_SETTLING){
+            if(positionOffset > .5f){ // move to the right
+                animate.xBy(mScreenWidth / 3);
+                if(rotated){
+                    animate.rotation(180f);
+                    rotated = false;
+                }
+            } else if(positionOffset < .5f) { // move to the left
+                animate.xBy(-(mScreenWidth / 3));
+                if(!rotated){
+                    animate.rotation(180f);
+                    rotated = true;
+                }
             }
-//            animate.xBy(mScreenWidth/3);
         }
     }
 

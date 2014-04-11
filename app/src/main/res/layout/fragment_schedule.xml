@@ -27,8 +27,8 @@
         android:layout_height="36dp"
         android:paddingTop="1dp"
         android:paddingBottom="3dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
         android:src="@drawable/ic_rocket2x"
         android:layout_alignParentTop="true"/>
 
