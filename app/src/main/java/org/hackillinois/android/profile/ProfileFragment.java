@@ -197,8 +197,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         mStatusAdapter = new StatusListAdapter(getActivity());
         statusList.setAdapter(mStatusAdapter);
 
-        if (mPerson == null) {
-
+        if (getArguments().getSerializable("person") == null) {
 
             mTextLocation.setOnClickListener(new View.OnClickListener() {
                 @Override
