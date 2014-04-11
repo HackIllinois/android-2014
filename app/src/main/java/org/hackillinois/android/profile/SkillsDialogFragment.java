@@ -58,6 +58,7 @@ public class SkillsDialogFragment extends DialogFragment implements LoaderManage
         Utils.setInsetsBottom(getActivity(), rootView);
         this.getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
+        assert rootView != null;
         ListView skillsList = (ListView) rootView.findViewById(R.id.pick_skills_list);
         mSkillsListAdapter = new SkillsListAdapter(getActivity(), new ArrayList<Skill>(), skillsList);
         skillsList.setAdapter(mSkillsListAdapter);
