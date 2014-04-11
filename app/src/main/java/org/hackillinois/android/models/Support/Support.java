@@ -4,6 +4,7 @@ public class Support {
 
 private String title;
 
+/*NOTE In this implementation a support model could refer to a category, a sub category, or a room (room number)*/
 
 public Support(String title) {
     this.title = title;
