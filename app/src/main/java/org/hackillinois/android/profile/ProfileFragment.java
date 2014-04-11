@@ -1,6 +1,5 @@
 package org.hackillinois.android.profile;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -82,10 +81,9 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         }
     };
 
-    /** launch the DialogFragment to edit skills list **/
+    /** Launch the DialogFragment to edit skills list. Give it the Person object **/
     private void launchEditSkillsFragment() {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-
         DialogFragment skillsFragment = SkillsDialogFragment.newInstance(null);
         skillsFragment.show(fragmentManager, SKILLS_FRAG);
 
@@ -107,7 +105,6 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
                     public void onClick(DialogInterface dialog, int which) {
                         // The 'which' argument contains the index position
                         // of the selected item
-                        Activity activity = getActivity();
                         switch (which) {
                             case 0:
                                 updateStatus("Hacking");
@@ -174,19 +171,17 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         statusList.setAdapter(mStatusAdapter);
 
 
+        mTextLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchSetLocation();
+            }
+        });
+
         mTextSkills.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 launchEditSkillsFragment();
-            }
-        });
-
-
-
-        statusList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                updateStatusDialog();
             }
         });
         skillsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -195,7 +190,17 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
                 launchEditSkillsFragment();
             }
         });
+        statusList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                updateStatusDialog();
+            }
+        });
         return v;
+    }
+
+    private void launchSetLocation() {
+        getFragmentManager().beginTransaction().replace(R.id.container, new LocationFragment()).addToBackStack(null).commit();
     }
 
     @Override
