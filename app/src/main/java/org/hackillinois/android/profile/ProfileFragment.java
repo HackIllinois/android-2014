@@ -129,7 +129,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         DateTime date = new DateTime();
         String statusArray = mPerson.getStatusArray().toString();
         Log.e("status array", statusArray.substring(1));
-        String body = "[{\"status\": \"" + status + "\", \"date\": " + date.getMillis() + "}";
+        String body = "[{\"status\": \"" + status + "\", \"date\": " + date.getMillis()/1000 + "}";
         if(statusArray.length() <= 2)
             body = body + "]";
         else
