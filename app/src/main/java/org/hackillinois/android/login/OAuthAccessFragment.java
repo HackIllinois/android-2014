@@ -8,7 +8,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,14 +32,13 @@ public class OAuthAccessFragment extends Fragment implements LoaderManager.Loade
     private static final String TAG = "OAuthAccessFragment";
     private ProgressDialog progressDialog;
     private WebView webview;
-    OAuth2Helper mOAuth2Helper;
+    private OAuth2Helper mOAuth2Helper;
 
     private WebViewClient webViewClient = new WebViewClient() {
 
         @Override
         public void onPageFinished(WebView view, String url) {
-            Log.i(TAG, url);
-            if (url.startsWith(Oauth2Params.GOOGLE_PLUS.getRedirectUri())) {
+            if (url.startsWith(Oauth2Params.GOOGLE_PLUS.getRedirectUri()) && url.contains("code=")) {
                 webview.setVisibility(View.GONE);
                 Bundle bundle = new Bundle();
                 bundle.putString("url", url);
@@ -66,7 +64,6 @@ public class OAuthAccessFragment extends Fragment implements LoaderManager.Loade
         webview.setWebViewClient(webViewClient);
         webview.loadUrl(authorizationUrl);
         Utils.setInsets(getActivity(), webview);
-        setRetainInstance(true);
         return rootView;
     }
 
@@ -93,14 +90,17 @@ public class OAuthAccessFragment extends Fragment implements LoaderManager.Loade
             if (progressDialog != null && progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean(getString(R.string.pref_splash_viewed), true);
-            editor.commit();
 
             startActivity(new Intent(getActivity(), MainActivity.class));
             getActivity().finish();
         } else {
+            // This is super hacky, but solves a race condition where onload finished is called twice!!
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            if (sharedPreferences.getBoolean(getString(R.string.pref_splash_viewed), false)) {
+                startActivity(new Intent(getActivity(), MainActivity.class));
+                getActivity().finish();
+                return;
+            }
             CookieSyncManager.createInstance(getActivity());
             CookieManager cookieManager = CookieManager.getInstance();
             cookieManager.removeAllCookie();
