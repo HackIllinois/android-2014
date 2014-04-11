@@ -138,8 +138,9 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         postTask.execute();
     }
 
-    public void setLocation() {
-        getLoaderManager().initLoader(0,null,this).forceLoad();
+    public void setLocation(String location) {
+        mTextLocation.setText(location);
+        //getLoaderManager().initLoader(0,null,this).forceLoad();
     }
 
     @Override
@@ -203,7 +204,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
     }
 
     private void launchSetLocation() {
-        getFragmentManager().beginTransaction().replace(R.id.container, new LocationFragment()).addToBackStack(null).commit();
+        new LocationFragment().show(getFragmentManager(), "poop");
     }
 
     @Override
