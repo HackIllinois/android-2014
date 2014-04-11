@@ -148,8 +148,8 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         mPicasso = Picasso.with(getActivity());
 
         ListView skillsList = (ListView) v.findViewById(R.id.profile_skills_list);
+        View viewClick = v.findViewById(R.id.skills_click);
         ListView statusList = (ListView) v.findViewById(R.id.status_list);
-
 
         Object object = getArguments().getSerializable("person");
         if (object != null) {
@@ -180,10 +180,11 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
                 launchEditSkillsFragment();
             }
         });
-        skillsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        viewClick.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onClick(View v) {
                 launchEditSkillsFragment();
+
             }
         });
         statusList.setOnItemClickListener(new AdapterView.OnItemClickListener() {

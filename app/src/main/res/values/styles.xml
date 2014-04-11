@@ -12,7 +12,7 @@
     </style>
 
     <style name="SkillsAnimation">
-        <item name="android:windowEnterAnimation">@anim/abc_fade_in</item>
+        <item name="android:windowEnterAnimation">@anim/slide_in_up</item>
         <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
     </style>
 
