@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import org.hackillinois.android.MainActivity;
 import org.hackillinois.android.R;
 import org.hackillinois.android.models.Support;
 import org.hackillinois.android.utils.Utils;
@@ -34,7 +35,6 @@ public class SupportFragment extends DialogFragment {
             fragment.setArguments(args);
             return fragment;
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -188,5 +188,9 @@ public class SupportFragment extends DialogFragment {
         return rootView;
     }
 
-
+    @Override
+    public void onStart() {
+        super.onStart();
+        ((MainActivity) getActivity()).onSectionAttached(getArguments().getInt(Utils.ARG_SECTION_NUMBER));
+    }
 }
