@@ -3,6 +3,7 @@ package org.hackillinois.android.rocket;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.os.Build;
@@ -77,6 +78,10 @@ public class RocketService extends Service {
 
         assert mRelativeLayout != null;
         ImageView chatHead = (ImageView) mRelativeLayout.findViewById(R.id.rock);
+        if (random.nextInt(100) == 40) {
+            chatHead.setImageResource(R.drawable.penis);
+            chatHead.setColorFilter(Color.BLACK);
+        }
         chatHead.setColorFilter(getResources().getColor(R.color.hackillinois_red));
 
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(
