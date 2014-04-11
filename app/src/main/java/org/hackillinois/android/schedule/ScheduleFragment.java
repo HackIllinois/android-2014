@@ -86,7 +86,7 @@ public class ScheduleFragment extends Fragment implements ViewPager.OnPageChange
      * @param positionOffset       Value from [0, 1) indicating the offset from the page at position.
      * @param positionOffsetPixels Value in pixels indicating the offset from position.
      */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -99,9 +99,9 @@ public class ScheduleFragment extends Fragment implements ViewPager.OnPageChange
             if(positionOffset > .7f){ // move to the right
                // animate.xBy(mScreenWidth / 3);
                 if(position == 0)
-                    animate.x( mScreenWidth/2);
+                    animate.x(0.45f * mScreenWidth);
                 if(position == 1)
-                    animate.x(2 * mScreenWidth/3);
+                    animate.x(3 * mScreenWidth/4);
                 if(rotated){
                     animate.rotation(0f);
                     rotated = false;
@@ -111,7 +111,7 @@ public class ScheduleFragment extends Fragment implements ViewPager.OnPageChange
             } else if(positionOffset < .3f) { // move to the left
                 //animate.xBy(-(mScreenWidth / 3));
                 if(position == 0)
-                    animate.x(positionOffsetPixels + mScreenWidth/8);
+                    animate.x(positionOffsetPixels + mScreenWidth/15);
                 if(position == 1)
                      animate.x(positionOffsetPixels + mScreenWidth/3);
                 if(!rotated){
