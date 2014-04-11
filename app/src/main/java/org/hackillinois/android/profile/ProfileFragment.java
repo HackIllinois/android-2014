@@ -219,6 +219,35 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         if (object != null) {
             mPerson = (Person) object;
             setFields(mPerson);
+            List<String> skills = mPerson.getSkills();
+
+            ArrayList<List<String>> lists = new ArrayList<List<String>>();
+
+            int i = 0;
+            for (String skill : skills) {
+                if (i % 4 == 0)
+                    lists.add(new ArrayList<String>());
+                lists.get(i / 4).add(skill);
+                i++;
+            }
+
+            for (; i % 4 != 0; i++) { // fill in the rest of the 4-tuple with empty strings
+                lists.get(i / 4).add("");
+            }
+
+            List<Status> status_list = mPerson.getStatuses();
+            mStatusAdapter.clear();
+            for (Status stat : status_list) {
+                mStatusAdapter.add(stat);
+            }
+            mStatusAdapter.notifyDataSetChanged();
+
+            mSkillsAdapter.clear();
+            for (List<String> list : lists)
+                mSkillsAdapter.add(list);
+            mSkillsAdapter.notifyDataSetChanged();
+
+            Log.e("new person", mPerson.getName());
             statusPlusImage.setVisibility(View.GONE);
             skillsPlusImage.setVisibility(View.GONE);
 
