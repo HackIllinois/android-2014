@@ -21,9 +21,9 @@ import org.hackillinois.android.utils.Utils;
 /**
  * @author vishal
  *         <p/>
- * The top level fragment for the Schedule. Has a view pager for Friday, Saturday, and Sunday
+ *         The top level fragment for the Schedule. Has a view pager for Friday, Saturday, and Sunday
  */
-public class ScheduleFragment extends Fragment implements ViewPager.OnPageChangeListener{
+public class ScheduleFragment extends Fragment implements ViewPager.OnPageChangeListener {
 
     private int mScrollState;
     private int mScreenWidth;
@@ -39,7 +39,7 @@ public class ScheduleFragment extends Fragment implements ViewPager.OnPageChange
         if (Build.VERSION.SDK_INT >= 13) {
             Point point = new Point();
             wm.getDefaultDisplay().getSize(point);
-            mScreenWidth =  point.x;
+            mScreenWidth = point.x;
         } else {
             mScreenWidth = wm.getDefaultDisplay().getWidth();
         }
@@ -90,36 +90,38 @@ public class ScheduleFragment extends Fragment implements ViewPager.OnPageChange
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-        if(positionOffset <= 0 || positionOffset >= 1)
-            return;
+        if (Build.VERSION.SDK_INT >= 14) {
+            if (positionOffset <= 0 || positionOffset >= 1)
+                return;
 
-        ImageView view = (ImageView) getActivity().findViewById(R.id.rocketship);
-        ViewPropertyAnimator animate = view.animate();
-        if(animate != null && mScrollState == ViewPager.SCROLL_STATE_SETTLING){
-            if(positionOffset > .7f){ // move to the right
-               // animate.xBy(mScreenWidth / 3);
-                if(position == 0)
-                    animate.x(0.45f * mScreenWidth);
-                if(position == 1)
-                    animate.x(3 * mScreenWidth/4);
-                if(rotated){
-                    animate.rotation(0f);
-                    rotated = false;
+            ImageView view = (ImageView) getActivity().findViewById(R.id.rocketship);
+            ViewPropertyAnimator animate = view.animate();
+            if (animate != null && mScrollState == ViewPager.SCROLL_STATE_SETTLING) {
+                if (positionOffset > .7f) { // move to the right
+                    // animate.xBy(mScreenWidth / 3);
+                    if (position == 0)
+                        animate.x(0.45f * mScreenWidth);
+                    if (position == 1)
+                        animate.x(3 * mScreenWidth / 4);
+                    if (rotated) {
+                        animate.rotation(0f);
+                        rotated = false;
+                    }
+                    if (mScrollState == ViewPager.SCROLL_STATE_IDLE)
+                        animate.cancel();
+                } else if (positionOffset < .3f) { // move to the left
+                    //animate.xBy(-(mScreenWidth / 3));
+                    if (position == 0)
+                        animate.x(positionOffsetPixels + mScreenWidth / 15);
+                    if (position == 1)
+                        animate.x(positionOffsetPixels + mScreenWidth / 3);
+                    if (!rotated) {
+                        animate.rotation(180f);
+                        rotated = true;
+                    }
+                    if (mScrollState == ViewPager.SCROLL_STATE_IDLE)
+                        animate.cancel();
                 }
-                if(mScrollState == ViewPager.SCROLL_STATE_IDLE)
-                    animate.cancel();
-            } else if(positionOffset < .3f) { // move to the left
-                //animate.xBy(-(mScreenWidth / 3));
-                if(position == 0)
-                    animate.x(positionOffsetPixels + mScreenWidth/15);
-                if(position == 1)
-                     animate.x(positionOffsetPixels + mScreenWidth/3);
-                if(!rotated){
-                    animate.rotation(180f);
-                    rotated = true;
-                }
-                if(mScrollState == ViewPager.SCROLL_STATE_IDLE)
-                    animate.cancel();
             }
         }
     }

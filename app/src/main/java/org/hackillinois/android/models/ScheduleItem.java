@@ -9,7 +9,7 @@ import org.json.JSONObject;
 /**
  * @author vishal
  */
-public class ScheduleItem {
+public class ScheduleItem implements Comparable<ScheduleItem>{
 
     private String eventName;
     private String description;
@@ -111,5 +111,26 @@ public class ScheduleItem {
     private int time_minute(int unixTime) {
         DateTime time = new DateTime((long) unixTime * 1000);
         return time.getMinuteOfHour();
+    }
+
+    /**
+     * Compares this object to the specified object to determine their relative
+     * order.
+     *
+     * @param another the object to compare to this instance.
+     * @return a negative integer if this instance is less than {@code another};
+     * a positive integer if this instance is greater than
+     * {@code another}; 0 if this instance has the same order as
+     * {@code another}.
+     * @throws ClassCastException if {@code another} cannot be converted into something
+     *                            comparable to {@code this} instance.
+     */
+    @Override
+    public int compareTo(ScheduleItem another) {
+        if(this.getHour() < another.getHour())
+            return -1;
+        if(this.getHour() > another.getHour())
+            return 1;
+        else return 0;
     }
 }

@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -56,6 +57,8 @@ public class ScheduleDataLoader extends AsyncTaskLoader<List<ScheduleItem>> {
                     // add each schedule item retrieved from the backend to the array list
                     scheduleList.add(new ScheduleItem(schedule));
                 }
+
+                Collections.sort(scheduleList);
 
                 return scheduleList;
             } catch (JSONException e) {

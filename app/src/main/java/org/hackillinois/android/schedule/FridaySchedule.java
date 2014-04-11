@@ -65,7 +65,7 @@ public class FridaySchedule extends ListFragment
 
         );
 
-
+        Utils.setInsetsBottom(getActivity(), rootView);
         return rootView;
     }
 

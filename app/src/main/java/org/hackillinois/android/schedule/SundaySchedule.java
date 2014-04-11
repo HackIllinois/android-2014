@@ -66,6 +66,8 @@ public class SundaySchedule extends ListFragment
 
         );
 
+        Utils.setInsetsBottom(getActivity(), rootView);
+
         return rootView;
     }
 
