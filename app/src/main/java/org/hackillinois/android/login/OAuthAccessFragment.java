@@ -49,6 +49,12 @@ public class OAuthAccessFragment extends DialogFragment implements LoaderManager
     };
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setRetainInstance(true);
         View rootView = inflater.inflate(R.layout.fragment_login, container, false);
@@ -77,13 +83,6 @@ public class OAuthAccessFragment extends DialogFragment implements LoaderManager
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-
-
-    }
-
-    @Override
     public Loader<Person> onCreateLoader(int id, Bundle args) {
         return new ProcessTokenLoader(getActivity(), args.getString("url"));
     }
@@ -94,7 +93,7 @@ public class OAuthAccessFragment extends DialogFragment implements LoaderManager
             if (progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
-            Intent intent = new Intent("LOGGED_IN");
+            Intent intent = new Intent(getString(R.string.broadcast_login));
             intent.putExtra("person", data);
             LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
             new Handler().post(new Runnable() {

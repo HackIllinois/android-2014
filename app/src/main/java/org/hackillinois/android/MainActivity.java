@@ -79,13 +79,26 @@ public class MainActivity extends ActionBarActivity
         SplashScreenDialogFragment splashFragment = (SplashScreenDialogFragment) fm.findFragmentByTag("splash");
         OAuthAccessFragment oAuthAccessFragment = (OAuthAccessFragment) fm.findFragmentByTag("login");
 
+        if (oAuthAccessFragment != null && !oAuthAccessFragment.isVisible()) {
+            oAuthAccessFragment.dismiss();
+            oAuthAccessFragment.show(getSupportFragmentManager().beginTransaction(), "login");
+            getSupportFragmentManager().executePendingTransactions();
+        }
+
+        if (splashFragment != null && !splashFragment.isVisible()) {
+            splashFragment.dismiss();
+            splashFragment.show(getSupportFragmentManager().beginTransaction(), "splash");
+            getSupportFragmentManager().executePendingTransactions();
+        }
+
         if (email.length() == 0 && oAuthAccessFragment == null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             oAuthAccessFragment = new OAuthAccessFragment();
-            oAuthAccessFragment.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.Theme_AppCompat_Light_DarkActionBar);
-            oAuthAccessFragment.setCancelable(false);
+            oAuthAccessFragment.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.Theme_HackIllinois_blue_actionbar);
+            oAuthAccessFragment.setCancelable(true);
             oAuthAccessFragment.show(ft, "login");
         }
+
 
         if (!viewed && splashFragment == null) {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -103,8 +116,8 @@ public class MainActivity extends ActionBarActivity
 
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
-                R.id.navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout));
+                    R.id.navigation_drawer,
+                    (DrawerLayout) findViewById(R.id.drawer_layout));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             // Tint that shit!
