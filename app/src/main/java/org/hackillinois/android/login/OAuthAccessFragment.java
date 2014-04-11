@@ -79,13 +79,6 @@ public class OAuthAccessFragment extends DialogFragment implements LoaderManager
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-
-
-    }
-
-    @Override
     public Loader<Person> onCreateLoader(int id, Bundle args) {
         return new ProcessTokenLoader(getActivity(), args.getString("url"));
     }
@@ -96,12 +89,12 @@ public class OAuthAccessFragment extends DialogFragment implements LoaderManager
             if (progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
+            Intent intent = new Intent(getString(R.string.broadcast_login));
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putBoolean(getString(R.string.pref_splash_viewed), true);
             editor.commit();
 
-            Intent intent = new Intent("LOGGED_IN");
             intent.putExtra("person", data);
             LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
             new Handler().post(new Runnable() {

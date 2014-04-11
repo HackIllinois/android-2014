@@ -22,6 +22,8 @@ public abstract class Person implements Serializable, Comparable<Person> {
     private int databaseKey;
     private String mac;
     private int RSSI;
+    private JSONArray skillsArray;
+    private JSONArray statusArray;
 
     public Person(JSONObject jsonObject) throws JSONException {
         name = jsonObject.getString("name");
@@ -29,14 +31,14 @@ public abstract class Person implements Serializable, Comparable<Person> {
         if (jsonObject.has("homebase")) {
             homebase = jsonObject.getString("homebase");
         }
-        JSONArray skillsArray = jsonObject.getJSONArray("skills");
+        skillsArray = jsonObject.getJSONArray("skills");
         skills = new ArrayList<String>();
         for(int i = 0; i < skillsArray.length(); i++) {
             skills.add(skillsArray.getString(i));
         }
 
         fbID = jsonObject.getString("fb_url");
-        JSONArray statusArray = jsonObject.getJSONArray("status");
+        statusArray = jsonObject.getJSONArray("status");
         statuses = new ArrayList<Status>();
         for (int i = 0; i < statusArray.length(); i++) {
             JSONObject status = statusArray.getJSONObject(i);
@@ -99,6 +101,14 @@ public abstract class Person implements Serializable, Comparable<Person> {
 
     public void setRSSI(int RSSI) {
         this.RSSI = RSSI;
+    }
+
+    public JSONArray getStatusArray() {
+        return statusArray;
+    }
+
+    public JSONArray getSkillsArray() {
+        return skillsArray;
     }
 
     @Override

@@ -34,6 +34,7 @@ import org.hackillinois.android.people.PeopleSwitcherFragment;
 import org.hackillinois.android.people.ProfileViewActivity;
 import org.hackillinois.android.people.SearchResultsFragment;
 import org.hackillinois.android.profile.ProfileFragment;
+import org.hackillinois.android.support.SupportFragment;
 import org.hackillinois.android.schedule.ScheduleFragment;
 
 import java.util.HashMap;
@@ -46,6 +47,7 @@ public class MainActivity extends ActionBarActivity
     private static final String PEOPLE_TAG = "peopleFrag";
     private static final String NEWS_TAG = "newsFrag";
     private static final String SCHEDULE_TAG = "scheduleFrag";
+    private static final String SUPPORT_TAG = "supportFrag";
     private static final String TAG = "MainActivity";
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
@@ -86,12 +88,28 @@ public class MainActivity extends ActionBarActivity
 //            oAuthAccessFragment.show(ft, "login");
 //        }
 
-//        if (!viewed && splashFragment == null) {
-//            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//            splashFragment = new SplashScreenDialogFragment();
-//            splashFragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.Theme_Hackillinois_Launcher);
-//            splashFragment.show(fragmentTransaction, "splash");
-//        }
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        final boolean viewed = sharedPreferences.getBoolean(getString(R.string.pref_splash_viewed), false);
+        final String email = sharedPreferences.getString(getString(R.string.pref_email), "");
+        final FragmentManager fm = getSupportFragmentManager();
+
+        SplashScreenDialogFragment splashFragment = (SplashScreenDialogFragment) fm.findFragmentByTag("splash");
+        OAuthAccessFragment oAuthAccessFragment = (OAuthAccessFragment) fm.findFragmentByTag("login");
+
+        if (email.length() == 0 && oAuthAccessFragment == null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            oAuthAccessFragment = new OAuthAccessFragment();
+            oAuthAccessFragment.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.Theme_AppCompat_Light_DarkActionBar);
+            oAuthAccessFragment.setCancelable(false);
+            oAuthAccessFragment.show(ft, "login");
+        }
+
+        if (!viewed && splashFragment == null) {
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            splashFragment = new SplashScreenDialogFragment();
+            splashFragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.Theme_Hackillinois_Launcher);
+            splashFragment.show(fragmentTransaction, "splash");
+        }
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setIcon(getResources().getDrawable(R.drawable.ic_action_hackillinois_icon_white));
@@ -159,6 +177,15 @@ public class MainActivity extends ActionBarActivity
                         .replace(R.id.container, scheduleFragment, SCHEDULE_TAG).addToBackStack(null)
                         .commit();
                 break;
+            case 4:
+                Fragment supportFragment = fragmentManager.findFragmentByTag(SUPPORT_TAG);
+                if (supportFragment == null) {
+                    supportFragment = SupportFragment.newInstance(position + 1);
+                }
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, supportFragment, SUPPORT_TAG).addToBackStack(null)
+                        .commit();
+                break;
         }
     }
 
@@ -175,6 +202,9 @@ public class MainActivity extends ActionBarActivity
                 break;
             case 4:
                 mTitle = getString(R.string.title_section4);
+                break;
+            case 5:
+                mTitle = getString(R.string.title_section5);
                 break;
         }
     }

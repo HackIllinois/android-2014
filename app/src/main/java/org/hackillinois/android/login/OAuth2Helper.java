@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.google.api.client.auth.oauth2.AuthorizationCodeFlow;
+import com.google.api.client.auth.oauth2.AuthorizationCodeTokenRequest;
 import com.google.api.client.auth.oauth2.ClientParametersAuthentication;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.auth.oauth2.CredentialStore;
@@ -51,11 +52,16 @@ public class OAuth2Helper {
 	
 	public void retrieveAndStoreAccessToken(String authorizationCode) throws IOException {
 		Log.i(TAG, "retrieveAndStoreAccessToken for code " + authorizationCode);
-		TokenResponse tokenResponse = flow.newTokenRequest(authorizationCode).setScopes(convertScopesToString(oauth2Params.getScope())).setRedirectUri(oauth2Params.getRedirectUri()).execute();
+        Collection<String> scopes = convertScopesToString(oauth2Params.getScope());
+		AuthorizationCodeTokenRequest tokenResponse = flow.newTokenRequest(authorizationCode);
+                tokenResponse.setScopes(scopes);
+                tokenResponse.setRedirectUri(oauth2Params.getRedirectUri());
+
+        TokenResponse response = tokenResponse.execute();
 		Log.i(TAG, "Found tokenResponse :");
-		Log.i(TAG, "Access Token : " + tokenResponse.getAccessToken());
-		Log.i(TAG, "Refresh Token : " + tokenResponse.getRefreshToken());
-		flow.createAndStoreCredential(tokenResponse, oauth2Params.getUserId());
+		Log.i(TAG, "Access Token : " + response.getAccessToken());
+		Log.i(TAG, "Refresh Token : " + response.getRefreshToken());
+		flow.createAndStoreCredential(response, oauth2Params.getUserId());
 	}
 
 	public String executeApiCall() throws IOException {

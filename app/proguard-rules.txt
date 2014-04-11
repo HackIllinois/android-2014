@@ -15,9 +15,23 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
+}
+
 -dontwarn com.squareup.picasso.**
 -dontwarn com.squareup.okhttp.**
 -dontwarn com.google.api.**
 -dontwarn org.joda.time.**
--keepattributes Deprecated
 -dontwarn org.hackillinois.android.login.**
+
+-keepattributes Deprecated, SourceFile, LineNumberTable
+
+-keep class OAuth2Helper
+-keep class Oauth2Params
+-keep class OAuthAcccessFragment
+-keep class ProcessTokenLoader
+-keep class SharedPreferencesCredentialStore
+-keep class TokenResponse
+-keep class AuthorizationCodeTokenRequest
