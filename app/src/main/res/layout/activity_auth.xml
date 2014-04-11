@@ -2,8 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/auth_activity_container"
-    tools:context="${packageName}.${activityClass}">
-
+    android:id="@+id/container"
+    tools:context="org.hackillinois.android.AuthActivity">
 
 </FrameLayout>
