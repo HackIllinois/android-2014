@@ -81,7 +81,7 @@ public class SkillsDialogFragment extends DialogFragment implements LoaderManage
                 ArrayList<Skill> selected = mSkillsListAdapter.getSelectedSkills();
                 PostTask postTask = new PostTask(getActivity(), "skills", mPerson.getType(), formatBody(selected));
                 postTask.execute();
-                Intent intent = new Intent("update_status");
+                Intent intent = new Intent("get_skills");
                 intent.putExtra("skills", selected);
                 LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
                 dismiss();

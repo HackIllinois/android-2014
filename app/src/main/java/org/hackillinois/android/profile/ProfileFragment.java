@@ -204,7 +204,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         ListView statusList = (ListView) v.findViewById(R.id.status_list);
 
         Utils.setInsets(getActivity(), v);
-        IntentFilter intentFilter = new IntentFilter(getString(R.string.broadcast_login));
+        IntentFilter intentFilter = new IntentFilter("get_skills");
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver, intentFilter);
 
         mSkillsAdapter = new SkillsAdapter(getActivity());
