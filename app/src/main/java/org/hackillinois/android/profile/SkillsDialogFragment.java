@@ -105,9 +105,7 @@ public class SkillsDialogFragment extends DialogFragment implements LoaderManage
     @Override
     public void onResume() {
         super.onResume();
-        //if (mSkillsListAdapter.isEmpty()) {
-            getLoaderManager().initLoader(0, null, SkillsDialogFragment.this).forceLoad();
-        //}
+        getLoaderManager().initLoader(0, null, SkillsDialogFragment.this).forceLoad();
     }
 
     @Override

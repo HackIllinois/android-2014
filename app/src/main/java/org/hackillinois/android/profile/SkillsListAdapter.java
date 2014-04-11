@@ -52,7 +52,8 @@ public class SkillsListAdapter extends ArrayAdapter<Skill> implements Filterable
      * @param position
      */
     public void notifyListItemClick(int position) {
-        Skill selected = this.allSkills.get(position);
+        //Skill selected = this.allSkills.get(position);
+        Skill selected = this.currentFilteredSkills.get(position);
         selected.setSelected( !selected.isSelected() );
         notifyDataSetChanged();
     }
