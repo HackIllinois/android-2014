@@ -1,8 +1,10 @@
 package org.hackillinois.android.profile;
 
 import android.app.Activity;
-
+import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -14,17 +16,19 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import org.hackillinois.android.R;
 import org.hackillinois.android.models.Location;
+import org.hackillinois.android.models.people.Person;
+import org.hackillinois.android.utils.HttpUtils;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class LocationFragment extends Fragment implements
+public class LocationFragment extends DialogFragment implements
         LoaderManager.LoaderCallbacks<List<Location>>,
         AdapterView.OnItemClickListener {
 
@@ -43,36 +47,13 @@ public class LocationFragment extends Fragment implements
      */
     private ListView mListView;
 
-    /**
-     * The Adapter which will be used to populate the ListView/GridView with
-     * Views.
-     */
     private ListAdapter mAdapter;
-
-    // TODO: Rename and change types of parameters
-    public static LocationFragment newInstance(String param1, String param2) {
-        LocationFragment fragment = new LocationFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public LocationFragment() {
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
 
-        // TODO: Change Adapter to display your content
         mAdapter = new ArrayAdapter<Location>(getActivity(),
                 android.R.layout.simple_list_item_1, android.R.id.text1, locations);
     }
@@ -101,7 +82,7 @@ public class LocationFragment extends Fragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_locationfragment, container, false);
-
+        getDialog().setTitle("Please Select a Location");
         // Set the adapter
         mListView = (ListView) view.findViewById(android.R.id.list);
         mListView.setAdapter(mAdapter);
@@ -155,8 +136,57 @@ public class LocationFragment extends Fragment implements
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        String selectedLocation = locations.get(position).toString();
+        String body = "\"" + selectedLocation + "\"";
+        ProfileFragment profileFragment = (ProfileFragment) getFragmentManager().findFragmentByTag("profileFrag");
+        Person mPerson = profileFragment.getmPerson();
+
+        PostTask postTask = new PostTask(getActivity(), "homebase", mPerson.getType(), body);
+        postTask.execute();
+        profileFragment.setLocation(selectedLocation);
+        dismiss();
+    }
+
+    public class PostTask extends AsyncTask<String, Integer, Integer> {
+
+        private Context mContext;
+        private String body;
+        private String key;
+        private String type;
+
+        private final Integer POST_SUCCESS = 0x1;
+        private final Integer POST_FAIL = 0x0;
+
+        public PostTask(Context context, String key, String type, String body) {
+            mContext = context;
+            this.body = body;
+            this.key = key;
+            this.type = type;
+        }
 
 
+        @Override
+        protected Integer doInBackground(String... s) {
+
+            try {
+                HttpUtils httpUtils = HttpUtils.getHttpUtils(mContext);
+
+                httpUtils.postPersonData(key, body, type);
+
+                return POST_SUCCESS;
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return POST_FAIL;
+        }
+
+//        @Override
+//        protected void onPostExecute(Integer integer) {
+//            super.onPostExecute(integer);
+//            getLoaderManager().initLoader(0,null,ProfileFragment.this).forceLoad();
+//        }
     }
 
 

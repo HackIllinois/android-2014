@@ -31,11 +31,12 @@
         </activity>
         <activity
             android:name="org.hackillinois.android.AuthActivity"
+            android:icon="@drawable/ic_action_hackillinois_icon_white"
             android:label="@string/login">
         </activity>
         <activity
             android:name="org.hackillinois.android.MainActivity"
-            android:icon="@drawable/ic_action_hackillinois_icon_white"
+            android:icon="@drawable/ic_launcher"
             android:label="@string/app_name"
             android:launchMode="singleTop" >
             <intent-filter>
