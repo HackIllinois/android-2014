@@ -122,11 +122,16 @@ public class DatabaseTable {
         contentValues.put(COL_EMAIL, hacker.getEmail());
         contentValues.put(COL_SCHOOL, hacker.getSchool());
         contentValues.put(COL_YEAR, hacker.getYear());
-        if (sqLiteDatabase.update(FTS_VIRTUAL_TABLE_HACKER, contentValues, where, null) == 0) {
-            return sqLiteDatabase.insert(FTS_VIRTUAL_TABLE_HACKER, null, contentValues);
-        } else {
-            return 1;
+        try {
+            if (sqLiteDatabase.update(FTS_VIRTUAL_TABLE_HACKER, contentValues, where, null) == 0) {
+                return sqLiteDatabase.insert(FTS_VIRTUAL_TABLE_HACKER, null, contentValues);
+            } else {
+                return 1;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return 1;
     }
 
     public long addStaff(Staff staff) {
@@ -140,11 +145,16 @@ public class DatabaseTable {
         contentValues.put(COL_YEAR, staff.getYear());
         contentValues.put(COL_COMPANY, staff.getCompany());
         contentValues.put(COL_JOB_TITLE, staff.getJobTitle());
-        if (sqLiteDatabase.update(FTS_VIRTUAL_TABLE_STAFF, contentValues, where, null) == 0) {
-            return sqLiteDatabase.insert(FTS_VIRTUAL_TABLE_STAFF, null, contentValues);
-        } else {
-            return 1;
+        try {
+            if (sqLiteDatabase.update(FTS_VIRTUAL_TABLE_STAFF, contentValues, where, null) == 0) {
+                return sqLiteDatabase.insert(FTS_VIRTUAL_TABLE_STAFF, null, contentValues);
+            } else {
+                return 1;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return 1;
     }
 
     public long addMentor(Mentor mentor) {
@@ -157,11 +167,16 @@ public class DatabaseTable {
         contentValues.put(COL_EMAIL, mentor.getEmail());
         contentValues.put(COL_COMPANY, mentor.getCompany());
         contentValues.put(COL_JOB_TITLE, mentor.getJobTitle());
-        if (sqLiteDatabase.update(FTS_VIRTUAL_TABLE_MENTOR, contentValues, where, null) == 0) {
-            return sqLiteDatabase.insert(FTS_VIRTUAL_TABLE_MENTOR, null, contentValues);
-        } else {
-            return 1;
+        try {
+            if (sqLiteDatabase.update(FTS_VIRTUAL_TABLE_MENTOR, contentValues, where, null) == 0) {
+                return sqLiteDatabase.insert(FTS_VIRTUAL_TABLE_MENTOR, null, contentValues);
+            } else {
+                return 1;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return 1;
     }
 
     public Cursor getHackerMatches(String query, String[] columns) {

@@ -200,7 +200,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         mTextSkills = (TextView) v.findViewById(R.id.text_skills_header);
         mInitials = (TextView) v.findViewById(R.id.profile_other_initials);
         ImageView statusPlusImage = (ImageView) v.findViewById(R.id.profile_status_plus);
-        ImageView skillsPlus = (ImageView) v.findViewById(R.id.profile_skills_plus);
+        ImageView skillsPlusImage = (ImageView) v.findViewById(R.id.profile_skills_plus);
         mPicasso = Picasso.with(getActivity());
 
         ListView skillsList = (ListView) v.findViewById(R.id.profile_skills_list);
@@ -220,7 +220,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
             mPerson = (Person) object;
             setFields(mPerson);
             statusPlusImage.setVisibility(View.GONE);
-            skillsPlus.setVisibility(View.GONE);
+            skillsPlusImage.setVisibility(View.GONE);
 
         } else {
             mTextLocation.setOnClickListener(new View.OnClickListener() {
@@ -250,14 +250,12 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
                 }
             });
 
-            ImageView skillsPlusImage = (ImageView) v.findViewById(R.id.profile_skills_plus);
             skillsPlusImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     launchEditSkillsFragment();
                 }
             });
-
             statusList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
