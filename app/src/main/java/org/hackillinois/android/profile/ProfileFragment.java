@@ -77,10 +77,29 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (getLoaderManager() != null) {
-                getLoaderManager().initLoader(0, null, ProfileFragment.this).forceLoad();
-                LocalBroadcastManager.getInstance(context).unregisterReceiver(this);
+            ArrayList<Skill> skills = (ArrayList<Skill>) intent.getSerializableExtra("skills");
+
+            ArrayList<List<String>> lists = new ArrayList<List<String>>();
+            List<String> updatedSkills = new ArrayList<String>();
+            int i = 0;
+            for(Skill skill : skills) {
+                updatedSkills.add(skill.getName());
+                if(i % 4 == 0)
+                    lists.add( new ArrayList<String>() );
+                lists.get(i/4).add(skill.getName());
+                i++;
             }
+
+            mPerson.setSkills(updatedSkills);
+
+            for( ; i % 4 != 0; i++) { // fill in the rest of the 4-tuple with empty strings
+                lists.get(i / 4).add("");
+            }
+
+            mSkillsAdapter.clear();
+            for(List<String> list : lists)
+                mSkillsAdapter.add(list);
+            mSkillsAdapter.notifyDataSetChanged();
         }
     };
 

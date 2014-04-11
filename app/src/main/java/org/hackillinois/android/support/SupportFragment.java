@@ -164,7 +164,7 @@ public class SupportFragment extends DialogFragment implements LoaderManager.Loa
                     for (Support item : rooms) {
                         if (selected.equalsIgnoreCase(item.getTitle())) {
                             Intent testIntent = new Intent(Intent.ACTION_VIEW);
-                            Uri data = Uri.parse("mailto:?subject=" + mSupportListAdapter.getItem(1).getTitle() + " - " + mSupportListAdapter.getItem(2).getTitle() + " - " + mSupportListAdapter.getItem(position).getTitle() + "&body=" + "" + "&to=" + "support@hackillinois.org");
+                            Uri data = Uri.parse("mailto:?subject=" + mSupportListAdapter.getItem(0).getTitle().substring(1) + " - " + mSupportListAdapter.getItem(1).getTitle().substring(2) + " - " + mSupportListAdapter.getItem(position).getTitle() + "&body=" + "" + "&to=" + "support@hackillinois.org");
                             testIntent.setData(data);
                             startActivity(testIntent);
                             break;

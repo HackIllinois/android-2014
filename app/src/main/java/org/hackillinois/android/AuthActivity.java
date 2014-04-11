@@ -24,7 +24,6 @@ public class AuthActivity extends FragmentActivity {
         if (sharedPreferences.getBoolean(getString(R.string.pref_splash_viewed), false)) {
             startActivity(new Intent(this, MainActivity.class));
             finish();
-            return;
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {

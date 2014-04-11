@@ -3,15 +3,20 @@ package org.hackillinois.android.schedule;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewPropertyAnimator;
+import android.widget.ImageView;
 
 import org.hackillinois.android.R;
 import org.hackillinois.android.models.ScheduleItem;
@@ -45,8 +50,6 @@ public class SundaySchedule extends ListFragment
         mListAdapter = new ScheduleListAdapter(getActivity());
         setListAdapter(mListAdapter);// set the list adapter to our custom list adapter
         Utils.registerBroadcastReceiver(getActivity(), broadcastReceiver);
-
-
     }
 
     @Override

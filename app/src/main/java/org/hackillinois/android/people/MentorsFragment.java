@@ -121,15 +121,4 @@ public class MentorsFragment extends ListFragment {
         SimpleCursorAdapter names = new SimpleCursorAdapter(getActivity(), R.layout.query_result_item, c, from, to, 0);
         searchView.setSuggestionsAdapter(names);
     }
-
-    public void showResults(String query) {
-        Cursor c = databaseTable.getMentorMatches(query, null);
-        if (c != null) {
-            int count = c.getCount();
-            String countString = getResources().getQuantityString(R.plurals.search_results,
-                    count, new Object[]{count, query});
-            SimpleCursorAdapter names = new SimpleCursorAdapter(getActivity(), R.layout.query_result_item, c, from, to, 0);
-            setListAdapter(names);
-        }
-    }
 }
