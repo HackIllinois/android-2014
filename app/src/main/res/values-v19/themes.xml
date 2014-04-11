@@ -7,6 +7,6 @@
     </style>
 
     <style name="Theme.Hackillinois.Launcher" parent="@android:style/Theme.Holo.NoActionBar.TranslucentDecor">
-        <item name="android:windowAnimationStyle">@style/LauncherAnimation</item>
     </style>
+
 </resources>

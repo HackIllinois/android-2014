@@ -18,10 +18,8 @@
         <item name="actionBarStyle">@style/ActionBar.Solid.Hackillinois_red_actionbar</item>
     </style>
 
-    <!-- This isn't working :( -->
-    <!-- <style name="Theme.Hackillinois.Launcher" parent="@android:style/Theme.NoTitleBar.Fullscreen"> -->
-    <style name="Theme.Hackillinois.Launcher" parent="Theme.HackIllinois.Base">
-        <item name="android:windowAnimationStyle">@style/LauncherAnimation</item>
+    <style name="Theme.Hackillinois.Launcher." parent="@android:style/Theme.NoTitleBar.Fullscreen">
+        <item name="android:windowAnimationStyle">@style/SkillsAnimation</item>
     </style>
 
     <style name="Theme.Hackillinois.Skills" parent="Theme.HackIllinois.Base">
