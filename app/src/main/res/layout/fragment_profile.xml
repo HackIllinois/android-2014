@@ -95,6 +95,10 @@
             android:textColor="#222"
             android:textStyle="bold"
             android:id="@+id/text_skills_header"/>
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:background="@color/background_grey"/>
 
         <LinearLayout
             android:id="@+id/skills_click"

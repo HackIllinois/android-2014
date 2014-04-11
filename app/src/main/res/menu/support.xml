@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+tools:context="org.hackillinois.android.SupportActivity" >
+<item android:id="@+id/action_call"
+    android:title="Call"
+    android:icon="@drawable/ic_action_call"
+    app:showAsAction="collapseActionView|ifRoom"
+    />
+</menu>
