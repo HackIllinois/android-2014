@@ -46,6 +46,7 @@ public class PersonDatabaseLoader extends AsyncTaskLoader<Void> {
                     String type = person.getString("type");
                     if (type.equals("hacker")) {
                         Hacker hacker = new Hacker(person);
+                        mDatabaseTable.addHacker(hacker);
                     } else if (type.equals("mentor") || type.equals("staff")) {
                         Mentor mentor = new Mentor(person);
                         mDatabaseTable.addMentor(mentor);
