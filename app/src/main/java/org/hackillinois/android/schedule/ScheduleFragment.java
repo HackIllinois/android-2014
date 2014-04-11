@@ -29,7 +29,7 @@ public class ScheduleFragment extends Fragment implements ViewPager.OnPageChange
 
     private int mScrollState;
     private int mScreenWidth;
-    private boolean rotated;
+    private static boolean rotated;
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     @Override
@@ -86,7 +86,7 @@ public class ScheduleFragment extends Fragment implements ViewPager.OnPageChange
      * @param positionOffset       Value from [0, 1) indicating the offset from the page at position.
      * @param positionOffsetPixels Value in pixels indicating the offset from position.
      */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -97,17 +97,25 @@ public class ScheduleFragment extends Fragment implements ViewPager.OnPageChange
         ViewPropertyAnimator animate = view.animate();
         if(animate != null && mScrollState == ViewPager.SCROLL_STATE_SETTLING){
             if(positionOffset > .7f){ // move to the right
-                animate.xBy(mScreenWidth / 3);
+               // animate.xBy(mScreenWidth / 3);
+                if(position == 0)
+                    animate.x( mScreenWidth/2);
+                if(position == 1)
+                    animate.x(2 * mScreenWidth/3);
                 if(rotated){
-                    animate.rotationBy(180f);
+                    animate.rotation(0f);
                     rotated = false;
                 }
                 if(mScrollState == ViewPager.SCROLL_STATE_IDLE)
                     animate.cancel();
             } else if(positionOffset < .3f) { // move to the left
-                animate.xBy(-(mScreenWidth / 3));
+                //animate.xBy(-(mScreenWidth / 3));
+                if(position == 0)
+                    animate.x(positionOffsetPixels + mScreenWidth/8);
+                if(position == 1)
+                     animate.x(positionOffsetPixels + mScreenWidth/3);
                 if(!rotated){
-                    animate.rotationBy(180f);
+                    animate.rotation(180f);
                     rotated = true;
                 }
                 if(mScrollState == ViewPager.SCROLL_STATE_IDLE)
