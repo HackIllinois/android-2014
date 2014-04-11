@@ -1,7 +1,9 @@
 package org.hackillinois.android.profile;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -19,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.hackillinois.android.MainActivity;
 import org.hackillinois.android.R;
@@ -78,6 +81,34 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         fragment.show(fragmentTransaction, "skills");
     }
 
+    private void updateStatus() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Update Hacker Status");
+        builder.setItems(new CharSequence[]
+                        {"Hacking", "Available", "Taking A Break", "Do Not Disturb"},
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // The 'which' argument contains the index position
+                        // of the selected item
+                        switch (which) {
+                            case 0:
+                                Toast.makeText(getActivity(), "clicked 1", 0).show();
+                                break;
+                            case 1:
+                                Toast.makeText(getActivity(), "clicked 2", 0).show();
+                                break;
+                            case 2:
+                                Toast.makeText(getActivity(), "clicked 3", 0).show();
+                                break;
+                            case 3:
+                                Toast.makeText(getActivity(), "clicked 4", 0).show();
+                                break;
+                        }
+                    }
+                });
+        builder.create().show();
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -120,6 +151,12 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //launchEditSkillsFragment();
+            }
+        });
+        statusList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                updateStatus();
             }
         });
         return v;
@@ -194,6 +231,14 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
 
 
             }
+
+//            try {
+//                HttpUtils httpUtils = HttpUtils.getHttpUtils(getActivity());
+//                httpUtils.updateStatus("[{\"status\": \"Taking A Break\", \"date\": 1397000000},{\"status\": \"Taking A Break\", \"date\": 1397000000}]", "hacker");
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+
             mNameTextView.setText(person.getName());
             if (person instanceof Hacker)
                 mTextSchool.setText(((Hacker) person).getSchool());
