@@ -118,7 +118,8 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
                                 break;
                         }
                     }
-                });
+                }
+        );
         builder.create().show();
     }
 
@@ -154,6 +155,13 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         statusList.setAdapter(mStatusAdapter);
 
 
+        mTextLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchSetLocation();
+            }
+        });
+
         mTextSkills.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -173,6 +181,10 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
             }
         });
         return v;
+    }
+
+    private void launchSetLocation() {
+        getFragmentManager().beginTransaction().replace(R.id.container, new LocationFragment()).addToBackStack(null).commit();
     }
 
     @Override
