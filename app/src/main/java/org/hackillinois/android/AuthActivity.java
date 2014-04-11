@@ -1,13 +1,12 @@
 package org.hackillinois.android;
 
-import android.app.Activity;
-import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+
+import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import org.hackillinois.android.login.OAuthAccessFragment;
 
@@ -18,19 +17,24 @@ public class AuthActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            // Tint that shit!
+            SystemBarTintManager tintManager = new SystemBarTintManager(this);
+            tintManager.setStatusBarTintEnabled(true);
+            int actionBarColor = getResources().getColor(R.color.hackillinois_blue);
+            tintManager.setStatusBarTintColor(actionBarColor);
+        }
+
         if (savedInstanceState == null) {
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-            final String email = sharedPreferences.getString(getString(R.string.pref_email), "");
             final FragmentManager fm = getSupportFragmentManager();
 
             OAuthAccessFragment oAuthAccessFragment = (OAuthAccessFragment) fm.findFragmentByTag("login");
 
-            if (email.length() == 0 && oAuthAccessFragment == null) {
+            if (oAuthAccessFragment == null) {
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 oAuthAccessFragment = new OAuthAccessFragment();
-                oAuthAccessFragment.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.Theme_AppCompat_Light_DarkActionBar);
-                oAuthAccessFragment.setCancelable(false);
-                oAuthAccessFragment.show(ft, "login");
+                ft.replace(R.id.container, oAuthAccessFragment, null)
+                .commit();
             }
         }
     }
