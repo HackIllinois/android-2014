@@ -1,7 +1,8 @@
 package org.hackillinois.android.profile;
 
 import android.app.Activity;
-
+import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -14,11 +15,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import org.hackillinois.android.R;
 import org.hackillinois.android.models.Location;
+import org.hackillinois.android.models.people.Person;
+import org.hackillinois.android.utils.HttpUtils;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -155,8 +158,58 @@ public class LocationFragment extends Fragment implements
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        String selectedLocation = locations.get(position).toString();
+        String body = "\"" + selectedLocation + "\"";
+        ProfileFragment profileFragment = (ProfileFragment) getFragmentManager().findFragmentByTag("profileFrag");
+        Person mPerson = profileFragment.getmPerson();
+
+        PostTask postTask = new PostTask(getActivity(), "homebase", mPerson.getType(), body);
+        postTask.execute();
+
+        profileFragment.setLocation(selectedLocation);
+        getFragmentManager().popBackStack();
+    }
+
+    public class PostTask extends AsyncTask<String, Integer, Integer> {
+
+        private Context mContext;
+        private String body;
+        private String key;
+        private String type;
+
+        private final Integer POST_SUCCESS = 0x1;
+        private final Integer POST_FAIL = 0x0;
+
+        public PostTask(Context context, String key, String type, String body) {
+            mContext = context;
+            this.body = body;
+            this.key = key;
+            this.type = type;
+        }
 
 
+        @Override
+        protected Integer doInBackground(String... s) {
+
+            try {
+                HttpUtils httpUtils = HttpUtils.getHttpUtils(mContext);
+
+                httpUtils.postPersonData(key, body, type);
+
+                return POST_SUCCESS;
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return POST_FAIL;
+        }
+
+//        @Override
+//        protected void onPostExecute(Integer integer) {
+//            super.onPostExecute(integer);
+//            getLoaderManager().initLoader(0,null,ProfileFragment.this).forceLoad();
+//        }
     }
 
 
