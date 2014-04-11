@@ -11,9 +11,10 @@
         android:id="@+id/support_item_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="22sp"
-        android:text="support"/>
+        android:text="support"
+        />
 
 
 </RelativeLayout>
