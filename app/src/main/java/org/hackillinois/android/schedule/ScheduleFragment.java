@@ -1,5 +1,6 @@
 package org.hackillinois.android.schedule;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Point;
 import android.os.Build;
@@ -28,8 +29,9 @@ public class ScheduleFragment extends Fragment implements ViewPager.OnPageChange
 
     private int mScrollState;
     private int mScreenWidth;
-    private boolean rotated;
+    private static boolean rotated;
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,15 +39,9 @@ public class ScheduleFragment extends Fragment implements ViewPager.OnPageChange
 
         WindowManager wm = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
-
-        if (Build.VERSION.SDK_INT >= 13) {
-            Point point = new Point();
-            display.getSize(point);
-            wm.getDefaultDisplay().getSize(point);
-            mScreenWidth =  point.x;
-        } else {
-            mScreenWidth = wm.getDefaultDisplay().getWidth();
-        }
+        Point point = new Point();
+        display.getSize(point);
+        mScreenWidth =  point.x;
 
         rotated = false;
     }
@@ -90,33 +86,40 @@ public class ScheduleFragment extends Fragment implements ViewPager.OnPageChange
      * @param positionOffset       Value from [0, 1) indicating the offset from the page at position.
      * @param positionOffsetPixels Value in pixels indicating the offset from position.
      */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
         if(positionOffset <= 0 || positionOffset >= 1)
             return;
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            ImageView view = (ImageView) getActivity().findViewById(R.id.rocketship);
-            ViewPropertyAnimator animate = view.animate();
-            if (animate != null && mScrollState == ViewPager.SCROLL_STATE_SETTLING) {
-                if (positionOffset > .7f) { // move to the right
-                    animate.xBy(mScreenWidth / 3);
-                    if (rotated) {
-                        animate.rotationBy(180f);
-                        rotated = false;
-                    }
-                    if (mScrollState == ViewPager.SCROLL_STATE_IDLE)
-                        animate.cancel();
-                } else if (positionOffset < .3f) { // move to the left
-                    animate.xBy(-(mScreenWidth / 3));
-                    if (!rotated) {
-                        animate.rotationBy(180f);
-                        rotated = true;
-                    }
-                    if (mScrollState == ViewPager.SCROLL_STATE_IDLE)
-                        animate.cancel();
+        ImageView view = (ImageView) getActivity().findViewById(R.id.rocketship);
+        ViewPropertyAnimator animate = view.animate();
+        if(animate != null && mScrollState == ViewPager.SCROLL_STATE_SETTLING){
+            if(positionOffset > .7f){ // move to the right
+               // animate.xBy(mScreenWidth / 3);
+                if(position == 0)
+                    animate.x( mScreenWidth/2);
+                if(position == 1)
+                    animate.x(2 * mScreenWidth/3);
+                if(rotated){
+                    animate.rotation(0f);
+                    rotated = false;
                 }
+                if(mScrollState == ViewPager.SCROLL_STATE_IDLE)
+                    animate.cancel();
+            } else if(positionOffset < .3f) { // move to the left
+                //animate.xBy(-(mScreenWidth / 3));
+                if(position == 0)
+                    animate.x(positionOffsetPixels + mScreenWidth/8);
+                if(position == 1)
+                     animate.x(positionOffsetPixels + mScreenWidth/3);
+                if(!rotated){
+                    animate.rotation(180f);
+                    rotated = true;
+                }
+                if(mScrollState == ViewPager.SCROLL_STATE_IDLE)
+                    animate.cancel();
             }
         }
     }
