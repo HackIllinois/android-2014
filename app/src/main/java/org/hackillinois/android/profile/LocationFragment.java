@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,13 +67,12 @@ public class LocationFragment extends DialogFragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_locationfragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_locationfragment_list, container, false);
         getDialog().setTitle("Please Select a Location");
-        // Set the adapter
+        assert view != null;
         mListView = (ListView) view.findViewById(android.R.id.list);
         mListView.setAdapter(mAdapter);
 
-        // Set OnItemClickListener so we can be notified on item clicks
         mListView.setOnItemClickListener(this);
 
         return view;
@@ -107,13 +105,10 @@ public class LocationFragment extends DialogFragment implements
             loaded = true;
             for(Location l : location){
                 locations.add(l);
-                Log.i("DataFromLoader",l.toString());
             }
             mAdapter = new ArrayAdapter<Location>(getActivity(),
                     android.R.layout.simple_list_item_1, android.R.id.text1, locations);
             mListView.setAdapter(mAdapter);
-        } else{
-            Log.e("LocationLoader", "No list of locations");
         }
     }
 

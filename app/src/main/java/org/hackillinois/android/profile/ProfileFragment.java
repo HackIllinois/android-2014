@@ -197,39 +197,42 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         mStatusAdapter = new StatusListAdapter(getActivity());
         statusList.setAdapter(mStatusAdapter);
 
+        if (mPerson == null) {
 
-        mTextLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                launchSetLocation();
-            }
-        });
 
-        mTextSkills.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                launchEditSkillsFragment();
-            }
-        });
-        skillsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                  launchEditSkillsFragment();
-            }
-        });
-        viewClick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                launchEditSkillsFragment();
+            mTextLocation.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    launchSetLocation();
+                }
+            });
 
-            }
-        });
-        statusList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                updateStatusDialog();
-            }
-        });
+            mTextSkills.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    launchEditSkillsFragment();
+                }
+            });
+            skillsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    launchEditSkillsFragment();
+                }
+            });
+            viewClick.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    launchEditSkillsFragment();
+
+                }
+            });
+            statusList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    updateStatusDialog();
+                }
+            });
+        }
         return v;
     }
 
