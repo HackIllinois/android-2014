@@ -217,13 +217,23 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
                   launchEditSkillsFragment();
             }
         });
-        viewClick.setOnClickListener(new View.OnClickListener() {
+
+        ImageView statusPlusImage = (ImageView) v.findViewById(R.id.profile_status_plus);
+        statusPlusImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateStatusDialog();
+            }
+        });
+
+        ImageView skillsPlusImage = (ImageView) v.findViewById(R.id.profile_skills_plus);
+        skillsPlusImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 launchEditSkillsFragment();
-
             }
         });
+
         statusList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

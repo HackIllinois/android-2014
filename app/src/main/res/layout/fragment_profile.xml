@@ -77,24 +77,45 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <ListView
-            android:id="@+id/status_list"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:listSelector="@android:color/transparent"
-            android:layout_weight="1"
-            android:divider="@null"/>
-
-        <TextView
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/skills"
-            android:paddingLeft="8dp"
-            android:paddingTop="10dp"
-            android:textSize="20sp"
-            android:textColor="#222"
-            android:textStyle="bold"
-            android:id="@+id/text_skills_header"/>
+            android:layout_weight="1" >
+            <ListView
+                android:id="@+id/status_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:listSelector="@android:color/transparent"
+                android:divider="@null"/>
+            <ImageView
+                android:id="@+id/profile_status_plus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_plus"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/skills"
+                android:paddingLeft="8dp"
+                android:paddingTop="10dp"
+                android:textSize="20sp"
+                android:textColor="#222"
+                android:textStyle="bold"
+                android:id="@+id/text_skills_header"/>
+            <ImageView
+                android:id="@+id/profile_skills_plus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_plus"/>
+        </RelativeLayout>
+
         <View
             android:layout_width="fill_parent"
             android:layout_height="1dip"
