@@ -1,6 +1,5 @@
 package org.hackillinois.android.schedule;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Point;
 import android.os.Build;
@@ -8,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerTitleStrip;
 import android.support.v4.view.ViewPager;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,17 +29,20 @@ public class ScheduleFragment extends Fragment implements ViewPager.OnPageChange
     private int mScreenWidth;
     private static boolean rotated;
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
         WindowManager wm = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
-        Display display = wm.getDefaultDisplay();
-        Point point = new Point();
-        display.getSize(point);
-        mScreenWidth =  point.x;
+
+        if (Build.VERSION.SDK_INT >= 13) {
+            Point point = new Point();
+            wm.getDefaultDisplay().getSize(point);
+            mScreenWidth =  point.x;
+        } else {
+            mScreenWidth = wm.getDefaultDisplay().getWidth();
+        }
 
         rotated = false;
     }
@@ -86,7 +87,6 @@ public class ScheduleFragment extends Fragment implements ViewPager.OnPageChange
      * @param positionOffset       Value from [0, 1) indicating the offset from the page at position.
      * @param positionOffsetPixels Value in pixels indicating the offset from position.
      */
-    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 

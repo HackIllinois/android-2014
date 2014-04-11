@@ -188,10 +188,6 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         //getLoaderManager().initLoader(0,null,this).forceLoad();
     }
 
-    public void setSkills(ArrayList<Skill> skillList) {
-
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -203,20 +199,15 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         mTextLocation = (TextView) v.findViewById(R.id.location_profile);
         mTextSkills = (TextView) v.findViewById(R.id.text_skills_header);
         mInitials = (TextView) v.findViewById(R.id.profile_other_initials);
+        ImageView statusPlusImage = (ImageView) v.findViewById(R.id.profile_status_plus);
+        ImageView skillsPlus = (ImageView) v.findViewById(R.id.profile_skills_plus);
         mPicasso = Picasso.with(getActivity());
 
         ListView skillsList = (ListView) v.findViewById(R.id.profile_skills_list);
-        View viewClick = v.findViewById(R.id.skills_click);
         ListView statusList = (ListView) v.findViewById(R.id.status_list);
 
-        Object object = getArguments().getSerializable("person");
-        if (object != null) {
-            mPerson = (Person) object;
-            setFields(mPerson);
-        }
-
         Utils.setInsets(getActivity(), v);
-        IntentFilter intentFilter = new IntentFilter("update_status");
+        IntentFilter intentFilter = new IntentFilter("get_skills");
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver, intentFilter);
 
         mSkillsAdapter = new SkillsAdapter(getActivity());
@@ -224,8 +215,14 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         mStatusAdapter = new StatusListAdapter(getActivity());
         statusList.setAdapter(mStatusAdapter);
 
-        if (getArguments().getSerializable("person") == null) {
+        Object object = getArguments().getSerializable("person");
+        if (object != null) {
+            mPerson = (Person) object;
+            setFields(mPerson);
+            statusPlusImage.setVisibility(View.GONE);
+            skillsPlus.setVisibility(View.GONE);
 
+        } else {
             mTextLocation.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -245,13 +242,22 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
                     launchEditSkillsFragment();
                 }
             });
-            viewClick.setOnClickListener(new View.OnClickListener() {
+
+            statusPlusImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    updateStatusDialog();
+                }
+            });
+
+            ImageView skillsPlusImage = (ImageView) v.findViewById(R.id.profile_skills_plus);
+            skillsPlusImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     launchEditSkillsFragment();
-
                 }
             });
+
             statusList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
