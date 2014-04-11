@@ -29,6 +29,7 @@ import com.squareup.picasso.Picasso;
 import org.hackillinois.android.MainActivity;
 import org.hackillinois.android.R;
 import org.hackillinois.android.RoundedTransformation;
+import org.hackillinois.android.models.Skill;
 import org.hackillinois.android.models.Status;
 import org.hackillinois.android.models.people.Hacker;
 import org.hackillinois.android.models.people.Mentor;
@@ -198,7 +199,6 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         mPicasso = Picasso.with(getActivity());
 
         ListView skillsList = (ListView) v.findViewById(R.id.profile_skills_list);
-        View viewClick = v.findViewById(R.id.skills_click);
         ListView statusList = (ListView) v.findViewById(R.id.status_list);
 
         Object object = getArguments().getSerializable("person");
