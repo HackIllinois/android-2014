@@ -156,6 +156,12 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(broadcastReceiver);
+    }
+
+    @Override
     public Loader<Person> onCreateLoader(int id, Bundle args) {
         return new ProfileDataLoader(getActivity());
     }

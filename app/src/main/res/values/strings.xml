@@ -46,6 +46,7 @@
     <string name="staff">Staff</string>
     <string name="mentor">Mentor</string>
     <string name="hacker">Hacker</string>
+    <string name="loading">Loading...</string>
 
 
 </resources>

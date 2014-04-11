@@ -1,5 +1,6 @@
 package org.hackillinois.android.login;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -26,38 +27,60 @@ import org.hackillinois.android.models.people.Person;
 public class OAuthAccessFragment extends DialogFragment implements LoaderManager.LoaderCallbacks<Person> {
 
     private static final String TAG = "OAuthAccessFragment";
+    private ProgressDialog progressDialog;
     private WebView webview;
-    OAuth2Helper mOAuth2Helper;
+
+    private WebViewClient webViewClient = new WebViewClient() {
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            Log.i(TAG, url);
+            if (url.startsWith(Oauth2Params.GOOGLE_PLUS.getRedirectUri())) {
+                webview.setVisibility(View.GONE);
+                Bundle bundle = new Bundle();
+                bundle.putString("url", url);
+                getLoaderManager().initLoader(0, bundle, OAuthAccessFragment.this).forceLoad();
+                progressDialog = new ProgressDialog(getActivity());
+                progressDialog.setMessage(getString(R.string.loading));
+                progressDialog.setCancelable(false);
+                progressDialog.show();
+            }
+        }
+    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setRetainInstance(true);
         View rootView = inflater.inflate(R.layout.fragment_login, container, false);
 
+        assert rootView != null;
         webview = (WebView) rootView.findViewById(R.id.webview);
         webview.getSettings().setJavaScriptEnabled(true);
-
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        mOAuth2Helper = new OAuth2Helper(prefs);
+        OAuth2Helper mOAuth2Helper = new OAuth2Helper(prefs);
         String authorizationUrl = mOAuth2Helper.getAuthorizationUrl();
-
-        webview.setWebViewClient(new WebViewClient() {
-
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                Log.i(TAG, url);
-                if (url.startsWith(Oauth2Params.GOOGLE_PLUS.getRedirectUri())) {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("url", url);
-                    getLoaderManager().initLoader(0, bundle, OAuthAccessFragment.this).forceLoad();
-                    webview.setVisibility(View.INVISIBLE);
-                } else {
-                    webview.setVisibility(View.VISIBLE);
-                }
-            }
-        });
+        webview.setWebViewClient(webViewClient);
         webview.loadUrl(authorizationUrl);
         return rootView;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        webview.saveState(outState);
+    }
+
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        webview.restoreState(savedInstanceState);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+
     }
 
     @Override
@@ -68,6 +91,9 @@ public class OAuthAccessFragment extends DialogFragment implements LoaderManager
     @Override
     public void onLoadFinished(Loader<Person> loader, Person data) {
         if (data != null) {
+            if (progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
             Intent intent = new Intent("LOGGED_IN");
             intent.putExtra("person", data);
             LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
@@ -78,7 +104,7 @@ public class OAuthAccessFragment extends DialogFragment implements LoaderManager
                 }
             });
         } else {
-            //TODO fix bad login, add progress indicators
+            //TODO fix bad login
             //webview.clearCache(true);
             //String authorizationUrl = mOAuth2Helper.getAuthorizationUrl();
             //webview.loadUrl(authorizationUrl);
@@ -87,6 +113,5 @@ public class OAuthAccessFragment extends DialogFragment implements LoaderManager
 
     @Override
     public void onLoaderReset(Loader<Person> loader) {
-
     }
 }
