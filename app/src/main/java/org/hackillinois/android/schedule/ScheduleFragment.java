@@ -86,7 +86,7 @@ public class ScheduleFragment extends Fragment implements ViewPager.OnPageChange
      * @param positionOffset       Value from [0, 1) indicating the offset from the page at position.
      * @param positionOffsetPixels Value in pixels indicating the offset from position.
      */
-    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 

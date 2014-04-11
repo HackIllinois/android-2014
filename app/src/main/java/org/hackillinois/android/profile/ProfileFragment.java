@@ -197,39 +197,42 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         mStatusAdapter = new StatusListAdapter(getActivity());
         statusList.setAdapter(mStatusAdapter);
 
+        if (mPerson == null) {
 
-        mTextLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                launchSetLocation();
-            }
-        });
 
-        mTextSkills.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                launchEditSkillsFragment();
-            }
-        });
-        skillsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                  launchEditSkillsFragment();
-            }
-        });
-        viewClick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                launchEditSkillsFragment();
+            mTextLocation.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    launchSetLocation();
+                }
+            });
 
-            }
-        });
-        statusList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                updateStatusDialog();
-            }
-        });
+            mTextSkills.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    launchEditSkillsFragment();
+                }
+            });
+            skillsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    launchEditSkillsFragment();
+                }
+            });
+            viewClick.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    launchEditSkillsFragment();
+
+                }
+            });
+            statusList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    updateStatusDialog();
+                }
+            });
+        }
         return v;
     }
 
@@ -242,7 +245,9 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         super.onResume();
         Bundle args = getArguments();
         if (args != null) {
-            ((MainActivity) getActivity()).onSectionAttached(args.getInt(Utils.ARG_SECTION_NUMBER));
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).onSectionAttached(args.getInt(Utils.ARG_SECTION_NUMBER));
+            }
         }
         if (mPerson == null) {
             // This means this is the profile tab so we have to load the data
@@ -350,7 +355,6 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
 
         @Override
         protected Integer doInBackground(String... s) {
-
             try {
                 HttpUtils httpUtils = HttpUtils.getHttpUtils(mContext);
 

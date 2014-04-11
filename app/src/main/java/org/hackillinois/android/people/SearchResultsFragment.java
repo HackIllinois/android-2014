@@ -50,17 +50,12 @@ public class SearchResultsFragment extends ListFragment {
         mPeopleListAdapter = new PeopleListAdapter(getActivity());
         setListAdapter(mPeopleListAdapter);
         databaseTable = new DatabaseTable(getActivity());
-
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
         personSparseArray = ((MainActivity) getActivity()).getiOSLookup();
         String query = getArguments().getString(ARG_QUERY, "");
         if (query != null && !query.isEmpty()) {
             showResults(query);
         }
+
     }
 
     @Override
@@ -128,7 +123,7 @@ public class SearchResultsFragment extends ListFragment {
         Cursor c = databaseTable.getHackerMatches(query, null);
         if (c != null) {
             while (!c.isAfterLast()) {
-                int key = c.getInt(0);
+                int key = c.getInt(1);
                 Person person = personSparseArray.get(key);
                 mPeopleListAdapter.add(person);
                 c.moveToNext();

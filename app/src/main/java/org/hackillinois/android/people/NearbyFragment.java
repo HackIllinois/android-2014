@@ -79,8 +79,8 @@ public class NearbyFragment extends ListFragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
         if (mIsSupported) {
             final BluetoothManager bluetoothManager =
                     (BluetoothManager) getActivity().getSystemService(Context.BLUETOOTH_SERVICE);

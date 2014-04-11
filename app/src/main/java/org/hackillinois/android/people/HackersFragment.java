@@ -7,8 +7,8 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,6 +18,7 @@ import android.widget.ListView;
 import org.hackillinois.android.MainActivity;
 import org.hackillinois.android.R;
 import org.hackillinois.android.database.DatabaseTable;
+import org.hackillinois.android.database.SuggestionAdapter;
 import org.hackillinois.android.models.people.Hacker;
 import org.hackillinois.android.models.people.Person;
 import org.hackillinois.android.utils.Utils;
@@ -26,11 +27,10 @@ import java.util.List;
 
 public class HackersFragment extends ListFragment {
 
+    private static final String TAG = "HackersFragment";
     private PeopleListAdapter mPeopleListAdapter;
     private DatabaseTable databaseTable;
-    String [] from = new String[] {DatabaseTable.COL_NAME,
-            DatabaseTable.COL_EMAIL};
-    int[] to = new int[] {R.id.name, R.id.email};
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,6 +65,13 @@ public class HackersFragment extends ListFragment {
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
         searchView.setSearchableInfo(
                 searchManager.getSearchableInfo(getActivity().getComponentName()));
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CharSequence clickQuery = searchView.getQuery();
+                Log.i(TAG, "query is " + clickQuery);
+            }
+        });
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
@@ -119,8 +126,27 @@ public class HackersFragment extends ListFragment {
     private void setSuggestionsAdapter(SearchView searchView, String query) {
         Cursor c = databaseTable.getHackerMatches(query, null);
         if (getActivity() != null) {
-            SimpleCursorAdapter names = new SimpleCursorAdapter(getActivity(), R.layout.query_result_item, c, from, to, 0);
-            searchView.setSuggestionsAdapter(names);
+            final SuggestionAdapter suggestionAdapter = new SuggestionAdapter(getActivity(), R.layout.query_result_item, c, 0);
+            searchView.setSuggestionsAdapter(suggestionAdapter);
+            searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
+                @Override
+                public boolean onSuggestionSelect(int i) {
+                    return false;
+                }
+
+                @Override
+                public boolean onSuggestionClick(int i) {
+                    final Cursor c = (Cursor) suggestionAdapter.getItem(i);
+                    if (c != null) {
+                        int key = c.getInt(1);
+                        Person person = ((MainActivity)getActivity()).getiOSLookup().get(key);
+                        Intent intent = new Intent(getActivity(), ProfileViewActivity.class);
+                        intent.putExtra("person", person);
+                        startActivity(intent);
+                    }
+                    return false;
+                }
+            });
         }
 
     }

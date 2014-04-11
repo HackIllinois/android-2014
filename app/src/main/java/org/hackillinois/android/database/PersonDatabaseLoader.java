@@ -2,6 +2,7 @@ package org.hackillinois.android.database;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
+import android.util.Log;
 
 import org.hackillinois.android.models.people.Hacker;
 import org.hackillinois.android.models.people.Mentor;
@@ -15,6 +16,7 @@ import java.net.URL;
 
 public class PersonDatabaseLoader extends AsyncTaskLoader<Void> {
     private static final String PEOPLE_URL = "http://hackillinois.org/mobile/person";
+    private static final String TAG = "PersonDatabaseLoader";
 
     Context mContext;
     DatabaseTable mDatabaseTable;
@@ -28,6 +30,8 @@ public class PersonDatabaseLoader extends AsyncTaskLoader<Void> {
     @Override
     public Void loadInBackground() {
         String data = null;
+
+        Log.i(TAG, "loading database...");
         try {
             HttpUtils httpUtils = HttpUtils.getHttpUtils(mContext);
             data = httpUtils.loadData(new URL(PEOPLE_URL));
@@ -48,11 +52,13 @@ public class PersonDatabaseLoader extends AsyncTaskLoader<Void> {
                         mDatabaseTable.addMentor(mentor);
                     }
                 }
+                Log.i(TAG, "loading database done");
                 return null;
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
+        Log.i(TAG, "loading database error");
         return null;
     }
 }
