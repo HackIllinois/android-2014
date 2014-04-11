@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.content.AsyncTaskLoader;
-import android.util.Log;
 
 import org.hackillinois.android.R;
 import org.hackillinois.android.models.people.Hacker;
@@ -38,47 +37,40 @@ public class ProcessTokenLoader extends AsyncTaskLoader<Person> {
 
     @Override
     public Person loadInBackground() {
-        if (mUrl.startsWith(Oauth2Params.GOOGLE_PLUS.getRedirectUri())) {
-            try {
-                if (mUrl.contains("code=")) {
-                    String authorizationCode = extractCodeFromUrl(mUrl);
-                    mOAuth2Helper.retrieveAndStoreAccessToken(authorizationCode);
+        try {
+            String authorizationCode = extractCodeFromUrl(mUrl);
+            mOAuth2Helper.retrieveAndStoreAccessToken(authorizationCode);
 
-                    HttpUtils httpUtils = HttpUtils.getHttpUtils(getContext());
-                    String apiCall = mOAuth2Helper.executeApiCall();
-                    JSONObject response = new JSONObject(apiCall);
-                    JSONArray array = response.getJSONArray("emails");
+            HttpUtils httpUtils = HttpUtils.getHttpUtils(getContext());
+            String apiCall = mOAuth2Helper.executeApiCall();
+            JSONObject response = new JSONObject(apiCall);
+            JSONArray array = response.getJSONArray("emails");
 
-                    for (int i = 0; i < array.length(); i ++) {
-                        String email = array.getJSONObject(i).getString("value");
-                        String userResponse = httpUtils.testEmail(email);
-                        if (!userResponse.equals("[]")) {
-                            Person resPerson = null;
-                            JSONArray jsonArray = new JSONArray(userResponse);
-                            JSONObject person = jsonArray.getJSONObject(0);
-                            String type = person.getString("type");
-                            if (type.equals("hacker")) {
-                                resPerson = new Hacker(person);
-                            } else if (type.equals("staff")) {
-                                resPerson = new Staff(person);
-                            } else if (type.equals("mentor")) {
-                                resPerson = new Staff(person);
-                            }
-                            SharedPreferences.Editor editor = mSharedPreferences.edit();
-                            editor.putString(getContext().getString(R.string.pref_email), email);
-                            editor.commit();
-                            return resPerson;
-                        }
+            for (int i = 0; i < array.length(); i ++) {
+                String email = array.getJSONObject(i).getString("value");
+                String userResponse = httpUtils.testEmail(email);
+                if (!userResponse.equals("[]")) {
+                    Person resPerson = null;
+                    JSONArray jsonArray = new JSONArray(userResponse);
+                    JSONObject person = jsonArray.getJSONObject(0);
+                    String type = person.getString("type");
+                    if (type.equals("hacker")) {
+                        resPerson = new Hacker(person);
+                    } else if (type.equals("staff")) {
+                        resPerson = new Staff(person);
+                    } else if (type.equals("mentor")) {
+                        resPerson = new Staff(person);
                     }
-                    return null;
-                } else if (mUrl.contains("error=")) {
-                    Log.i(TAG, "error is " + mUrl);
+                    SharedPreferences.Editor editor = mSharedPreferences.edit();
+                    editor.putString(getContext().getString(R.string.pref_email), email);
+                    editor.putBoolean("PREF_SPLASH_VIEWED", true);
+                    editor.commit();
+                    return resPerson;
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
-        } else {
-            Log.i(TAG, "Not doing anything for mUrl " + mUrl);
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
     }
