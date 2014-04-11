@@ -1,5 +1,7 @@
 package org.hackillinois.android.profile;
 
+import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager;
@@ -19,8 +21,10 @@ import android.widget.Toast;
 import org.hackillinois.android.R;
 import org.hackillinois.android.models.Skill;
 import org.hackillinois.android.models.people.Person;
+import org.hackillinois.android.utils.HttpUtils;
 import org.hackillinois.android.utils.Utils;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -35,7 +39,7 @@ public class SkillsDialogFragment extends DialogFragment implements LoaderManage
     private static final String SKILLS_URL = "http://www.hackillinois.org/mobile/skills";
 
     private SkillsListAdapter mSkillsListAdapter;
-    private Person person;
+    private Person mPerson;
 
     public static SkillsDialogFragment newInstance(Person person) {
         SkillsDialogFragment fragment = new SkillsDialogFragment();
@@ -50,7 +54,7 @@ public class SkillsDialogFragment extends DialogFragment implements LoaderManage
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_pick_skills, container, false);
-        person = (Person) getArguments().getSerializable("person");
+        mPerson = (Person) getArguments().getSerializable("person");
 
         Utils.setInsetsBottom(getActivity(), rootView);
         this.getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
@@ -74,6 +78,9 @@ public class SkillsDialogFragment extends DialogFragment implements LoaderManage
             public void onClick(View v) {
                 ArrayList<Skill> selected = mSkillsListAdapter.getSelectedSkills();
                 Toast.makeText(getActivity(), "You selected " + selected.get(0).getName() + " and stuff!", Toast.LENGTH_LONG).show();
+
+                PostTask postTask = new PostTask(getActivity(), "skills", mPerson.getType(), formatBody(selected));
+                postTask.execute();
                 dismiss();
             }
         });
@@ -99,6 +106,22 @@ public class SkillsDialogFragment extends DialogFragment implements LoaderManage
     }
 
 
+    /** Given an ArrayList of the user's selected skills, return a string containing
+     * all the skills in proper json format for the backend. */
+    public String formatBody(ArrayList<Skill> selected) {
+        StringBuilder body = new StringBuilder();
+        body.append("{\"skills\":[");
+        for(int i = 0; i < selected.size(); i++) {
+            body.append( "\"" );
+            body.append( selected.get(i).getName() );
+            body.append( "\"" );
+            if(i != selected.size() - 1)
+                body.append( "," );
+        }
+        body.append( "]}");
+
+        return body.toString();
+    }
 
 
     @Override
@@ -144,7 +167,7 @@ public class SkillsDialogFragment extends DialogFragment implements LoaderManage
     @Override
     public void onLoadFinished(Loader<ArrayList<Skill>> loader, ArrayList<Skill> allSkills) {
         // load data into the list
-        ArrayList<String> userSkills = (ArrayList<String>) person.getSkills();
+        ArrayList<String> userSkills = (ArrayList<String>) mPerson.getSkills();
 
         // Pre-select all of the skills tha the user has already selected
         if(userSkills.size() > 0) {
@@ -168,5 +191,49 @@ public class SkillsDialogFragment extends DialogFragment implements LoaderManage
     public void onLoaderReset(Loader<ArrayList<Skill>> loader) {
 
     }
+
+
+    public class PostTask extends AsyncTask<String, Integer, Integer> {
+
+        private Context mContext;
+        private String body;
+        private String key;
+        private String type;
+
+        private final Integer POST_SUCCESS = 0x1;
+        private final Integer POST_FAIL = 0x0;
+
+        public PostTask(Context context, String key, String type, String body) {
+            mContext = context;
+            this.body = body;
+            this.key = key;
+            this.type = type;
+        }
+
+
+        @Override
+        protected Integer doInBackground(String... s) {
+
+            try {
+                HttpUtils httpUtils = HttpUtils.getHttpUtils(mContext);
+
+                httpUtils.postPersonData(key, body, type);
+
+                return POST_SUCCESS;
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return POST_FAIL;
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
+            //getLoaderManager().initLoader(0,null, SkillsDialogFragment.this).forceLoad();
+        }
+    }
+
 
 }
