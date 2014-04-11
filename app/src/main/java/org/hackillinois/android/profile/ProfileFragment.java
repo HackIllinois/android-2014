@@ -33,6 +33,7 @@ import org.hackillinois.android.models.Status;
 import org.hackillinois.android.models.people.Hacker;
 import org.hackillinois.android.models.people.Mentor;
 import org.hackillinois.android.models.people.Person;
+import org.hackillinois.android.models.people.Staff;
 import org.hackillinois.android.utils.HttpUtils;
 import org.hackillinois.android.utils.Utils;
 import org.joda.time.DateTime;
@@ -93,30 +94,58 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
     private void updateStatusDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Update Hacker Status");
-        builder.setItems(new CharSequence[]
-                        {"Hacking", "Available", "Taking A Break", "Do Not Disturb"},
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // The 'which' argument contains the index position
-                        // of the selected item
-                        switch (which) {
-                            case 0:
-                                updateStatus("Hacking");
-                                break;
-                            case 1:
-                                updateStatus("Available");
-                                break;
-                            case 2:
-                                updateStatus("Taking A Break");
-                                break;
-                            case 3:
-                                updateStatus("Do Not Disturb");
-                                break;
+        if(mPerson instanceof Staff) {
+            builder.setItems(new CharSequence[]
+                            {"Hacking", "Available", "Taking A Break", "Pooping"},
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // The 'which' argument contains the index position
+                            // of the selected item
+                            switch (which) {
+                                case 0:
+                                    updateStatus("Hacking");
+                                    break;
+                                case 1:
+                                    updateStatus("Available");
+                                    break;
+                                case 2:
+                                    updateStatus("Taking A Break");
+                                    break;
+                                case 3:
+                                    updateStatus("Pooping");
+                                    break;
+                            }
                         }
                     }
-                }
-        );
-        builder.create().show();
+            );
+            builder.create().show();
+        }
+        else{
+            builder.setItems(new CharSequence[]
+                            {"Hacking", "Available", "Taking A Break", "Do Not Disturb"},
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // The 'which' argument contains the index position
+                            // of the selected item
+                            switch (which) {
+                                case 0:
+                                    updateStatus("Hacking");
+                                    break;
+                                case 1:
+                                    updateStatus("Available");
+                                    break;
+                                case 2:
+                                    updateStatus("Taking A Break");
+                                    break;
+                                case 3:
+                                    updateStatus("Do Not Disturb");
+                                    break;
+                            }
+                        }
+                    }
+            );
+            builder.create().show();
+        }
     }
 
     private void updateStatus(String status){
