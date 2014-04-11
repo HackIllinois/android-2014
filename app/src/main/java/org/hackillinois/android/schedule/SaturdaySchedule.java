@@ -123,13 +123,6 @@ public class SaturdaySchedule extends ListFragment
 
     @Override
     public void onRefresh() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            ImageView view = (ImageView) getActivity().findViewById(R.id.rocketship);
-            ViewPropertyAnimator animate = view.animate();
-            if (animate != null) {
-                animate.rotationBy(-620f);
-            }
-        }
         getLoaderManager().initLoader(0, null, SaturdaySchedule.this).forceLoad();
     }
 
