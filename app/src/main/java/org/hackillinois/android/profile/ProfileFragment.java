@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -27,6 +28,7 @@ import com.squareup.picasso.Picasso;
 
 import org.hackillinois.android.MainActivity;
 import org.hackillinois.android.R;
+import org.hackillinois.android.RoundedTransformation;
 import org.hackillinois.android.models.Status;
 import org.hackillinois.android.models.people.Hacker;
 import org.hackillinois.android.models.people.Mentor;
@@ -280,7 +282,13 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
 
     private void setFields(Person person) {
         mNameTextView.setText(person.getName());
-        mPicasso.load(person.getImageURL()).resize(200, 200).centerCrop().into(mImageView);
+
+        Resources res = getResources();
+        RoundedTransformation mBlueTransformation = new RoundedTransformation(100, 5,
+                res.getColor(R.color.hackillinois_blue_trans), 0);
+        mPicasso.load(person.getImageURL()).resize(200, 200).centerCrop()
+                .transform(mBlueTransformation).into(mImageView);
+
         if (person instanceof Hacker)
             mTextSchool.setText(((Hacker) person).getSchool());
         else if (person instanceof Mentor)
