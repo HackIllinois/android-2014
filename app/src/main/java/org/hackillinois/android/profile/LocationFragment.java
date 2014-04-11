@@ -166,7 +166,7 @@ public class LocationFragment extends Fragment implements
         PostTask postTask = new PostTask(getActivity(), "homebase", mPerson.getType(), body);
         postTask.execute();
 
-        profileFragment.setLocation(selectedLocation);
+        profileFragment.setLocation();
         getFragmentManager().popBackStack();
     }
 
