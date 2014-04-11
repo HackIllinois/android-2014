@@ -110,7 +110,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
                         Activity activity = getActivity();
                         switch (which) {
                             case 0:
-                                updateStatus("Hacker");
+                                updateStatus("Hacking");
                                 break;
                             case 1:
                                 updateStatus("Available");
@@ -180,16 +180,19 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
                 launchEditSkillsFragment();
             }
         });
-        skillsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                launchEditSkillsFragment();
-            }
-        });
+
+
+
         statusList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 updateStatusDialog();
+            }
+        });
+        skillsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                launchEditSkillsFragment();
             }
         });
         return v;
