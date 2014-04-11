@@ -119,7 +119,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
 
     private void updateStatus(String status){
         DateTime date = new DateTime();
-        String statusArray = mPerson.getStatusArray().toString();
+        String statusArray = mPerson.getStatusArray();
         Log.e("status array", statusArray.substring(1));
         String body = "[{\"status\": \"" + status + "\", \"date\": " + date.getMillis()/1000 + "}";
         if(statusArray.length() <= 2)
@@ -234,45 +234,40 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onLoadFinished(Loader<Person> loader, Person person) {
         if (person != null) {
-            if (person.getSkills().isEmpty()) {
-                // maybe launch skills fragment
-                // launchEditSkillsFragment();
+            List<String> skills = person.getSkills();
+
+            ArrayList<List<String>> lists = new ArrayList<List<String>>();
+
+            int i = 0;
+            for(String skill : skills) {
+                if(i % 4 == 0)
+                    lists.add( new ArrayList<String>() );
+                lists.get(i/4).add(skill);
+                i++;
             }
-            else {
-                List<String> skills = person.getSkills();
 
-                ArrayList<List<String>> lists = new ArrayList<List<String>>();
-
-                int i = 0;
-                for(String skill : skills) {
-                    if(i % 4 == 0)
-                        lists.add( new ArrayList<String>() );
-                    lists.get(i/4).add(skill);
-                    i++;
-                }
-
-                for( ; i % 4 != 0; i++) { // fill in the rest of the 4-tuple with empty strings
-                    lists.get(i / 4).add("");
-                }
-
-                List<Status> status_list = person.getStatuses();
-                mStatusAdapter.clear();
-                for(Status stat : status_list) {
-                    mStatusAdapter.add(stat);
-                }
-                mStatusAdapter.notifyDataSetChanged();
-
-                mSkillsAdapter.clear();
-                for(List<String> list : lists)
-                    mSkillsAdapter.add(list);
-                mSkillsAdapter.notifyDataSetChanged();
-
-
+            for( ; i % 4 != 0; i++) { // fill in the rest of the 4-tuple with empty strings
+                lists.get(i / 4).add("");
             }
+
+            List<Status> status_list = person.getStatuses();
+            mStatusAdapter.clear();
+            for(Status stat : status_list) {
+                mStatusAdapter.add(stat);
+            }
+            mStatusAdapter.notifyDataSetChanged();
+
+            mSkillsAdapter.clear();
+            for(List<String> list : lists)
+                mSkillsAdapter.add(list);
+            mSkillsAdapter.notifyDataSetChanged();
+
+
             setFields(person);
             mPerson = person;
             if(person.getStatuses().isEmpty())
                 updateStatus("Hacking");
+
         }
     }
 
