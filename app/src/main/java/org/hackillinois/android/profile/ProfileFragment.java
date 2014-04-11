@@ -207,20 +207,12 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        Bundle args = getArguments();
-        if (args != null) {
-            if (args.getInt(Utils.ARG_SECTION_NUMBER) != 0) {
-                ((MainActivity) getActivity()).onSectionAttached(args.getInt(Utils.ARG_SECTION_NUMBER));
-            }
-        }
-
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
+        Bundle args = getArguments();
+        if (args != null) {
+            ((MainActivity) getActivity()).onSectionAttached(args.getInt(Utils.ARG_SECTION_NUMBER));
+        }
         if (mPerson == null) {
             // This means this is the profile tab so we have to load the data
             getLoaderManager().initLoader(0,null,this).forceLoad();

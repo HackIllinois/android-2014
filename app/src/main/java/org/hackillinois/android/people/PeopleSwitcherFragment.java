@@ -57,6 +57,7 @@ public class PeopleSwitcherFragment extends Fragment implements LoaderManager.Lo
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_people_switcher, container, false);
+        assert rootView != null;
         mViewPager = (ViewPager) rootView.findViewById(R.id.people_pager);
         PagerTitleStrip pagerTitleStrip = (PagerTitleStrip) rootView.findViewById(R.id.pager_strip);
 
@@ -68,9 +69,14 @@ public class PeopleSwitcherFragment extends Fragment implements LoaderManager.Lo
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        ((MainActivity) getActivity()).onSectionAttached(getArguments().getInt(Utils.ARG_SECTION_NUMBER));
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
-        ((MainActivity) getActivity()).onSectionAttached(getArguments().getInt(Utils.ARG_SECTION_NUMBER));
         if (!loaded) {
             getLoaderManager().initLoader(0, null, this).forceLoad();
         }

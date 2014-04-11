@@ -5,7 +5,6 @@ import android.support.v4.content.AsyncTaskLoader;
 
 import org.hackillinois.android.models.people.Hacker;
 import org.hackillinois.android.models.people.Mentor;
-import org.hackillinois.android.models.people.Staff;
 import org.hackillinois.android.utils.HttpUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,10 +43,7 @@ public class PersonDatabaseLoader extends AsyncTaskLoader<Void> {
                     if (type.equals("hacker")) {
                         Hacker hacker = new Hacker(person);
                         mDatabaseTable.addHacker(hacker);
-                    } else if (type.equals("staff")) {
-                        Staff staff = new Staff(person);
-                        mDatabaseTable.addStaff(staff);
-                    } else if (type.equals("mentor")) {
+                    } else if (type.equals("mentor") || type.equals("staff")) {
                         Mentor mentor = new Mentor(person);
                         mDatabaseTable.addMentor(mentor);
                     }

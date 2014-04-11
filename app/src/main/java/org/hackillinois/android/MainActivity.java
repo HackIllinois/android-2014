@@ -71,7 +71,9 @@ public class MainActivity extends ActionBarActivity
             tintManager.setStatusBarTintColor(actionBarColor);
         }
         handleIntent(getIntent());
-        new PersonDatabaseLoader(MainActivity.this).forceLoad();
+        if (savedInstanceState == null) {
+            new PersonDatabaseLoader(MainActivity.this).forceLoad();
+        }
     }
 
     @Override
