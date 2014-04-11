@@ -3,6 +3,7 @@ package org.hackillinois.android.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.squareup.okhttp.HttpResponseCache;
 import com.squareup.okhttp.OkHttpClient;
@@ -47,6 +48,7 @@ public class HttpUtils {
         try {
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
             String email = sharedPreferences.getString(mContext.getString(R.string.pref_email), "");
+            Log.e("Email",email);
             con.addRequestProperty("Email", email);
             con.setRequestMethod("GET");
             con.setRequestProperty("Content-Type", "application/json");
@@ -72,7 +74,7 @@ public class HttpUtils {
             String email = sharedPreferences.getString(mContext.getString(R.string.pref_email), "");
             con.addRequestProperty("Email", email);
             con.setRequestMethod("POST");
-            con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            con.setRequestProperty("Content-Type", "a2pplication/x-www-form-urlencoded");
             con.setRequestProperty("charset", "utf-8");
             con.setRequestProperty("Content-Length", "{\"status\":" + statusArray + "}");
             outputStream = con.getOutputStream();

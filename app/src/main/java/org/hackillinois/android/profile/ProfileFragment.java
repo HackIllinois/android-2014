@@ -39,6 +39,7 @@ import java.util.List;
 public class ProfileFragment extends Fragment implements LoaderManager.LoaderCallbacks<Person> {
 
     private static final String SKILLS_FRAG = "EDIT_SKILLS";
+    private static final String LOCATION_FRAG = "SET_LOCATION";
     private static final String TAG = "ProfileFragment";
 
     private Person person;
@@ -93,6 +94,18 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
 //                .commit();
 //        fragmentManager.executePendingTransactions();
     }
+
+    private void launchSetLocationFragment(){
+        getFragmentManager().beginTransaction().replace(R.id.container, new LocationFragment()).addToBackStack(null).commit();
+    }
+
+
+    private void updateLocation(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+    }
+
+
 
     private void updateStatus() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -154,6 +167,8 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         statusList.setAdapter(mStatusAdapter);
 
 
+
+
         mTextSkills.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -172,8 +187,18 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
                 updateStatus();
             }
         });
+
+        mTextLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchSetLocationFragment();
+            }
+        });
+
+
         return v;
     }
+
 
     @Override
     public void onStart() {
