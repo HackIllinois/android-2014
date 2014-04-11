@@ -4,13 +4,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * @author Will Hennessy
  *  Simple model class to represent a user skill.
  */
-public class Skill {
+public class Skill implements Serializable{
 
     private String name;
     private ArrayList<String> tags;

@@ -29,7 +29,7 @@
         android:paddingBottom="3dp"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
-        android:src="@drawable/ic_rocket2x"
+        android:src="@drawable/ic_rocket_small"
         android:layout_alignParentTop="true"/>
 
 </RelativeLayout>

@@ -51,11 +51,11 @@ public class SearchResultsFragment extends ListFragment {
         setListAdapter(mPeopleListAdapter);
         databaseTable = new DatabaseTable(getActivity());
         personSparseArray = ((MainActivity) getActivity()).getiOSLookup();
+        (getActivity()).setTitle(getString(R.string.search_results));
         String query = getArguments().getString(ARG_QUERY, "");
         if (query != null && !query.isEmpty()) {
             showResults(query);
         }
-
     }
 
     @Override
