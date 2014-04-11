@@ -13,6 +13,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
+        android:singleLine="true"
         android:id="@+id/skill_0"/>
 
     <TextView
@@ -24,6 +25,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
+        android:singleLine="true"
         android:id="@+id/skill_1" />
 
     <TextView
@@ -35,6 +37,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
+        android:singleLine="true"
         android:id="@+id/skill_2" />
 
     <TextView
@@ -46,5 +49,6 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
+        android:singleLine="true"
         android:id="@+id/skill_3" />
 </LinearLayout>
