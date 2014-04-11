@@ -34,6 +34,7 @@ import org.hackillinois.android.people.PeopleSwitcherFragment;
 import org.hackillinois.android.people.ProfileViewActivity;
 import org.hackillinois.android.people.SearchResultsFragment;
 import org.hackillinois.android.profile.ProfileFragment;
+import org.hackillinois.android.support.SupportFragment;
 import org.hackillinois.android.schedule.ScheduleFragment;
 
 import java.util.HashMap;
@@ -46,6 +47,7 @@ public class MainActivity extends ActionBarActivity
     private static final String PEOPLE_TAG = "peopleFrag";
     private static final String NEWS_TAG = "newsFrag";
     private static final String SCHEDULE_TAG = "scheduleFrag";
+    private static final String SUPPORT_TAG = "supportFrag";
     private static final String TAG = "MainActivity";
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
@@ -173,6 +175,15 @@ public class MainActivity extends ActionBarActivity
                         .replace(R.id.container, scheduleFragment, SCHEDULE_TAG).addToBackStack(null)
                         .commit();
                 break;
+            case 4:
+                Fragment supportFragment = fragmentManager.findFragmentByTag(SUPPORT_TAG);
+                if (supportFragment == null) {
+                    supportFragment = SupportFragment.newInstance(position + 1);
+                }
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, supportFragment, SUPPORT_TAG).addToBackStack(null)
+                        .commit();
+                break;
         }
     }
 
@@ -189,6 +200,9 @@ public class MainActivity extends ActionBarActivity
                 break;
             case 4:
                 mTitle = getString(R.string.title_section4);
+                break;
+            case 5:
+                mTitle = getString(R.string.title_section5);
                 break;
         }
     }

@@ -12,6 +12,7 @@ import org.hackillinois.android.R;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -22,6 +23,7 @@ public class HttpUtils {
     private Context mContext;
 
     private static final String EMAIL_URL = "http://www.hackillinois.org/mobile/login";
+    private static final String STATUS_URL = "http://www.hackillinois.org/mobile/person?type=";
 
     public static synchronized HttpUtils getHttpUtils(Context context) throws IOException {
         if (httpUtils != null) {
@@ -60,6 +62,27 @@ public class HttpUtils {
         }
     }
 
+
+    public void updateStatus(String statusArray, String type) throws IOException{
+        HttpURLConnection con = client.open(new URL(STATUS_URL + type));
+        OutputStream outputStream = null;
+        try {
+            con.setDoOutput(true);
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+            String email = sharedPreferences.getString(mContext.getString(R.string.pref_email), "");
+            con.addRequestProperty("Email", email);
+            con.setRequestMethod("POST");
+            con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            con.setRequestProperty("charset", "utf-8");
+            con.setRequestProperty("Content-Length", "{\"status\":" + statusArray + "}");
+            outputStream = con.getOutputStream();
+
+        } finally {
+            if (outputStream != null) {
+                outputStream.close();
+            }
+        }
+    }
     public String testEmail(String email) throws IOException {
         HttpURLConnection con = client.open(new URL(EMAIL_URL));
         InputStream inputStream = null;
