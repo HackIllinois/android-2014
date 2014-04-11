@@ -1,15 +1,11 @@
 package org.hackillinois.android;
 
 import android.app.SearchManager;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -53,16 +49,6 @@ public class MainActivity extends ActionBarActivity
     private HashMap<String, Person> androidLookup;
     private SparseArray<Person> iOSLookup;
 
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (getLoaderManager() != null) {
-                new PersonDatabaseLoader(MainActivity.this).forceLoad();
-                LocalBroadcastManager.getInstance(context).unregisterReceiver(this);
-            }
-        }
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,8 +71,7 @@ public class MainActivity extends ActionBarActivity
             tintManager.setStatusBarTintColor(actionBarColor);
         }
         handleIntent(getIntent());
-        IntentFilter intentFilter = new IntentFilter(getString(R.string.broadcast_login));
-        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, intentFilter);
+        new PersonDatabaseLoader(MainActivity.this).forceLoad();
     }
 
     @Override

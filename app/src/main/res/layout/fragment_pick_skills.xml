@@ -41,7 +41,6 @@
             android:textColor="@color/hackillinois_red"
             android:textSize="18sp"
             android:gravity="center"
-            android:layout_alignParentBottom="true"
             android:layout_weight="2"/>
     </LinearLayout>
 
