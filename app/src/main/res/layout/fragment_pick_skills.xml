@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="top"
-    android:background="@color/hackillinois_red">
+    android:background="@color/hackillinois_red"
+    android:clipToPadding="false">
 
 
     <EditText
@@ -23,12 +23,26 @@
         android:paddingLeft="14dp"
         android:paddingRight="14dp"/>
 
+    <TextView
+        android:id="@+id/pick_skills_done"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@color/white"
+        android:text="DONE"
+        android:textColor="@color/hackillinois_blue"
+        android:textSize="22sp"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"/>
+
 
     <ListView
         android:id="@+id/pick_skills_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@null"
-        android:dividerHeight="0dp"/>
+        android:dividerHeight="0dp"
+        android:layout_below="@id/pick_skills_edittext"
+        android:layout_above="@id/pick_skills_done"/>
 
-</LinearLayout>
+</RelativeLayout>

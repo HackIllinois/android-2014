@@ -19,8 +19,9 @@ import android.webkit.WebViewClient;
 
 import org.hackillinois.android.MainActivity;
 import org.hackillinois.android.R;
-import org.hackillinois.android.SplashLoginActivity;
 import org.hackillinois.android.models.people.Person;
+
+import java.io.IOException;
 
 /**
  * Execute the OAuthRequestTokenTask to retrieve the request, and authorize the request.
@@ -31,6 +32,7 @@ public class OAuthAccessFragment extends DialogFragment implements LoaderManager
     private static final String TAG = "OAuthAccessFragment";
     private ProgressDialog progressDialog;
     private WebView webview;
+    OAuth2Helper mOAuth2Helper;
 
     private WebViewClient webViewClient = new WebViewClient() {
 
@@ -59,7 +61,7 @@ public class OAuthAccessFragment extends DialogFragment implements LoaderManager
         webview = (WebView) rootView.findViewById(R.id.webview);
         webview.getSettings().setJavaScriptEnabled(true);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        OAuth2Helper mOAuth2Helper = new OAuth2Helper(prefs);
+        mOAuth2Helper = new OAuth2Helper(prefs);
         String authorizationUrl = mOAuth2Helper.getAuthorizationUrl();
         webview.setWebViewClient(webViewClient);
         webview.loadUrl(authorizationUrl);
@@ -108,9 +110,14 @@ public class OAuthAccessFragment extends DialogFragment implements LoaderManager
             getActivity().finish();
         } else {
             //TODO fix bad login
-            //webview.clearCache(true);
-            //String authorizationUrl = mOAuth2Helper.getAuthorizationUrl();
-            //webview.loadUrl(authorizationUrl);
+            try {
+                mOAuth2Helper.clearCredentials();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            webview.clearCache(true);
+            String authorizationUrl = mOAuth2Helper.getAuthorizationUrl();
+            webview.loadUrl(authorizationUrl);
         }
     }
 
