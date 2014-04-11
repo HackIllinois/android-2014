@@ -3,6 +3,7 @@ package org.hackillinois.android.schedule;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
@@ -12,6 +13,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewPropertyAnimator;
+import android.widget.ImageView;
 
 import org.hackillinois.android.R;
 import org.hackillinois.android.models.ScheduleItem;
@@ -120,6 +123,13 @@ public class SaturdaySchedule extends ListFragment
 
     @Override
     public void onRefresh() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            ImageView view = (ImageView) getActivity().findViewById(R.id.rocketship);
+            ViewPropertyAnimator animate = view.animate();
+            if (animate != null) {
+                animate.rotationBy(-620f);
+            }
+        }
         getLoaderManager().initLoader(0, null, SaturdaySchedule.this).forceLoad();
     }
 
