@@ -196,16 +196,12 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         mTextSchool = (TextView) v.findViewById(R.id.school_profile);
         mTextLocation = (TextView) v.findViewById(R.id.location_profile);
         mTextSkills = (TextView) v.findViewById(R.id.text_skills_header);
+        ImageView statusPlusImage = (ImageView) v.findViewById(R.id.profile_status_plus);
+        ImageView skillsPlus = (ImageView) v.findViewById(R.id.profile_skills_plus);
         mPicasso = Picasso.with(getActivity());
 
         ListView skillsList = (ListView) v.findViewById(R.id.profile_skills_list);
         ListView statusList = (ListView) v.findViewById(R.id.status_list);
-
-        Object object = getArguments().getSerializable("person");
-        if (object != null) {
-            mPerson = (Person) object;
-            setFields(mPerson);
-        }
 
         Utils.setInsets(getActivity(), v);
         IntentFilter intentFilter = new IntentFilter(getString(R.string.broadcast_login));
@@ -216,49 +212,56 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         mStatusAdapter = new StatusListAdapter(getActivity());
         statusList.setAdapter(mStatusAdapter);
 
+        Object object = getArguments().getSerializable("person");
+        if (object != null) {
+            mPerson = (Person) object;
+            setFields(mPerson);
+            statusPlusImage.setVisibility(View.GONE);
+            skillsPlus.setVisibility(View.GONE);
 
-        mTextLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                launchSetLocation();
-            }
-        });
+        } else {
+            mTextLocation.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    launchSetLocation();
+                }
+            });
 
-        mTextSkills.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                launchEditSkillsFragment();
-            }
-        });
-        skillsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                  launchEditSkillsFragment();
-            }
-        });
+            mTextSkills.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    launchEditSkillsFragment();
+                }
+            });
+            skillsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    launchEditSkillsFragment();
+                }
+            });
 
-        ImageView statusPlusImage = (ImageView) v.findViewById(R.id.profile_status_plus);
-        statusPlusImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateStatusDialog();
-            }
-        });
+            statusPlusImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    updateStatusDialog();
+                }
+            });
 
-        ImageView skillsPlusImage = (ImageView) v.findViewById(R.id.profile_skills_plus);
-        skillsPlusImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                launchEditSkillsFragment();
-            }
-        });
+            ImageView skillsPlusImage = (ImageView) v.findViewById(R.id.profile_skills_plus);
+            skillsPlusImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    launchEditSkillsFragment();
+                }
+            });
 
-        statusList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                updateStatusDialog();
-            }
-        });
+            statusList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    updateStatusDialog();
+                }
+            });
+        }
         return v;
     }
 
