@@ -110,15 +110,15 @@ public class SkillsDialogFragment extends DialogFragment implements LoaderManage
      * all the skills in proper json format for the backend. */
     public String formatBody(ArrayList<Skill> selected) {
         StringBuilder body = new StringBuilder();
-        body.append("{\"skills\":[");
+        body.append("[");
         for(int i = 0; i < selected.size(); i++) {
             body.append( "\"" );
-            body.append( selected.get(i).getName() );
+            body.append(selected.get(i).getName());
             body.append( "\"" );
             if(i != selected.size() - 1)
                 body.append( "," );
         }
-        body.append( "]}");
+        body.append( "]");
 
         return body.toString();
     }
@@ -167,6 +167,9 @@ public class SkillsDialogFragment extends DialogFragment implements LoaderManage
     @Override
     public void onLoadFinished(Loader<ArrayList<Skill>> loader, ArrayList<Skill> allSkills) {
         // load data into the list
+        if(mPerson == null)
+            return;
+
         ArrayList<String> userSkills = (ArrayList<String>) mPerson.getSkills();
 
         // Pre-select all of the skills tha the user has already selected
