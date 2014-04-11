@@ -70,7 +70,6 @@
                 android:textColor="#ff7d7d7d"
                 android:layout_gravity="center_vertical"
                 android:clickable="true"
-                android:layout_weight="1"
                 android:text="SC 2205" />
 
             <ImageView
@@ -90,7 +89,6 @@
                 android:textColor="#ff7d7d7d"
                 android:text="Add"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="1"
                 android:clickable="true" />
         </LinearLayout>
 

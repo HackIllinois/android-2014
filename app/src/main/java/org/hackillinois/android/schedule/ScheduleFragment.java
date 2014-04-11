@@ -94,21 +94,24 @@ public class ScheduleFragment extends Fragment implements ViewPager.OnPageChange
             return;
 
         ImageView view = (ImageView) getActivity().findViewById(R.id.rocketship);
-
         ViewPropertyAnimator animate = view.animate();
         if(animate != null && mScrollState == ViewPager.SCROLL_STATE_SETTLING){
-            if(positionOffset > .5f){ // move to the right
+            if(positionOffset > .7f){ // move to the right
                 animate.xBy(mScreenWidth / 3);
                 if(rotated){
-                    animate.rotation(180f);
+                    animate.rotationBy(180f);
                     rotated = false;
                 }
-            } else if(positionOffset < .5f) { // move to the left
+                if(mScrollState == ViewPager.SCROLL_STATE_IDLE)
+                    animate.cancel();
+            } else if(positionOffset < .3f) { // move to the left
                 animate.xBy(-(mScreenWidth / 3));
                 if(!rotated){
-                    animate.rotation(180f);
+                    animate.rotationBy(180f);
                     rotated = true;
                 }
+                if(mScrollState == ViewPager.SCROLL_STATE_IDLE)
+                    animate.cancel();
             }
         }
     }
