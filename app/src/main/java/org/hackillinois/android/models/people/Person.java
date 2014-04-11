@@ -106,6 +106,8 @@ public abstract class Person implements Serializable, Comparable<Person> {
         this.RSSI = RSSI;
     }
 
+    public void setSkills(List<String> skills) { this.skills = skills; }
+
     public String getStatusArray() {
         return mStatusArray;
     }
