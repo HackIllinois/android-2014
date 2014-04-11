@@ -1,22 +1,15 @@
 package org.hackillinois.android.profile;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Build;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
@@ -25,7 +18,6 @@ import android.widget.TextView;
 
 import org.hackillinois.android.R;
 import org.hackillinois.android.models.Location;
-import org.hackillinois.android.profile.dummy.DummyContent;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -36,15 +28,11 @@ public class LocationFragment extends Fragment implements
         LoaderManager.LoaderCallbacks<List<Location>>,
         AdapterView.OnItemClickListener {
 
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     private boolean loaded = false;
 
     private List<Location> locations = new ArrayList<Location>();
@@ -83,10 +71,6 @@ public class LocationFragment extends Fragment implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
 
         // TODO: Change Adapter to display your content
         mAdapter = new ArrayAdapter<Location>(getActivity(),
@@ -120,7 +104,7 @@ public class LocationFragment extends Fragment implements
 
         // Set the adapter
         mListView = (ListView) view.findViewById(android.R.id.list);
-        ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
+        mListView.setAdapter(mAdapter);
 
         // Set OnItemClickListener so we can be notified on item clicks
         mListView.setOnItemClickListener(this);
@@ -177,18 +161,6 @@ public class LocationFragment extends Fragment implements
 
 
 
-    /**
-     * The default content for this Fragment has a TextView that is shown when
-     * the list is empty. If you would like to change the text, call this method
-     * to supply the text it should use.
-     */
-    public void setEmptyText(CharSequence emptyText) {
-        View emptyView = mListView.getEmptyView();
-
-        if (emptyText instanceof TextView) {
-            ((TextView) emptyView).setText("Loading Fragments");
-        }
-    }
 
 
 }
