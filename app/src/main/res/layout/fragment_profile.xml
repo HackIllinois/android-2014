@@ -65,6 +65,7 @@
                     android:textColor="@color/white"
                     android:layout_gravity="center_vertical"
                     android:text="@string/set_location"
+                    android:clickable="true"
                     android:id="@+id/location_profile" />
             </LinearLayout>
         </LinearLayout>

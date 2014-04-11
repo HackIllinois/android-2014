@@ -1,5 +1,9 @@
 package org.hackillinois.android.models;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 /**
@@ -12,10 +16,23 @@ public class Skill {
     private ArrayList<String> tags;
     private ArrayList<String> aliases;
 
-    public Skill(String name, ArrayList<String> tags, ArrayList<String> aliases) {
-        this.name = name;
-        this.tags = tags;
-        this.aliases = aliases;
+    public Skill(JSONObject skill) {
+        try {
+            this.name = skill.getString("name");
+
+            this.tags = new ArrayList<String>();
+            JSONArray jsonTags = skill.getJSONArray("tags");
+            for (int i = 0; i < jsonTags.length(); i++)
+                tags.add( jsonTags.getString(i) );
+
+            this.aliases = new ArrayList<String>();
+            JSONArray jsonAliases = skill.getJSONArray("alias");
+            for (int i = 0; i < jsonAliases.length(); i++)
+                tags.add( jsonAliases.getString(i) );
+
+        } catch(JSONException j) {
+            j.printStackTrace();
+        }
     }
 
     public String getName() {
