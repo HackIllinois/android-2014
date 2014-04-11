@@ -1,17 +1,11 @@
 package org.hackillinois.android.support;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -48,7 +42,6 @@ public class SupportFragment extends DialogFragment implements LoaderManager.Loa
     private List<Support> rooms = new ArrayList<Support>();
     private List<Support> categories = new ArrayList<Support>();
     private Map<Support, List<Support>> subCategories = new HashMap<Support, List<Support>>();
-    private SupportData MainData;
 
     public static SupportFragment newInstance(int sectionNumber) {
         Bundle args = new Bundle();
@@ -64,7 +57,9 @@ public class SupportFragment extends DialogFragment implements LoaderManager.Loa
         setHasOptionsMenu(true);
         View rootView = inflater.inflate(R.layout.fragment_support, container, false);
         mSupportListAdapter = new SupportListAdapter(getActivity());
+        assert rootView != null;
         final ListView supportList = (ListView) rootView.findViewById(R.id.support_list);
+        Utils.setInsets(getActivity(), supportList);
         supportList.setAdapter(mSupportListAdapter);
 
         getLoaderManager().initLoader(0, null, this).forceLoad();
@@ -86,41 +81,39 @@ public class SupportFragment extends DialogFragment implements LoaderManager.Loa
                 boolean selectionFound = false;
 
                 String selected = mSupportListAdapter.getItem(position).getTitle();
-                if (!selectionFound) {
-                    for (Support item : categories) {
-                        if (selected.equalsIgnoreCase(item.getTitle())) {
-                            selectionFound = true;
-                            List<Support> modSubCategories = new ArrayList<Support>();
+                for (Support item : categories) {
+                    if (selected.equalsIgnoreCase(item.getTitle())) {
+                        selectionFound = true;
+                        List<Support> modSubCategories = new ArrayList<Support>();
 
-                            //Path
-                            Support OptionChosen = new Support("-" + selected);
-                            modSubCategories.add(OptionChosen);
+                        //Path
+                        Support OptionChosen = new Support("-" + selected);
+                        modSubCategories.add(OptionChosen);
 
-                            int tempint = -1;
-                            for (int i = 0; i < categories.size(); i++) {
-                                if(selected.equalsIgnoreCase(categories.get(i).getTitle()))
-                                {
-                                    tempint = i;
-                                }
+                        int tempint = -1;
+                        for (int i = 0; i < categories.size(); i++) {
+                            if(selected.equalsIgnoreCase(categories.get(i).getTitle()))
+                            {
+                                tempint = i;
                             }
-                            if(tempint != -1) {
-                                for (Support s : subCategories.get(categories.get(tempint))) {
-                                    modSubCategories.add(s);
-                                }
-                            }
-                            mSupportListAdapter.setData(modSubCategories);
-                            break;
                         }
-                        if (selected.substring(1).equalsIgnoreCase(item.getTitle())) {
-                            selectionFound = true;
-                            List<Support> modCategories = new ArrayList<Support>();
-                            for (Support s : categories) {
-                                modCategories.add(s);
+                        if(tempint != -1) {
+                            for (Support s : subCategories.get(categories.get(tempint))) {
+                                modSubCategories.add(s);
                             }
-
-                            mSupportListAdapter.setData(modCategories);
-                            break;
                         }
+                        mSupportListAdapter.setData(modSubCategories);
+                        break;
+                    }
+                    if (selected.substring(1).equalsIgnoreCase(item.getTitle())) {
+                        selectionFound = true;
+                        List<Support> modCategories = new ArrayList<Support>();
+                        for (Support s : categories) {
+                            modCategories.add(s);
+                        }
+
+                        mSupportListAdapter.setData(modCategories);
+                        break;
                     }
                 }
                 if (!selectionFound) {
@@ -158,10 +151,8 @@ public class SupportFragment extends DialogFragment implements LoaderManager.Loa
                                 Support OptionChosen = new Support(mSupportListAdapter.getItem(0).getTitle());
                                 modSubCategories.add(OptionChosen);
 
-                                if(tempint != -1) {
-                                    for (Support s : subCategories.get(categories.get(tempint))) {
-                                        modSubCategories.add(s);
-                                    }
+                                for (Support s : subCategories.get(categories.get(tempint))) {
+                                    modSubCategories.add(s);
                                 }
                                 mSupportListAdapter.setData(modSubCategories);
                                 break;
@@ -196,7 +187,6 @@ public class SupportFragment extends DialogFragment implements LoaderManager.Loa
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.support, menu);
-        MenuItem menuItem = menu.findItem(R.id.action_call);
     }
 
     @Override
