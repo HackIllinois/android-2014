@@ -1,11 +1,13 @@
 package org.hackillinois.android.profile;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -77,6 +79,11 @@ public class SkillsDialogFragment extends DialogFragment implements LoaderManage
             @Override
             public void onClick(View v) {
                 ArrayList<Skill> selected = mSkillsListAdapter.getSelectedSkills();
+                LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(getActivity());
+                Intent intent = new Intent("update_status");
+                intent.putExtra("skills", selected);
+                localBroadcastManager.sendBroadcast(intent);
+
                 Toast.makeText(getActivity(), "You selected " + selected.get(0).getName() + " and stuff!", Toast.LENGTH_LONG).show();
 
                 PostTask postTask = new PostTask(getActivity(), "skills", mPerson.getType(), formatBody(selected));
