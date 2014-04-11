@@ -24,16 +24,29 @@ import java.util.ArrayList;
 public class SkillsListAdapter extends ArrayAdapter<Skill> implements Filterable {
 
     private LayoutInflater mLayoutInflater;
-    private ArrayList<Skill> allSkills;                 // a read-only copy of all the skills
+    private ArrayList<Skill> allSkills;                 // a read-only reference to all the skills
     private ArrayList<Skill> currentFilteredSkills;     // an edited list of skills to display currently
 
     /** Constructor **/
     public SkillsListAdapter(Activity activity, ArrayList<Skill> allSkills) {
         super(activity, R.layout.pick_skills_list_item, R.id.pick_skills_list_item_name, allSkills);
         mLayoutInflater = activity.getLayoutInflater();
-        this.allSkills = (ArrayList<Skill>) allSkills.clone();
-        this.currentFilteredSkills = allSkills;
+        this.currentFilteredSkills = allSkills;  // currentFilteredSkills is bound to the list view
+        this.allSkills = new ArrayList<Skill>();         // allSkills is a separate copy of the list. It does not affect listview content
+        for(Skill skill : allSkills)
+            allSkills.add(skill);
     }
+
+
+    public void setData(ArrayList<Skill> allSkills) {
+        //addAll(allSkills);
+        this.allSkills = allSkills;
+        this.currentFilteredSkills.clear();
+        for(Skill skill : allSkills)
+            this.currentFilteredSkills.add(skill);
+        notifyDataSetChanged();
+    }
+
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
