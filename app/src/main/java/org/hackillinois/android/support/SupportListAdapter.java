@@ -23,7 +23,6 @@ public class SupportListAdapter extends ArrayAdapter<Support> {
 
     private LayoutInflater mLayoutInflater;
 
-    /** Constructor **/
     public SupportListAdapter(Activity activity) {
         super(activity, R.layout.support_item, R.id.support_item_title);
         mLayoutInflater = activity.getLayoutInflater();
@@ -37,6 +36,7 @@ public class SupportListAdapter extends ArrayAdapter<Support> {
             rowView = mLayoutInflater.inflate(R.layout.support_item, parent, false);
 
             holder = new ViewHolder();
+            assert rowView != null;
             holder.name = (TextView) rowView.findViewById(R.id.support_item_title);
             rowView.setTag(holder);
         } else {

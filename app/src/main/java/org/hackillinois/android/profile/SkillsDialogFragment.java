@@ -16,7 +16,6 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.hackillinois.android.R;
 import org.hackillinois.android.models.Skill;
@@ -59,6 +58,7 @@ public class SkillsDialogFragment extends DialogFragment implements LoaderManage
         Utils.setInsetsBottom(getActivity(), rootView);
         this.getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
+        assert rootView != null;
         ListView skillsList = (ListView) rootView.findViewById(R.id.pick_skills_list);
         mSkillsListAdapter = new SkillsListAdapter(getActivity(), new ArrayList<Skill>(), skillsList);
         skillsList.setAdapter(mSkillsListAdapter);
@@ -77,8 +77,6 @@ public class SkillsDialogFragment extends DialogFragment implements LoaderManage
             @Override
             public void onClick(View v) {
                 ArrayList<Skill> selected = mSkillsListAdapter.getSelectedSkills();
-                Toast.makeText(getActivity(), "You selected " + selected.get(0).getName() + " and stuff!", Toast.LENGTH_LONG).show();
-
                 PostTask postTask = new PostTask(getActivity(), "skills", mPerson.getType(), formatBody(selected));
                 postTask.execute();
                 dismiss();
