@@ -1,11 +1,13 @@
 package org.hackillinois.android.profile;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,7 +22,6 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -30,8 +31,11 @@ import org.hackillinois.android.models.Status;
 import org.hackillinois.android.models.people.Hacker;
 import org.hackillinois.android.models.people.Mentor;
 import org.hackillinois.android.models.people.Person;
+import org.hackillinois.android.utils.HttpUtils;
 import org.hackillinois.android.utils.Utils;
+import org.joda.time.DateTime;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +44,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
     private static final String SKILLS_FRAG = "EDIT_SKILLS";
     private static final String TAG = "ProfileFragment";
 
-    private Person person;
+    private Person mPerson;
     private ImageView mImageView;
     private TextView mNameTextView;
     private TextView mTextSchool;
@@ -89,7 +93,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         fragmentManager.executePendingTransactions();
     }
 
-    private void updateStatus() {
+    private void updateStatusDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Update Hacker Status");
         builder.setItems(new CharSequence[]
@@ -98,23 +102,39 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
                     public void onClick(DialogInterface dialog, int which) {
                         // The 'which' argument contains the index position
                         // of the selected item
+                        Activity activity = getActivity();
                         switch (which) {
                             case 0:
-                                Toast.makeText(getActivity(), "clicked 1", 0).show();
+                                updateStatus("Hacker");
                                 break;
                             case 1:
-                                Toast.makeText(getActivity(), "clicked 2", 0).show();
+                                updateStatus("Available");
                                 break;
                             case 2:
-                                Toast.makeText(getActivity(), "clicked 3", 0).show();
+                                updateStatus("Taking A Break");
                                 break;
                             case 3:
-                                Toast.makeText(getActivity(), "clicked 4", 0).show();
+                                updateStatus("Do Not Disturb");
                                 break;
                         }
                     }
-                });
+                }
+        );
         builder.create().show();
+    }
+
+    private void updateStatus(String status){
+        DateTime date = new DateTime();
+        String statusArray = mPerson.getStatusArray().toString();
+        Log.e("status array", statusArray.substring(1));
+        String body = "[{\"status\": \"" + status + "\", \"date\": " + date.getMillis() + "}";
+        if(statusArray.length() <= 2)
+            body = body + "]";
+        else
+            body = body + ", " + statusArray.substring(1);
+        PostTask postTask = new PostTask(getActivity(), "status", mPerson.getType(), body);
+        postTask.execute();
+
     }
 
     @Override
@@ -135,8 +155,8 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
 
         Object object = getArguments().getSerializable("person");
         if (object != null) {
-            person = (Person) object;
-            setFields(person);
+            mPerson = (Person) object;
+            setFields(mPerson);
         }
 
         Utils.setInsets(getActivity(), v);
@@ -164,7 +184,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         statusList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                updateStatus();
+                updateStatusDialog();
             }
         });
         return v;
@@ -185,7 +205,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onResume() {
         super.onResume();
-        if (person == null) {
+        if (mPerson == null) {
             // This means this is the profile tab so we have to load the data
             getLoaderManager().initLoader(0,null,this).forceLoad();
         }
@@ -229,7 +249,6 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
                 List<Status> status_list = person.getStatuses();
                 mStatusAdapter.clear();
                 for(Status stat : status_list) {
-                    Log.e("adding status", stat.getStatus());
                     mStatusAdapter.add(stat);
                 }
                 mStatusAdapter.notifyDataSetChanged();
@@ -242,6 +261,9 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
 
             }
             setFields(person);
+            mPerson = person;
+            if(person.getStatuses().isEmpty())
+                updateStatus("Hacking");
         }
     }
 
@@ -266,5 +288,47 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
     public void onDetach() {
         getLoaderManager().destroyLoader(0);
         super.onDetach();
+    }
+
+    private class PostTask extends AsyncTask<String, Integer, Integer> {
+
+        private Context mContext;
+        private String body;
+        private String key;
+        private String type;
+
+        private final Integer POST_SUCCESS = 0x1;
+        private final Integer POST_FAIL = 0x0;
+
+        public PostTask(Context context, String key, String type, String body) {
+            mContext = context;
+            this.body = body;
+            this.key = key;
+            this.type = type;
+        }
+
+
+        @Override
+        protected Integer doInBackground(String... s) {
+
+            try {
+                HttpUtils httpUtils = HttpUtils.getHttpUtils(mContext);
+
+                httpUtils.postPersonData(key, body, type);
+
+                return POST_SUCCESS;
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return POST_FAIL;
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
+            getLoaderManager().initLoader(0,null,ProfileFragment.this).forceLoad();
+        }
     }
 }

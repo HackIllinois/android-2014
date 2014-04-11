@@ -3,6 +3,7 @@ package org.hackillinois.android.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.squareup.okhttp.HttpResponseCache;
 import com.squareup.okhttp.OkHttpClient;
@@ -10,9 +11,10 @@ import com.squareup.okhttp.OkHttpClient;
 import org.hackillinois.android.R;
 
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -23,7 +25,7 @@ public class HttpUtils {
     private Context mContext;
 
     private static final String EMAIL_URL = "http://www.hackillinois.org/mobile/login";
-    private static final String STATUS_URL = "http://www.hackillinois.org/mobile/person?type=";
+    private static final String POST_URL = "http://www.hackillinois.org/mobile/person";
 
     public static synchronized HttpUtils getHttpUtils(Context context) throws IOException {
         if (httpUtils != null) {
@@ -63,25 +65,37 @@ public class HttpUtils {
     }
 
 
-    public void updateStatus(String statusArray, String type) throws IOException{
-        HttpURLConnection con = client.open(new URL(STATUS_URL + type));
-        OutputStream outputStream = null;
-        try {
-            con.setDoOutput(true);
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
-            String email = sharedPreferences.getString(mContext.getString(R.string.pref_email), "");
-            con.addRequestProperty("Email", email);
-            con.setRequestMethod("POST");
-            con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            con.setRequestProperty("charset", "utf-8");
-            con.setRequestProperty("Content-Length", "{\"status\":" + statusArray + "}");
-            outputStream = con.getOutputStream();
+    public String postPersonData(String key, String body, String type) throws IOException{
+        URL url = new URL(POST_URL);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+        String email = sharedPreferences.getString(mContext.getString(R.string.pref_email), "");
 
-        } finally {
-            if (outputStream != null) {
-                outputStream.close();
-            }
-        }
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setDoOutput(true);
+        con.setDoInput(true);
+        con.setInstanceFollowRedirects(false);
+        con.setRequestMethod("POST");
+
+        con.addRequestProperty("Email", email);
+        con.setRequestProperty("Content-Type", "text/json");
+        con.setRequestProperty("charset", "utf-8");
+
+        String content = "{\"" + key + "\":" + body + "}";
+        Log.e("content", content);
+        con.setRequestProperty("Content-Length", Integer.toString(content.getBytes().length));
+
+        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+        wr.writeBytes(content);
+        wr.flush();
+        wr.close();
+        DataInputStream  inputStream = new DataInputStream(con.getInputStream());
+        byte[] response = readFully(inputStream);
+        String responseString = new String(response);
+        Log.i("HttpUtils", "response was " + responseString);
+        con.disconnect();
+        if(response.equals("{\"message\": \"Updated Profile\"}"))
+            return "Post Success";
+        return "Post Fail";
     }
     public String testEmail(String email) throws IOException {
         HttpURLConnection con = client.open(new URL(EMAIL_URL));
