@@ -180,6 +180,12 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
                 launchEditSkillsFragment();
             }
         });
+        skillsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                  launchEditSkillsFragment();
+            }
+        });
         viewClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

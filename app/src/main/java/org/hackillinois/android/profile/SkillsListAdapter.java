@@ -30,15 +30,14 @@ public class SkillsListAdapter extends ArrayAdapter<Skill> implements Filterable
     private ListView mListView;
 
     /** Constructor **/
-    public SkillsListAdapter(Activity activity, ArrayList<Skill> allSkills) {
+    public SkillsListAdapter(Activity activity, ArrayList<Skill> allSkills, ListView listView) {
         super(activity, R.layout.pick_skills_list_item, R.id.pick_skills_list_item_name, allSkills);
-        mLayoutInflater = activity.getLayoutInflater();
+        this.mLayoutInflater = activity.getLayoutInflater();
+        this.mListView = listView;
         this.currentFilteredSkills = allSkills;  // currentFilteredSkills is bound to the list view
         this.allSkills = new ArrayList<Skill>();         // allSkills is a separate copy of the list. It does not affect listview content
         for(Skill skill : allSkills)
             allSkills.add(skill);
-
-        mListView = (ListView) activity.findViewById(R.id.pick_skills_list);
     }
 
 
