@@ -78,20 +78,11 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         }
     };
 
-    /** launch the DialogFragment to edit skills list **/
+    /** Launch the DialogFragment to edit skills list. Give it the Person object **/
     private void launchEditSkillsFragment() {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-
-        DialogFragment skillsFragment = SkillsDialogFragment.newInstance(null);
+        DialogFragment skillsFragment = SkillsDialogFragment.newInstance(person);
         skillsFragment.show(fragmentManager, SKILLS_FRAG);
-
-//        Fragment profileFragment = fragmentManager.findFragmentByTag(SKILLS_FRAG);
-//        if (profileFragment == null) {
-//            profileFragment = new SkillsDialogFragment();
-//        }
-//        fragmentManager.beginTransaction().replace(R.id.container, profileFragment, SKILLS_FRAG).addToBackStack(null)
-//                .commit();
-//        fragmentManager.executePendingTransactions();
     }
 
     private void updateStatus() {
@@ -259,6 +250,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
 
             }
             setFields(person);
+            this.person = person;
         }
     }
 
