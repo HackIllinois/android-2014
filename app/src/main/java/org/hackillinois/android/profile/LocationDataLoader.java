@@ -1,9 +1,7 @@
 package org.hackillinois.android.profile;
 
-import android.support.v4.content.AsyncTaskLoader;
 import android.content.Context;
-
-import com.google.api.client.json.Json;
+import android.support.v4.content.AsyncTaskLoader;
 
 import org.hackillinois.android.models.Location;
 import org.hackillinois.android.utils.HttpUtils;

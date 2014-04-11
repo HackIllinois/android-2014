@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.util.Log;
@@ -32,28 +31,16 @@ public class LocationFragment extends DialogFragment implements
         LoaderManager.LoaderCallbacks<List<Location>>,
         AdapterView.OnItemClickListener {
 
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-
     private boolean loaded = false;
 
     private List<Location> locations = new ArrayList<Location>();
 
-
-    /**
-     * The fragment's ListView/GridView.
-     */
     private ListView mListView;
-
     private ListAdapter mAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         mAdapter = new ArrayAdapter<Location>(getActivity(),
                 android.R.layout.simple_list_item_1, android.R.id.text1, locations);
     }
