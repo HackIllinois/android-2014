@@ -3,6 +3,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
+              android:background="@color/background_grey"
               tools:context="org.hackillinois.android.profile.ProfileFragment">
 
     <LinearLayout
@@ -76,7 +77,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background_grey"
         android:orientation="vertical">
 
         <ListView
