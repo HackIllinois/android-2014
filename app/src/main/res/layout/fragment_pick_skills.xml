@@ -1,39 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:gravity="top"
     android:background="@color/hackillinois_red"
     android:clipToPadding="false">
 
 
-    <EditText
-        android:id="@+id/pick_skills_edittext"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxLines="1"
-        android:hint="@string/add_your_skills_hint"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white"
-        android:textSize="24sp"
-        android:layout_marginTop="22dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="24dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
         android:layout_marginBottom="6dp"
-        android:paddingLeft="14dp"
-        android:paddingRight="14dp"/>
+        android:weightSum="10">
 
-    <TextView
-        android:id="@+id/pick_skills_done"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:background="@color/white"
-        android:text="DONE"
-        android:textColor="@color/hackillinois_blue"
-        android:textSize="22sp"
-        android:gravity="center"
-        android:layout_alignParentBottom="true"/>
+        <EditText
+            android:id="@+id/pick_skills_edittext"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:hint="@string/add_your_skills_hint"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:textSize="24sp"
+            android:layout_marginRight="6dp"
+            android:layout_weight="8"
+            android:background="@drawable/skills_edit_text"/>
+
+        <TextView
+            android:id="@+id/pick_skills_done"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="6dp"
+            android:background="@color/white"
+            android:text="DONE"
+            android:textColor="@color/hackillinois_red"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:layout_alignParentBottom="true"
+            android:layout_weight="2"/>
+    </LinearLayout>
 
 
     <ListView
@@ -45,4 +55,4 @@
         android:layout_below="@id/pick_skills_edittext"
         android:layout_above="@id/pick_skills_done"/>
 
-</RelativeLayout>
+</LinearLayout>

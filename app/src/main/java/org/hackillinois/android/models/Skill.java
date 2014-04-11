@@ -15,6 +15,7 @@ public class Skill {
     private String name;
     private ArrayList<String> tags;
     private ArrayList<String> aliases;
+    private boolean isSelected;
 
     public Skill(JSONObject skill) {
         try {
@@ -29,6 +30,8 @@ public class Skill {
             JSONArray jsonAliases = skill.getJSONArray("alias");
             for (int i = 0; i < jsonAliases.length(); i++)
                 tags.add( jsonAliases.getString(i) );
+
+            this.isSelected = false;  // will be set later by the SkillsDialogFragment
 
         } catch(JSONException j) {
             j.printStackTrace();
@@ -77,4 +80,11 @@ public class Skill {
         return false;
     }
 
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean isSelected) {
+        this.isSelected = isSelected;
+    }
 }

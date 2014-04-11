@@ -5,9 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.hackillinois.android.R;
@@ -47,6 +47,16 @@ public class SkillsListAdapter extends ArrayAdapter<Skill> implements Filterable
         notifyDataSetChanged();
     }
 
+    /** Function that allows the parent fragment to notify this list adapter when
+     *  an item in the list is clicked.  Flip it's selected state.
+     * @param position
+     */
+    public void notifyListItemClick(int position) {
+        Skill selected = this.allSkills.get(position);
+        selected.setSelected( !selected.isSelected() );
+        notifyDataSetChanged();
+    }
+
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -57,7 +67,7 @@ public class SkillsListAdapter extends ArrayAdapter<Skill> implements Filterable
 
             holder = new ViewHolder();
             holder.name = (TextView) rowView.findViewById(R.id.pick_skills_list_item_name);
-            holder.checkbox = (CheckBox) rowView.findViewById(R.id.pick_skills_list_item_checkbox);
+            holder.image = (ImageView) rowView.findViewById(R.id.pick_skills_list_item_image);
             rowView.setTag(holder);
         } else {
             holder = (ViewHolder) rowView.getTag();
@@ -66,7 +76,10 @@ public class SkillsListAdapter extends ArrayAdapter<Skill> implements Filterable
         Skill skill = currentFilteredSkills.get(position);
 
         holder.name.setText( skill.getName() );
-        holder.checkbox.setChecked(false);
+        if(skill.isSelected())
+            holder.image.setVisibility(View.VISIBLE);
+        else
+            holder.image.setVisibility(View.INVISIBLE);
 
         return rowView;
     }
@@ -76,7 +89,7 @@ public class SkillsListAdapter extends ArrayAdapter<Skill> implements Filterable
      *  Decreases number of calls to rowView.findViewById() which is expensive. **/
     static class ViewHolder {
         public TextView name;
-        public CheckBox checkbox;
+        public ImageView image;
     }
 
 
