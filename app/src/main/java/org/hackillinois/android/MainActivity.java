@@ -77,6 +77,7 @@ public class MainActivity extends ActionBarActivity
         }
     }
 
+
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the people content by replacing fragments
@@ -88,10 +89,19 @@ public class MainActivity extends ActionBarActivity
                 if (profileFragment == null) {
                     profileFragment = ProfileFragment.newInstance(position + 1);
                 }
-                fragmentManager.beginTransaction()
-                        .replace(R.id.container, profileFragment, PROFILE_TAG).addToBackStack(null)
-                        .commit();
-                break;
+                if(fragmentManager.getBackStackEntryCount()==0)
+                {
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.container, profileFragment, PROFILE_TAG)
+                            .commit();
+                    break;
+                }
+                else {
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.container, profileFragment, PROFILE_TAG).addToBackStack(null)
+                            .commit();
+                    break;
+                }
             case 1:
                 Fragment peopleFragment = fragmentManager.findFragmentByTag(PEOPLE_TAG);
                 if (peopleFragment == null) {
