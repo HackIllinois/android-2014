@@ -66,6 +66,7 @@ public class NewsfeedFragment extends ListFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_news, null, false);
         Utils.setViewPagerInsets(getActivity(), v);
+        assert v != null;
         mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_container);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setColorScheme(

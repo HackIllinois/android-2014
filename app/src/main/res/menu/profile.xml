@@ -1,9 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="org.hackillinois.android.util.ProfileActivity" >
     
-    <item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never" />
+    <item android:id="@+id/send_email"
+        android:title="@string/send_email"
+        android:icon="@drawable/ic_action_content_new_email"
+        app:showAsAction="collapseActionView|ifRoom"
+        />
 </menu>

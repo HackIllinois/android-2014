@@ -39,13 +39,13 @@
     <string name="staff">Staff</string>
     <string name="mentor">Mentor</string>
     <string name="hacker">Hacker</string>
-    <string name="loading">Loading...</string>
+    <string name="loading">Loading…</string>
     <string name="title_activity_splash_login">SplashLoginActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_auth">HackIllinois Login</string>
-    <string name="title_activity_loggogogogogog">Loggogogogogog</string>
     <string name="try_again">Please try again with the email you used to register for HackIllinois</string>
     <string name="search_results">Search results</string>
     <string name="update_status_title">Update status</string>
+    <string name="send_email">Send email</string>
 
 </resources>

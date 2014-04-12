@@ -168,12 +168,12 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         mNameTextView = (TextView) v.findViewById(R.id.name_profile);
         mTextSchool = (TextView) v.findViewById(R.id.school_profile);
         mTextLocation = (TextView) v.findViewById(R.id.location_profile);
-        TextView textSkills = (TextView) v.findViewById(R.id.text_skills_header);
         mInitials = (TextView) v.findViewById(R.id.profile_other_initials);
-        ImageView statusPlusImage = (ImageView) v.findViewById(R.id.profile_status_plus);
-        ImageView skillsPlusImage = (ImageView) v.findViewById(R.id.profile_skills_plus);
         mPicasso = Picasso.with(getActivity());
 
+        TextView textSkills = (TextView) v.findViewById(R.id.text_skills_header);
+        ImageView statusPlusImage = (ImageView) v.findViewById(R.id.profile_status_plus);
+        ImageView skillsPlusImage = (ImageView) v.findViewById(R.id.profile_skills_plus);
         ListView skillsList = (ListView) v.findViewById(R.id.profile_skills_list);
         ListView statusList = (ListView) v.findViewById(R.id.status_list);
 
@@ -182,8 +182,8 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver, intentFilter);
 
         mSkillsAdapter = new SkillsAdapter(getActivity());
-        skillsList.setAdapter(mSkillsAdapter);
         mStatusAdapter = new StatusListAdapter(getActivity());
+        skillsList.setAdapter(mSkillsAdapter);
         statusList.setAdapter(mStatusAdapter);
 
         Object object = getArguments().getSerializable("person");
@@ -226,6 +226,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
             progressDialog.setMessage(getString(R.string.loading));
             progressDialog.setCancelable(false);
             progressDialog.show();
+            getLoaderManager().initLoader(0, null, this).forceLoad();
 
             mTextLocation.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -270,7 +271,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
     }
 
     private void launchSetLocation() {
-        new LocationFragment().show(getFragmentManager(), "poop");
+        new LocationFragment().show(getFragmentManager(), "unused");
     }
 
     @Override
@@ -281,10 +282,6 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
             if (getActivity() instanceof MainActivity) {
                 ((MainActivity) getActivity()).onSectionAttached(args.getInt(Utils.ARG_SECTION_NUMBER));
             }
-        }
-        if (mPerson == null) {
-            // This means this is the profile tab so we have to load the data
-            getLoaderManager().initLoader(0, null, this).forceLoad();
         }
     }
 
@@ -414,9 +411,5 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
             super.onPostExecute(thing);
             getLoaderManager().initLoader(0, null, ProfileFragment.this).forceLoad();
         }
-    }
-
-    public Person getmPerson() {
-        return mPerson;
     }
 }

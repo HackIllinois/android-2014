@@ -166,7 +166,7 @@ public class SupportFragment extends DialogFragment implements LoaderManager.Loa
                             Intent testIntent = new Intent(Intent.ACTION_VIEW);
                             Uri data = Uri.parse("mailto:?subject=" + mSupportListAdapter.getItem(0).getTitle().substring(1) + " - " + mSupportListAdapter.getItem(1).getTitle().substring(2) + " - " + mSupportListAdapter.getItem(position).getTitle() + "&body=" + "" + "&to=" + "support@hackillinois.org");
                             testIntent.setData(data);
-                            startActivity(testIntent);
+                            startActivityForResult(testIntent, 3);
                             break;
                         }
                     }
