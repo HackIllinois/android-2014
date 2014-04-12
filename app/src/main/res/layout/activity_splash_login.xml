@@ -47,11 +47,12 @@
 
         <ImageView
             android:id="@+id/launchbutton_activity"
+            android:visibility="invisible"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:padding="20dp"
             android:src="@drawable/launch_button_selector"
-            android:clickable="true"/>
+            android:clickable="false"/>
     </LinearLayout>
 </RelativeLayout>

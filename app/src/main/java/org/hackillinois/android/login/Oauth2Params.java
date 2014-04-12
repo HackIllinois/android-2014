@@ -23,7 +23,7 @@ import com.google.api.client.auth.oauth2.Credential.AccessMethod;
  */
 public enum Oauth2Params {
 
-	GOOGLE_PLUS("1024924889757-i1d2jq824b484nh95k5lkhggjlnquj9g.apps.googleusercontent.com",
+	GOOGLE_PLUS("1024924889757-shkkhkqdnsrd6d0j52733fktqvs1q1hr.apps.googleusercontent.com",
             "https://accounts.google.com/o/oauth2/token",
             "https://accounts.google.com/o/oauth2/auth",
             BearerToken.authorizationHeaderAccessMethod(),
