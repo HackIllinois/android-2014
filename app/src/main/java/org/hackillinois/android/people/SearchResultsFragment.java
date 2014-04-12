@@ -52,7 +52,7 @@ public class SearchResultsFragment extends ListFragment {
         databaseTable = new DatabaseTable(getActivity());
         personSparseArray = ((MainActivity) getActivity()).getiOSLookup();
         (getActivity()).setTitle(getString(R.string.search_results));
-        String query = getArguments().getString(ARG_QUERY, "");
+        String query = getArguments().getString(ARG_QUERY);
         if (query != null && !query.isEmpty()) {
             showResults(query);
         }
@@ -124,9 +124,11 @@ public class SearchResultsFragment extends ListFragment {
         if (c != null) {
             while (!c.isAfterLast()) {
                 int key = c.getInt(1);
-                Person person = personSparseArray.get(key);
-                mPeopleListAdapter.add(person);
-                c.moveToNext();
+                if (personSparseArray != null) {
+                    Person person = personSparseArray.get(key);
+                    mPeopleListAdapter.add(person);
+                    c.moveToNext();
+                }
             }
         }
     }
