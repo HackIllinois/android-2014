@@ -48,7 +48,7 @@ public class SplashLoginActivity extends FragmentActivity implements LoaderManag
             @Override
             public void onClick(View v) {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                //editor.putBoolean("PREF_SPLASH_VIEWED", true);
+                editor.putBoolean("PREF_SPLASH_VIEWED", true);
                 editor.commit();
                 startActivity(new Intent(SplashLoginActivity.this, AuthActivity.class));
                 overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);

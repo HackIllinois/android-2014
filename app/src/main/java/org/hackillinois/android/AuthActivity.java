@@ -23,7 +23,7 @@ public class AuthActivity extends FragmentActivity implements LoadingInterface {
         setContentView(R.layout.activity_auth);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (sharedPreferences.getBoolean(getString(R.string.pref_splash_viewed), false)) {
+        if (!sharedPreferences.getString(getString(R.string.pref_email), "").equals("")) {
             startActivity(new Intent(this, MainActivity.class));
             finish();
         }
