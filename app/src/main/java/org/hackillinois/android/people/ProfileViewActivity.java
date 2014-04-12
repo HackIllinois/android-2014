@@ -9,6 +9,7 @@ import android.view.MenuItem;
 
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
+import org.hackillinois.android.LoadingInterface;
 import org.hackillinois.android.R;
 import org.hackillinois.android.models.people.Hacker;
 import org.hackillinois.android.models.people.Mentor;
@@ -16,7 +17,7 @@ import org.hackillinois.android.models.people.Person;
 import org.hackillinois.android.models.people.Staff;
 import org.hackillinois.android.profile.ProfileFragment;
 
-public class ProfileViewActivity extends ActionBarActivity {
+public class ProfileViewActivity extends ActionBarActivity implements LoadingInterface{
 
     String email;
 
@@ -69,5 +70,15 @@ public class ProfileViewActivity extends ActionBarActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onLoadStart() {
+        setProgressBarIndeterminateVisibility(true);
+    }
+
+    @Override
+    public void onLoadEnd() {
+        setProgressBarIndeterminateVisibility(false);
     }
 }
