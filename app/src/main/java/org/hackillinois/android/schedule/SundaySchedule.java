@@ -9,13 +9,10 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewPropertyAnimator;
 import android.widget.ImageView;
 
 import org.hackillinois.android.R;
@@ -55,6 +52,9 @@ public class SundaySchedule extends ListFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_sunday, container, false);
+        assert rootView != null;
+        View list = rootView.findViewById(android.R.id.list);
+        Utils.setInsetsBottom(getActivity(), list);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.sunday_swipe_container);
         mSwipeRefreshLayout.setOnRefreshListener(this);
@@ -65,9 +65,6 @@ public class SundaySchedule extends ListFragment
                 R.color.hackillinois_blue
 
         );
-
-        Utils.setInsetsBottom(getActivity(), rootView);
-
         return rootView;
     }
 
@@ -127,7 +124,7 @@ public class SundaySchedule extends ListFragment
     public void onRefresh() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                     ImageView view = (ImageView) getActivity().findViewById(R.id.rocketship);
-                    ViewPropertyAnimator animate = view.animate();
+                    //ViewPropertyAnimator animate = view.animate();
 //                    if (animate != null) {
 //                        animate.rotationBy(360f);
 //                    }

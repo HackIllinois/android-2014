@@ -16,14 +16,13 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_action_hackillinois_icon_white"
+        android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.HackIllinois_blue_actionbar" >
         <activity
             android:name="org.hackillinois.android.SplashLoginActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:icon="@drawable/ic_launcher"
             android:theme="@style/Theme.Hackillinois.Launcher" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,10 +32,12 @@
         </activity>
         <activity
             android:name="org.hackillinois.android.AuthActivity"
+            android:icon="@drawable/ic_action_hackillinois_icon_white"
             android:label="@string/login">
         </activity>
         <activity
             android:name="org.hackillinois.android.MainActivity"
+            android:icon="@drawable/ic_action_hackillinois_icon_white"
             android:label="@string/app_name"
             android:launchMode="singleTop" >
             <intent-filter>
@@ -51,6 +52,7 @@
             android:name="org.hackillinois.android.people.ProfileViewActivity"
             android:label="@string/title_activity_profile_view"
             android:parentActivityName="org.hackillinois.android.MainActivity"
+            android:icon="@drawable/ic_action_hackillinois_icon_white"
             android:theme="@style/Theme.HackIllinois_red_actionbar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

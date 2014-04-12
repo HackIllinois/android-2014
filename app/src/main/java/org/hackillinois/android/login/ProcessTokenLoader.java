@@ -7,6 +7,7 @@ import android.support.v4.content.AsyncTaskLoader;
 
 import org.hackillinois.android.R;
 import org.hackillinois.android.models.people.Hacker;
+import org.hackillinois.android.models.people.Mentor;
 import org.hackillinois.android.models.people.Person;
 import org.hackillinois.android.models.people.Staff;
 import org.hackillinois.android.utils.HttpUtils;
@@ -59,7 +60,7 @@ public class ProcessTokenLoader extends AsyncTaskLoader<Person> {
                     } else if (type.equals("staff")) {
                         resPerson = new Staff(person);
                     } else if (type.equals("mentor")) {
-                        resPerson = new Staff(person);
+                        resPerson = new Mentor(person);
                     }
                     SharedPreferences.Editor editor = mSharedPreferences.edit();
                     editor.putString(getContext().getString(R.string.pref_email), email);

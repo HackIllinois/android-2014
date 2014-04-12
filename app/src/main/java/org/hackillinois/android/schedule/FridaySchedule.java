@@ -13,7 +13,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewPropertyAnimator;
 import android.widget.ImageView;
 
 import org.hackillinois.android.R;
@@ -48,13 +47,14 @@ public class FridaySchedule extends ListFragment
         mListAdapter = new ScheduleListAdapter(getActivity());
         setListAdapter(mListAdapter);// set the list adapter to our custom list adapter
         Utils.registerBroadcastReceiver(getActivity(), broadcastReceiver);
-
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_friday, container, false);
+        assert rootView != null;
+        View list = rootView.findViewById(android.R.id.list);
+        Utils.setInsetsBottom(getActivity(), list);
         mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.friday_swipe_container);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setColorScheme(
@@ -65,7 +65,6 @@ public class FridaySchedule extends ListFragment
 
         );
 
-        Utils.setInsetsBottom(getActivity(), rootView);
         return rootView;
     }
 
@@ -150,7 +149,7 @@ public class FridaySchedule extends ListFragment
     public void onRefresh() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
         ImageView view = (ImageView) getActivity().findViewById(R.id.rocketship);
-        ViewPropertyAnimator animate = view.animate();
+        //ViewPropertyAnimator animate = view.animate();
 //        if (animate != null) {
 //            animate.rotationBy(360f);
 //        }

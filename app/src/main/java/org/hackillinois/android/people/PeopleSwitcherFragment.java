@@ -26,8 +26,6 @@ public class PeopleSwitcherFragment extends Fragment implements LoaderManager.Lo
 
     private static final String PEOPLE_URL = "http://hackillinois.org/mobile/person";
     private PeoplePagerAdapter mSchedulePagerAdapter;
-    private ViewPager mViewPager;
-    private boolean loaded = false;
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -58,7 +56,7 @@ public class PeopleSwitcherFragment extends Fragment implements LoaderManager.Lo
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_people_switcher, container, false);
         assert rootView != null;
-        mViewPager = (ViewPager) rootView.findViewById(R.id.people_pager);
+        ViewPager mViewPager = (ViewPager) rootView.findViewById(R.id.people_pager);
         PagerTitleStrip pagerTitleStrip = (PagerTitleStrip) rootView.findViewById(R.id.pager_strip);
 
         mSchedulePagerAdapter = new PeoplePagerAdapter(PeopleSwitcherFragment.this, getChildFragmentManager());
@@ -77,9 +75,7 @@ public class PeopleSwitcherFragment extends Fragment implements LoaderManager.Lo
     @Override
     public void onStart() {
         super.onStart();
-        if (!loaded) {
-            getLoaderManager().initLoader(0, null, this).forceLoad();
-        }
+        getLoaderManager().initLoader(0, null, this).forceLoad();
     }
 
     @Override
@@ -95,7 +91,6 @@ public class PeopleSwitcherFragment extends Fragment implements LoaderManager.Lo
     @Override
     public void onLoadFinished(Loader<PeopleDataHolder> loader, PeopleDataHolder data) {
         if (data != null) {
-            loaded = true;
             ((MainActivity)getActivity()).setPeople(data);
             mSchedulePagerAdapter.notifyDataReady();
         }
