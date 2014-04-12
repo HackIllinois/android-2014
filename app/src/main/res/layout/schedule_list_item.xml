@@ -85,7 +85,7 @@
                 android:layout_height="26dp"
                 android:src="@drawable/ic_calendar_schedule_icon"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="40dp"
                 android:layout_marginRight="5dp"
                 android:id="@+id/schedule_add_calendar_icon"
                 android:clickable="true"/>

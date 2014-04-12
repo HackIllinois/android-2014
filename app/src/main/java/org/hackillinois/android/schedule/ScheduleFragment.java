@@ -98,27 +98,27 @@ public class ScheduleFragment extends Fragment implements ViewPager.OnPageChange
             ViewPropertyAnimator animate = view.animate();
             if (animate != null && mScrollState == ViewPager.SCROLL_STATE_SETTLING) {
                 if (positionOffset > .7f) { // move to the right
-                    // animate.xBy(mScreenWidth / 3);
-                    if (position == 0)
-                        animate.x(0.45f * mScreenWidth);
-                    if (position == 1)
-                        animate.x(3 * mScreenWidth / 4);
                     if (rotated) {
                         animate.rotation(0f);
                         rotated = false;
                     }
+                    if (position == 0)
+                        animate.x(0.45f * mScreenWidth);
+                    if (position == 1)
+                        animate.x(3 * mScreenWidth / 4);
+
                     if (mScrollState == ViewPager.SCROLL_STATE_IDLE)
                         animate.cancel();
                 } else if (positionOffset < .3f) { // move to the left
-                    //animate.xBy(-(mScreenWidth / 3));
-                    if (position == 0)
-                        animate.x(positionOffsetPixels + mScreenWidth / 15);
-                    if (position == 1)
-                        animate.x(positionOffsetPixels + mScreenWidth / 3);
                     if (!rotated) {
                         animate.rotation(180f);
                         rotated = true;
                     }
+                    if (position == 0)
+                        animate.x(positionOffsetPixels + mScreenWidth / 15);
+                    if (position == 1)
+                        animate.x(positionOffsetPixels + mScreenWidth / 2.4f);
+
                     if (mScrollState == ViewPager.SCROLL_STATE_IDLE)
                         animate.cancel();
                 }
