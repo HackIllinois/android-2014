@@ -48,7 +48,7 @@ public class NewsfeedListAdapter extends ArrayAdapter<NewsItem> {
 
         NewsItem newsItem = getItem(position);
 
-        holder.description.setText( newsItem.getDescription() );
+        holder.description.setText( newsItem.getColoredDescription() );
         holder.time.setText( newsItem.getTime() );
         final Resources resources = getContext().getResources();
         // this is super hacky
