@@ -60,8 +60,12 @@ public class PeoplePagerAdapter extends FragmentPagerAdapter {
     }
 
     public void notifyDataReady() {
-        mHackersFragment.notifyDataReady();
-        mMentorsFragment.notifyDataReady();
+        if (mHackersFragment.isResumed()) {
+            mHackersFragment.notifyDataReady();
+        }
+        if (mMentorsFragment.isResumed()) {
+            mMentorsFragment.notifyDataReady();
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             mNearbyFragment.notifyDataReady();
         }

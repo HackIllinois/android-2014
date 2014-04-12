@@ -3,7 +3,6 @@ package org.hackillinois.android.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import com.squareup.okhttp.HttpResponseCache;
 import com.squareup.okhttp.OkHttpClient;
@@ -20,6 +19,7 @@ import java.net.URL;
 
 public class HttpUtils {
 
+    private static final String TAG = "HttpUtils";
     private static HttpUtils httpUtils;
     private OkHttpClient client;
     private Context mContext;
@@ -65,12 +65,12 @@ public class HttpUtils {
     }
 
 
-    public String postPersonData(String key, String body, String type) throws IOException{
+    public boolean postPersonData(String key, String body) throws IOException{
         URL url = new URL(POST_URL);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         String email = sharedPreferences.getString(mContext.getString(R.string.pref_email), "");
 
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        HttpURLConnection con = client.open(url);
         con.setDoOutput(true);
         con.setDoInput(true);
         con.setInstanceFollowRedirects(false);
@@ -81,7 +81,6 @@ public class HttpUtils {
         con.setRequestProperty("charset", "utf-8");
 
         String content = "{\"" + key + "\":" + body + "}";
-        Log.e("content", content);
         con.setRequestProperty("Content-Length", Integer.toString(content.getBytes().length));
 
         DataOutputStream wr = new DataOutputStream(con.getOutputStream());
@@ -89,13 +88,11 @@ public class HttpUtils {
         wr.flush();
         wr.close();
         DataInputStream  inputStream = new DataInputStream(con.getInputStream());
-        byte[] response = readFully(inputStream);
-        String responseString = new String(response);
-        Log.i("HttpUtils", "response was " + responseString);
+
+        // we need to read the response otherwise it will not post
+        String response =  new String(readFully(inputStream));
         con.disconnect();
-        if(response.equals("{\"message\": \"Updated Profile\"}"))
-            return "Post Success";
-        return "Post Fail";
+        return response.equals("{\"message\": \"Updated Profile\"}");
     }
     public String testEmail(String email) throws IOException {
         HttpURLConnection con = client.open(new URL(EMAIL_URL));

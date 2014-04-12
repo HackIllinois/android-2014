@@ -117,7 +117,7 @@ public class MentorsFragment extends ListFragment {
     }
 
     private void setSuggestionsAdapter(SearchView searchView, String query) {
-        Cursor c = databaseTable.getHackerMatches(query, null);
+        Cursor c = databaseTable.getMentorMatches(query, null);
         SimpleCursorAdapter names = new SimpleCursorAdapter(getActivity(), R.layout.query_result_item, c, from, to, 0);
         searchView.setSuggestionsAdapter(names);
     }

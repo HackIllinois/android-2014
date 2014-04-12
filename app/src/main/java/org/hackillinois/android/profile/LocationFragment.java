@@ -17,7 +17,6 @@ import android.widget.ListView;
 
 import org.hackillinois.android.R;
 import org.hackillinois.android.models.Location;
-import org.hackillinois.android.models.people.Person;
 import org.hackillinois.android.utils.HttpUtils;
 
 import java.io.IOException;
@@ -50,17 +49,6 @@ public class LocationFragment extends DialogFragment implements
           // This means this is the profile tab so we have to load the data
         if(!loaded) {
             getLoaderManager().initLoader(0, null, this).forceLoad();
-        }
-
-    }
-
-
-    public void onResume(){
-        super.onResume();
-        if(!loaded){
-                // This means this is the profile tab so we have to load the data
-                getLoaderManager().initLoader(0,null,this).forceLoad();
-
         }
     }
 
@@ -121,60 +109,36 @@ public class LocationFragment extends DialogFragment implements
         String selectedLocation = locations.get(position).toString();
         String body = "\"" + selectedLocation + "\"";
         ProfileFragment profileFragment = (ProfileFragment) getFragmentManager().findFragmentByTag("profileFrag");
-        Person mPerson = profileFragment.getmPerson();
 
-        PostTask postTask = new PostTask(getActivity(), "homebase", mPerson.getType(), body);
+        PostTask postTask = new PostTask(getActivity(), "homebase", body);
         postTask.execute();
         profileFragment.setLocation(selectedLocation);
         dismiss();
     }
 
-    public class PostTask extends AsyncTask<String, Integer, Integer> {
+    public class PostTask extends AsyncTask<String, Integer, Boolean> {
 
         private Context mContext;
         private String body;
         private String key;
-        private String type;
 
-        private final Integer POST_SUCCESS = 0x1;
-        private final Integer POST_FAIL = 0x0;
-
-        public PostTask(Context context, String key, String type, String body) {
+        public PostTask(Context context, String key, String body) {
             mContext = context;
             this.body = body;
             this.key = key;
-            this.type = type;
         }
 
-
         @Override
-        protected Integer doInBackground(String... s) {
-
+        protected Boolean doInBackground(String... s) {
             try {
                 HttpUtils httpUtils = HttpUtils.getHttpUtils(mContext);
-
-                httpUtils.postPersonData(key, body, type);
-
-                return POST_SUCCESS;
-
+                return httpUtils.postPersonData(key, body);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-            return POST_FAIL;
+            return false;
         }
-
-//        @Override
-//        protected void onPostExecute(Integer integer) {
-//            super.onPostExecute(integer);
-//            getLoaderManager().initLoader(0,null,ProfileFragment.this).forceLoad();
-//        }
     }
-
-
-
-
-
 }
 
 

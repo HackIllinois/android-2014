@@ -78,11 +78,11 @@ public class RocketService extends Service {
 
         assert mRelativeLayout != null;
         ImageView chatHead = (ImageView) mRelativeLayout.findViewById(R.id.rock);
+        chatHead.setColorFilter(getResources().getColor(R.color.hackillinois_red));
         if (random.nextInt(100) == 40) {
             chatHead.setImageResource(R.drawable.penis);
             chatHead.setColorFilter(Color.BLACK);
         }
-        chatHead.setColorFilter(getResources().getColor(R.color.hackillinois_red));
 
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.MATCH_PARENT,

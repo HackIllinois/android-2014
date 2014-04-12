@@ -46,5 +46,6 @@
     <string name="title_activity_loggogogogogog">Loggogogogogog</string>
     <string name="try_again">Please try again with the email you used to register for HackIllinois</string>
     <string name="search_results">Search results</string>
+    <string name="update_status_title">Update status</string>
 
 </resources>

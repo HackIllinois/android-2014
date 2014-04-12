@@ -79,7 +79,7 @@ public class SkillsDialogFragment extends DialogFragment implements LoaderManage
             @Override
             public void onClick(View v) {
                 ArrayList<Skill> selected = mSkillsListAdapter.getSelectedSkills();
-                PostTask postTask = new PostTask(getActivity(), "skills", mPerson.getType(), formatBody(selected));
+                PostTask postTask = new PostTask(getActivity(), "skills", formatBody(selected));
                 postTask.execute();
                 Intent intent = new Intent("get_skills");
                 intent.putExtra("skills", selected);
@@ -195,51 +195,35 @@ public class SkillsDialogFragment extends DialogFragment implements LoaderManage
      */
     @Override
     public void onLoaderReset(Loader<ArrayList<Skill>> loader) {
-
     }
 
 
-    public class PostTask extends AsyncTask<String, Integer, Integer> {
+    public class PostTask extends AsyncTask<String, Void, Boolean> {
 
         private Context mContext;
         private String body;
         private String key;
-        private String type;
 
-        private final Integer POST_SUCCESS = 0x1;
-        private final Integer POST_FAIL = 0x0;
-
-        public PostTask(Context context, String key, String type, String body) {
+        public PostTask(Context context, String key, String body) {
             mContext = context;
             this.body = body;
             this.key = key;
-            this.type = type;
         }
 
-
         @Override
-        protected Integer doInBackground(String... s) {
+        protected Boolean doInBackground(String... s) {
 
             try {
                 HttpUtils httpUtils = HttpUtils.getHttpUtils(mContext);
 
-                httpUtils.postPersonData(key, body, type);
+                return httpUtils.postPersonData(key, body);
 
-                return POST_SUCCESS;
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            return POST_FAIL;
-        }
-
-        @Override
-        protected void onPostExecute(Integer integer) {
-            super.onPostExecute(integer);
-            //getLoaderManager().initLoader(0,null, SkillsDialogFragment.this).forceLoad();
+            return false;
         }
     }
-
-
 }

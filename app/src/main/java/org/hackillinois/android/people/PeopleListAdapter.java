@@ -65,30 +65,15 @@ public class PeopleListAdapter extends ArrayAdapter<Person> {
             viewHolder.nameTextView.setText(person.getName());
             viewHolder.locationTextView.setText(person.getHomebase());
 
-            RequestCreator requestCreator = picasso.load(person.getImageURL()).resize(200, 200);
+            RequestCreator requestCreator;
 
-            if (person instanceof Staff) {
-                requestCreator = requestCreator.transform(mRedTransform);
-                viewHolder.companyTextView.setText(((Staff) person).getCompany());
-                viewHolder.jobTitleTextView.setText(((Staff) person).getJobTitle());
-                viewHolder.initialsTextView.setTextColor(getContext().getResources().getColor(R.color.hackillinois_red));
-
-            } else if (person instanceof Mentor) {
-                requestCreator = requestCreator.transform(mRedTransform);
-                viewHolder.companyTextView.setText(((Mentor) person).getCompany());
-                viewHolder.jobTitleTextView.setText(((Mentor) person).getJobTitle());
-                viewHolder.initialsTextView.setTextColor(getContext().getResources().getColor(R.color.hackillinois_red));
-            } else if (person instanceof Hacker) {
-                requestCreator = requestCreator.transform(mBlueTransformation);
-                viewHolder.companyTextView.setText(((Hacker) person).getSchool());
-                viewHolder.jobTitleTextView.setText(((Hacker) person).getYear());
-                viewHolder.initialsTextView.setTextColor(getContext().getResources().getColor(R.color.hackillinois_blue));
-            }
-
-            if (!person.getFbID().isEmpty())
-                requestCreator.centerCrop().into(viewHolder.profileImageView);
-            else{ // put in initials for the image view
-                viewHolder.profileImageView.setVisibility(View.INVISIBLE);
+            if (!person.getFbID().isEmpty()) {
+                requestCreator = picasso.load(person.getImageURL()).resize(200, 200).centerCrop();
+                viewHolder.initialsTextView.setVisibility(View.INVISIBLE);
+                viewHolder.profileImageView.setVisibility(View.VISIBLE);
+            } else{ // put in initials for the image view
+                requestCreator = picasso.load("http://localhost").resize(200, 200).centerCrop().error(R.drawable.ic_action_hackillinois_icon_white);
+                viewHolder.profileImageView.setVisibility(View.VISIBLE);
                 viewHolder.initialsTextView.setVisibility(View.VISIBLE);
                 String parseThisShit = person.getName();
                 int space = parseThisShit.indexOf(" ");
@@ -97,7 +82,23 @@ public class PeopleListAdapter extends ArrayAdapter<Person> {
                 String initials = firstName.toUpperCase() + lastName.toUpperCase();
                 viewHolder.initialsTextView.setText(initials);
             }
-
+            if (person instanceof Staff) {
+                requestCreator.transform(mRedTransform);
+                viewHolder.companyTextView.setText(((Staff) person).getCompany());
+                viewHolder.jobTitleTextView.setText(((Staff) person).getJobTitle());
+                viewHolder.initialsTextView.setTextColor(getContext().getResources().getColor(R.color.hackillinois_red));
+            } else if (person instanceof Mentor) {
+                requestCreator.transform(mRedTransform);
+                viewHolder.companyTextView.setText(((Mentor) person).getCompany());
+                viewHolder.jobTitleTextView.setText(((Mentor) person).getJobTitle());
+                viewHolder.initialsTextView.setTextColor(getContext().getResources().getColor(R.color.hackillinois_red));
+            } else if (person instanceof Hacker) {
+                requestCreator.transform(mBlueTransformation);
+                viewHolder.companyTextView.setText(((Hacker) person).getSchool());
+                viewHolder.jobTitleTextView.setText(((Hacker) person).getYear());
+                viewHolder.initialsTextView.setTextColor(getContext().getResources().getColor(R.color.hackillinois_blue));
+            }
+            requestCreator.into(viewHolder.profileImageView);
         }
 
         return convertView;

@@ -53,7 +53,6 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
     private ImageView mImageView;
     private TextView mNameTextView;
     private TextView mTextSchool;
-    private TextView mTextSkills;
     private TextView mTextLocation;
     private TextView mInitials;
     private Picasso mPicasso;
@@ -118,62 +117,33 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
 
     private void updateStatusDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Update Hacker Status");
+        builder.setTitle(getString(R.string.update_status_title));
+        final CharSequence[] staffStatuses = new CharSequence[]{"Hacking", "Available", "Taking A Break", "Pooping"};
+        final CharSequence[] statuses = new CharSequence[]{"Hacking", "Available", "Taking A Break", "Do not distrub"};
+
+        DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (mPerson instanceof Staff) {
+                    updateStatus(staffStatuses[which].toString());
+                } else {
+                    updateStatus(statuses[which].toString());
+                }
+            }
+        };
         if (mPerson instanceof Staff) {
-            builder.setItems(new CharSequence[]
-                            {"Hacking", "Available", "Taking A Break", "Pooping"},
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // The 'which' argument contains the index position
-                            // of the selected item
-                            switch (which) {
-                                case 0:
-                                    updateStatus("Hacking");
-                                    break;
-                                case 1:
-                                    updateStatus("Available");
-                                    break;
-                                case 2:
-                                    updateStatus("Taking A Break");
-                                    break;
-                                case 3:
-                                    updateStatus("Pooping");
-                                    break;
-                            }
-                        }
-                    }
-            );
-            builder.create().show();
+            builder.setItems(staffStatuses, clickListener).create().show();
         } else {
-            builder.setItems(new CharSequence[]
-                            {"Hacking", "Available", "Taking A Break", "Do Not Disturb"},
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // The 'which' argument contains the index position
-                            // of the selected item
-                            switch (which) {
-                                case 0:
-                                    updateStatus("Hacking");
-                                    break;
-                                case 1:
-                                    updateStatus("Available");
-                                    break;
-                                case 2:
-                                    updateStatus("Taking A Break");
-                                    break;
-                                case 3:
-                                    updateStatus("Do Not Disturb");
-                                    break;
-                            }
-                        }
-                    }
-            );
-            builder.create().show();
+            builder.setItems(statuses, clickListener).create().show();
         }
     }
 
+
     private void updateStatus(String status) {
         DateTime date = new DateTime();
+        if (mPerson == null) {
+            return;
+        }
         String statusArray = mPerson.getStatusArray();
         Log.e("status array", statusArray.substring(1));
         String body = "[{\"status\": \"" + status + "\", \"date\": " + date.getMillis() / 1000 + "}";
@@ -181,13 +151,12 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
             body = body + "]";
         else
             body = body + ", " + statusArray.substring(1);
-        PostTask postTask = new PostTask(getActivity(), "status", mPerson.getType(), body);
+        PostTask postTask = new PostTask(getActivity(), "status", body);
         postTask.execute();
     }
 
     public void setLocation(String location) {
         mTextLocation.setText(location);
-        //getLoaderManager().initLoader(0,null,this).forceLoad();
     }
 
     @Override
@@ -199,7 +168,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         mNameTextView = (TextView) v.findViewById(R.id.name_profile);
         mTextSchool = (TextView) v.findViewById(R.id.school_profile);
         mTextLocation = (TextView) v.findViewById(R.id.location_profile);
-        mTextSkills = (TextView) v.findViewById(R.id.text_skills_header);
+        TextView textSkills = (TextView) v.findViewById(R.id.text_skills_header);
         mInitials = (TextView) v.findViewById(R.id.profile_other_initials);
         ImageView statusPlusImage = (ImageView) v.findViewById(R.id.profile_status_plus);
         ImageView skillsPlusImage = (ImageView) v.findViewById(R.id.profile_skills_plus);
@@ -249,7 +218,6 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
                 mSkillsAdapter.add(list);
             mSkillsAdapter.notifyDataSetChanged();
 
-            Log.e("new person", mPerson.getName());
             statusPlusImage.setVisibility(View.GONE);
             skillsPlusImage.setVisibility(View.GONE);
 
@@ -265,8 +233,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
                     launchSetLocation();
                 }
             });
-
-            mTextSkills.setOnClickListener(new View.OnClickListener() {
+            textSkills.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     launchEditSkillsFragment();
@@ -417,43 +384,34 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         super.onDetach();
     }
 
-    public class PostTask extends AsyncTask<String, Integer, Integer> {
+    public class PostTask extends AsyncTask<String, Void, Boolean> {
 
         private Context mContext;
         private String body;
         private String key;
-        private String type;
 
-        private final Integer POST_SUCCESS = 0x1;
-        private final Integer POST_FAIL = 0x0;
-
-        public PostTask(Context context, String key, String type, String body) {
+        public PostTask(Context context, String key, String body) {
             mContext = context;
             this.body = body;
             this.key = key;
-            this.type = type;
         }
 
-
         @Override
-        protected Integer doInBackground(String... s) {
+        protected Boolean doInBackground(String... s) {
             try {
                 HttpUtils httpUtils = HttpUtils.getHttpUtils(mContext);
 
-                httpUtils.postPersonData(key, body, type);
-
-                return POST_SUCCESS;
-
+                return httpUtils.postPersonData(key, body);
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            return POST_FAIL;
+            return false;
         }
 
         @Override
-        protected void onPostExecute(Integer integer) {
-            super.onPostExecute(integer);
+        protected void onPostExecute(Boolean thing) {
+            super.onPostExecute(thing);
             getLoaderManager().initLoader(0, null, ProfileFragment.this).forceLoad();
         }
     }
