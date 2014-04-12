@@ -37,8 +37,8 @@ public class ScheduleListAdapter extends ArrayAdapter<ScheduleItem> {
         super(activity, R.layout.schedule_list_item, R.id.schedule_description);
         mInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         picasso = Picasso.with(activity);
-        mActivity = activity;
         mRoundedTransformation = new RoundedTransformation(100, 20, 0, 0);
+        mActivity = activity;
     }
 
     @Override
@@ -69,8 +69,11 @@ public class ScheduleListAdapter extends ArrayAdapter<ScheduleItem> {
         final ScheduleItem item = getItem(position);
         holder.timeTextView.setText(item.getTime());
         // load the image into the ImageView
-        if (item.getIconURL() != null)
+        if (item.getIconURL() != null && !item.getIconURL().isEmpty()) {
+            holder.iconImageView.setImageResource(item.getImageDrawable());
+        } else {
             picasso.load(item.getIconURL()).resize(200, 200).transform(mRoundedTransformation).centerCrop().into(holder.iconImageView);
+        }
 
         holder.titleTextView.setText(item.getEventName());
         holder.descriptionTextView.setText(item.getDescription());
@@ -97,109 +100,11 @@ public class ScheduleListAdapter extends ArrayAdapter<ScheduleItem> {
         final View.OnClickListener googleMaps = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String room = item.getRoomNumber();
-                double lat = 0;
-                double lng = 0;
-                if (room.equals("SC 0216")) {
-                    lat = 40.113760;
-                    lng = -88.225017;
-                } else if (room.equals("SC 0224")) {
-                    lat = 40.113772;
-                    lng = -88.224636;
-                } else if (room.equals("SC Basement")) {
-                    lat = 40.113870;
-                    lng = -88.224848;
-                } else if (room.equals("SC 1103")) {
-                    lat = 40.113964;
-                    lng = -88.225296;
-                } else if (room.equals("SC 1105")) {
-                    lat = 40.114066;
-                    lng = -88.225294;
-                } else if (room.equals("SC 1109")) {
-                    lat = 40.114167;
-                    lng = -88.225295;
-                } else if (room.equals("SC 1112")) {
-                    lat = 40.114301;
-                    lng = -88.225133;
-                } else if (room.equals("SC 1131")) {
-                    lat = 40.114276;
-                    lng = -88.225307;
-                } else if (room.equals("SC 1214")) {
-                    lat = 40.113791;
-                    lng = -88.224911;
-                } else if (room.equals("SC 1302")) {
-                    lat = 40.113794;
-                    lng = -88.224741;
-                } else if (room.equals("SC 1304")) {
-                    lat = 40.113793;
-                    lng = -88.224603;
-                } else if (room.equals("SC 1404")) {
-                    lat = 40.114056;
-                    lng = -88.224460;
-                } else if (room.equals("SC Atrium")) {
-                    lat = 40.113886;
-                    lng = -88.224955;
-                } else if (room.equals("SC 1312")) {
-                    lat = 40.113719;
-                    lng = -88.224829;
-                } else if (room.equals("SC 2405")) {
-                    lat = 40.113990;
-                    lng = -88.224428;
-                } else if (room.equals("SC 2102")) {
-                    lat = 40.113928;
-                    lng = -88.225188;
-                } else if (room.equals("SC 2124")) {
-                    lat = 40.114299;
-                    lng = -88.225139;
-                } else if (room.equals("SC 3401")) {
-                    lat = 40.113976;
-                    lng = -88.224555;
-                } else if (room.equals("SC 3403")) {
-                    lat = 40.113986;
-                    lng = -88.224469;
-                } else if (room.equals("SC 3405")) {
-                    lat = 40.113994;
-                    lng = -88.224380;
-                } else if (room.equals("SC 3102")) {
-                    lat = 40.113925;
-                    lng = -88.225189;
-                } else if (room.equals("SC 3124")) {
-                    lat = 40.114298;
-                    lng = -88.225131;
-                } else if (room.equals("SC 4102")) {
-                    lat = 40.113929;
-                    lng = -88.225190;
-                } else if (room.equals("SC 4124")) {
-                    lat = 40.114301;
-                    lng = -88.225132;
-                } else if (room.equals("SC 4403")) {
-                    lat = 40.114001;
-                    lng = -88.224473;
-                } else if (room.equals("SC 4405")) {
-                    lat = 40.114001;
-                    lng = -88.224383;
-                } else if (room.equals("SC 4407")) {
-                    lat = 40.114014;
-                    lng = -88.224293;
-                } else if (room.equals("DCL 1310")) {
-                    lat = 40.113185;
-                    lng = -88.225861;
-                } else if (room.equals("DCL 1320")) {
-                    lat = 40.113210;
-                    lng = -88.226039;
-                } else if (room.equals("DCL 2320")) {
-                    lat = 40.113228;
-                    lng = -88.226011;
-                } else if (room.equals("DCL 2436")) {
-                    lat = 40.113116;
-                    lng = -88.226112;
-                } else {
-                    lat = 40.114300;
-                    lng = -88.224837;
-                }
+                double lat = item.getRoomLat();
+                double lng = item.getRoomLong();
 
                 String uriBegin = "geo:" + lat + "," + lng;
-                String query = lat + "," + lng + "(" + item.getEventName() + " at " + room + ")";
+                String query = lat + "," + lng + "(" + item.getEventName() + " in " + item.getRoomName() + ")";
                 String encodedQuery = Uri.encode(query);
                 String uriString = uriBegin + "?q=" + encodedQuery + "&z=19";
                 Uri uri = Uri.parse(uriString);

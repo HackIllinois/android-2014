@@ -23,6 +23,7 @@ public class SplashLoginActivity extends FragmentActivity implements LoaderManag
 
     private ImageView button;
     private ImageView splash;
+    private ImageView illinoisLogo;
     private VideoView video;
 
 
@@ -40,6 +41,7 @@ public class SplashLoginActivity extends FragmentActivity implements LoaderManag
         setContentView(R.layout.activity_splash_login);
         splash = (ImageView) findViewById(R.id.splash_image_activity);
         button = (ImageView) findViewById(R.id.launchbutton_activity);
+        illinoisLogo = (ImageView) findViewById(R.id.logo_activity);
         video = (VideoView) findViewById(R.id.videoView_activity);
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -88,6 +90,7 @@ public class SplashLoginActivity extends FragmentActivity implements LoaderManag
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.abc_fade_in);
         animation.setFillAfter(true);
         button.startAnimation(animation);
+        illinoisLogo.startAnimation(animation);
         button.setClickable(true);
 
     }

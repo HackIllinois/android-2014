@@ -72,7 +72,7 @@ public class PeopleListAdapter extends ArrayAdapter<Person> {
                 viewHolder.initialsTextView.setVisibility(View.INVISIBLE);
                 viewHolder.profileImageView.setVisibility(View.VISIBLE);
             } else{ // put in initials for the image view
-                requestCreator = picasso.load("http://localhost").resize(200, 200).centerCrop().error(R.drawable.ic_action_hackillinois_icon_white);
+                requestCreator = picasso.load("http://localhost").resize(200, 200).centerCrop().error(R.drawable.ic_action_hackillinois_icon_white).placeholder(R.drawable.ic_action_hackillinois_icon_white);
                 viewHolder.profileImageView.setVisibility(View.VISIBLE);
                 viewHolder.initialsTextView.setVisibility(View.VISIBLE);
                 String parseThisShit = person.getName();

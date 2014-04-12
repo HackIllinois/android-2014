@@ -47,5 +47,6 @@
     <string name="search_results">Search results</string>
     <string name="update_status_title">Update status</string>
     <string name="send_email">Send email</string>
+    <string name="add_calendar">Add</string>
 
 </resources>
