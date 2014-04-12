@@ -105,7 +105,7 @@ public class ScheduleFragment extends Fragment implements ViewPager.OnPageChange
                     if (position == 0)
                         animate.x(0.45f * mScreenWidth);
                     if (position == 1)
-                        animate.x(3 * mScreenWidth / 4);
+                        animate.x(3.2f * mScreenWidth / 4);
 
                     if (mScrollState == ViewPager.SCROLL_STATE_IDLE)
                         animate.cancel();
@@ -117,7 +117,7 @@ public class ScheduleFragment extends Fragment implements ViewPager.OnPageChange
                     if (position == 0)
                         animate.x(positionOffsetPixels + mScreenWidth / 15);
                     if (position == 1)
-                        animate.x(positionOffsetPixels + mScreenWidth / 2.4f);
+                        animate.x(positionOffsetPixels + mScreenWidth / 2.25f);
 
                     if (mScrollState == ViewPager.SCROLL_STATE_IDLE)
                         animate.cancel();
