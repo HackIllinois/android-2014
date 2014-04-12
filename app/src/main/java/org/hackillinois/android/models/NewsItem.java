@@ -14,7 +14,7 @@ import java.util.ArrayList;
  *
  * Simple class to represent an item in the newsfeed.
  */
-public class NewsItem {
+public class NewsItem implements Comparable<NewsItem> {
 
     private String description;
     private int time;
@@ -89,6 +89,11 @@ public class NewsItem {
             return "just now";
         else
             return diff.getMinutes() + "m ago";
+    }
+
+    @Override
+    public int compareTo(NewsItem another) {
+        return another.time - time;
     }
 
 

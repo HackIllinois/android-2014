@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class NewsfeedDataLoader extends AsyncTaskLoader<List<NewsItem>> {
@@ -71,10 +72,12 @@ public class NewsfeedDataLoader extends AsyncTaskLoader<List<NewsItem>> {
                     }
 
                     if(isEmergency)
-                        emergencyNewsItems.add(0, buildingItem);
+                        emergencyNewsItems.add(buildingItem);
                     else
-                        newsItems.add(0, buildingItem );
+                        newsItems.add(buildingItem);
                 }
+                Collections.sort(emergencyNewsItems);
+                Collections.sort(newsItems);
 
                 // put the emergency items at the top, followed by the others news items
                 emergencyNewsItems.addAll(newsItems);
