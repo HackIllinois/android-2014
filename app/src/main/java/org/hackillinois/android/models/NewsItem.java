@@ -16,7 +16,8 @@ import java.util.ArrayList;
  */
 public class NewsItem implements Comparable<NewsItem> {
 
-    private String description;
+    private String description;         // a plain text copy of the news message
+    private String coloredDescription;  // a copy of the news message with <font color=#?> tags
     private int time;
     private String iconUrl;
     private ArrayList<Highlight> highlights;  // [[range,color], [range,color]]
@@ -26,6 +27,7 @@ public class NewsItem implements Comparable<NewsItem> {
     /** Constructor **/
     public NewsItem(String description, int time, String iconUrl, boolean isEmergency) {
         this.description = description;
+        this.coloredDescription = description;
         this.time = time;
         this.iconUrl = iconUrl;
         this.isEmergency = isEmergency;
@@ -34,9 +36,7 @@ public class NewsItem implements Comparable<NewsItem> {
 
 
     /** ----- Getters and Setters ----- **/
-    public Spanned getDescription() {
-        return Html.fromHtml(description);
-    }
+    public Spanned getColoredDescription() { return Html.fromHtml(coloredDescription); }
 
     public void setDescription(String description) {
         this.description = description;
@@ -126,6 +126,7 @@ public class NewsItem implements Comparable<NewsItem> {
         StringBuilder colored = new StringBuilder();
         Highlight currHighlight = null;
 
+        // start with description (the plain text message) and add in all the <font> tags
         for( int i = 0; i < description.length(); i++ ) {
 
             // check if this index is the start of a highlighted region
@@ -148,7 +149,7 @@ public class NewsItem implements Comparable<NewsItem> {
             }
         }
 
-        this.description = colored.toString();
+        this.coloredDescription = colored.toString();
     }
 
 }
