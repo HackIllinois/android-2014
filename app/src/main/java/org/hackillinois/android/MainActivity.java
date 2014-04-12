@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.SparseArray;
 import android.view.Menu;
+import android.view.Window;
 
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
@@ -31,7 +32,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks,
+        LoadingInterface {
 
     private static final String PROFILE_TAG = "profileFrag";
     private static final String PEOPLE_TAG = "peopleFrag";
@@ -51,8 +53,9 @@ public class MainActivity extends ActionBarActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        handleIntent(getIntent());
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_main);
+        handleIntent(getIntent());
         startService(new Intent(this, RocketService.class));
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
@@ -85,23 +88,21 @@ public class MainActivity extends ActionBarActivity
 
         switch (position){
             case 0:
-                Fragment profileFragment = fragmentManager.findFragmentByTag(PROFILE_TAG);
+                ProfileFragment profileFragment = (ProfileFragment) fragmentManager.findFragmentByTag(PROFILE_TAG);
                 if (profileFragment == null) {
                     profileFragment = ProfileFragment.newInstance(position + 1);
+                    profileFragment.setInterface(this);
                 }
-                if(fragmentManager.getBackStackEntryCount()==0)
-                {
+                if(fragmentManager.getBackStackEntryCount() == 0) {
                     fragmentManager.beginTransaction()
                             .replace(R.id.container, profileFragment, PROFILE_TAG)
                             .commit();
-                    break;
-                }
-                else {
+                } else {
                     fragmentManager.beginTransaction()
                             .replace(R.id.container, profileFragment, PROFILE_TAG).addToBackStack(null)
                             .commit();
-                    break;
                 }
+                break;
             case 1:
                 Fragment peopleFragment = fragmentManager.findFragmentByTag(PEOPLE_TAG);
                 if (peopleFragment == null) {
@@ -234,4 +235,15 @@ public class MainActivity extends ActionBarActivity
                 .replace(R.id.container, peopleFragment, "SEARCH_RESULTS").addToBackStack(null)
                 .commit();
     }
+
+    @Override
+    public void onLoadStart() {
+        setProgressBarIndeterminateVisibility(true);
+    }
+
+    @Override
+    public void onLoadEnd() {
+        setProgressBarIndeterminateVisibility(false);
+    }
+
 }

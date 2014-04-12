@@ -1,7 +1,6 @@
 package org.hackillinois.android.profile;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -27,6 +26,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import org.hackillinois.android.LoadingInterface;
 import org.hackillinois.android.MainActivity;
 import org.hackillinois.android.R;
 import org.hackillinois.android.RoundedTransformation;
@@ -56,7 +56,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
     private TextView mTextLocation;
     private TextView mInitials;
     private Picasso mPicasso;
-    private ProgressDialog progressDialog;
+    private LoadingInterface mLoadingInterface;
 
     private SkillsAdapter mSkillsAdapter;
     private StatusListAdapter mStatusAdapter;
@@ -222,10 +222,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
             skillsPlusImage.setVisibility(View.GONE);
 
         } else {
-            progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setMessage(getString(R.string.loading));
-            progressDialog.setCancelable(false);
-            progressDialog.show();
+            mLoadingInterface.onLoadStart();
             getLoaderManager().initLoader(0, null, this).forceLoad();
 
             mTextLocation.setOnClickListener(new View.OnClickListener() {
@@ -286,6 +283,14 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        if (mLoadingInterface != null) {
+            mLoadingInterface.onLoadEnd();
+        }
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(broadcastReceiver);
@@ -335,10 +340,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
                 updateStatus("Hacking");
 
         }
-        if (progressDialog != null && progressDialog.isShowing()) {
-            progressDialog.dismiss();
-        }
-
+        mLoadingInterface.onLoadEnd();
     }
 
     private void setFields(Person person) {
@@ -411,5 +413,9 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
             super.onPostExecute(thing);
             getLoaderManager().initLoader(0, null, ProfileFragment.this).forceLoad();
         }
+    }
+
+    public void setInterface(LoadingInterface loadingInterface) {
+        mLoadingInterface = loadingInterface;
     }
 }

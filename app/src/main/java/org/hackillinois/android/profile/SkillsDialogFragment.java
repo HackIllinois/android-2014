@@ -57,11 +57,12 @@ public class SkillsDialogFragment extends DialogFragment implements LoaderManage
         View rootView = inflater.inflate(R.layout.fragment_pick_skills, container, false);
         mPerson = (Person) getArguments().getSerializable("person");
 
-        Utils.setInsetsBottom(getActivity(), rootView);
         this.getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         assert rootView != null;
         ListView skillsList = (ListView) rootView.findViewById(R.id.pick_skills_list);
+        Utils.setInsetsBottom(getActivity(), skillsList);
+        skillsList.setCacheColorHint(getResources().getColor(R.color.hackillinois_red));
         mSkillsListAdapter = new SkillsListAdapter(getActivity(), new ArrayList<Skill>(), skillsList);
         skillsList.setAdapter(mSkillsListAdapter);
 
@@ -226,4 +227,6 @@ public class SkillsDialogFragment extends DialogFragment implements LoaderManage
             return false;
         }
     }
+
+
 }

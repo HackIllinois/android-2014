@@ -8,16 +8,18 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.Window;
 
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import org.hackillinois.android.login.OAuthAccessFragment;
 
-public class AuthActivity extends FragmentActivity {
+public class AuthActivity extends FragmentActivity implements LoadingInterface {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_auth);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -42,9 +44,20 @@ public class AuthActivity extends FragmentActivity {
             if (oAuthAccessFragment == null) {
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 oAuthAccessFragment = new OAuthAccessFragment();
+                oAuthAccessFragment.setLoadingInterface(this);
                 ft.replace(R.id.container, oAuthAccessFragment, null)
                 .commit();
             }
         }
+    }
+
+    @Override
+    public void onLoadStart() {
+        setProgressBarIndeterminateVisibility(true);
+    }
+
+    @Override
+    public void onLoadEnd() {
+        setProgressBarIndeterminateVisibility(false);
     }
 }

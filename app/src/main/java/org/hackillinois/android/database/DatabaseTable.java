@@ -131,6 +131,7 @@ public class DatabaseTable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        sqLiteDatabase.close();
         return 1;
     }
 
@@ -154,6 +155,7 @@ public class DatabaseTable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        sqLiteDatabase.close();
         return 1;
     }
 
@@ -176,6 +178,7 @@ public class DatabaseTable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        sqLiteDatabase.close();
         return 1;
     }
 
