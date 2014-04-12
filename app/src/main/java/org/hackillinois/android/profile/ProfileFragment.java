@@ -205,11 +205,6 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         ImageView skillsPlusImage = (ImageView) v.findViewById(R.id.profile_skills_plus);
         mPicasso = Picasso.with(getActivity());
 
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setMessage(getString(R.string.loading));
-        progressDialog.setCancelable(false);
-        progressDialog.show();
-
         ListView skillsList = (ListView) v.findViewById(R.id.profile_skills_list);
         ListView statusList = (ListView) v.findViewById(R.id.status_list);
 
@@ -259,6 +254,11 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
             skillsPlusImage.setVisibility(View.GONE);
 
         } else {
+            progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setMessage(getString(R.string.loading));
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+
             mTextLocation.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
