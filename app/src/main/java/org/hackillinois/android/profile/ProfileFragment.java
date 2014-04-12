@@ -1,5 +1,6 @@
 package org.hackillinois.android.profile;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -299,6 +300,22 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public Loader<Person> onCreateLoader(int id, Bundle args) {
         return new ProfileDataLoader(getActivity());
+    }
+
+    /**
+     * Called when a fragment is first attached to its activity.
+     * {@link #onCreate(android.os.Bundle)} will be called after this.
+     *
+     * @param activity
+     */
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try{
+            mLoadingInterface = (LoadingInterface) activity;
+        } catch(ClassCastException e){
+            throw new ClassCastException("Activity must implement LoadingInterface.");
+        }
     }
 
     @Override
