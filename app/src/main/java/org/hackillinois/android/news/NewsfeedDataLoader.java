@@ -71,9 +71,9 @@ public class NewsfeedDataLoader extends AsyncTaskLoader<List<NewsItem>> {
                     }
 
                     if(isEmergency)
-                        emergencyNewsItems.add(buildingItem);
+                        emergencyNewsItems.add(0, buildingItem);
                     else
-                        newsItems.add( buildingItem );
+                        newsItems.add(0, buildingItem );
                 }
 
                 // put the emergency items at the top, followed by the others news items
