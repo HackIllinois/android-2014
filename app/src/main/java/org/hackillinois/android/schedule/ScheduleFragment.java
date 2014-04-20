@@ -25,6 +25,7 @@ import org.hackillinois.android.utils.Utils;
  */
 public class ScheduleFragment extends Fragment implements ViewPager.OnPageChangeListener {
 
+    private int mCurrentPosition;//Updated before animation begins
     private int mScrollState;
     private int mScreenWidth;
     private static boolean rotated;
@@ -89,7 +90,6 @@ public class ScheduleFragment extends Fragment implements ViewPager.OnPageChange
      */
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
         if (Build.VERSION.SDK_INT >= 14) {
             if (positionOffset <= 0 || positionOffset >= 1)
                 return;
@@ -97,7 +97,7 @@ public class ScheduleFragment extends Fragment implements ViewPager.OnPageChange
             ImageView view = (ImageView) getActivity().findViewById(R.id.rocketship);
             ViewPropertyAnimator animate = view.animate();
             if (animate != null && mScrollState == ViewPager.SCROLL_STATE_SETTLING) {
-                if (positionOffset > .7f) { // move to the right
+                if (mCurrentPosition == (position + 1)){ // move to the right
                     if (rotated) {
                         animate.rotation(0f);
                         rotated = false;
@@ -105,19 +105,19 @@ public class ScheduleFragment extends Fragment implements ViewPager.OnPageChange
                     if (position == 0)
                         animate.x(0.45f * mScreenWidth);
                     if (position == 1)
-                        animate.x(3.2f * mScreenWidth / 4);
+                        animate.x(.8f * mScreenWidth);
 
                     if (mScrollState == ViewPager.SCROLL_STATE_IDLE)
                         animate.cancel();
-                } else if (positionOffset < .3f) { // move to the left
+                } else if (mCurrentPosition == position) { // move to the left
                     if (!rotated) {
                         animate.rotation(180f);
                         rotated = true;
                     }
                     if (position == 0)
-                        animate.x(positionOffsetPixels + mScreenWidth / 15);
+                        animate.x(1f/15f * mScreenWidth);
                     if (position == 1)
-                        animate.x(positionOffsetPixels + mScreenWidth / 2.25f);
+                        animate.x(4f/9f * mScreenWidth);
 
                     if (mScrollState == ViewPager.SCROLL_STATE_IDLE)
                         animate.cancel();
@@ -149,7 +149,7 @@ public class ScheduleFragment extends Fragment implements ViewPager.OnPageChange
      */
     @Override
     public void onPageSelected(int position) {
-
+        mCurrentPosition = position;
     }
 
 }
