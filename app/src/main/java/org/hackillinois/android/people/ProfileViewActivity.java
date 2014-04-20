@@ -1,6 +1,7 @@
 package org.hackillinois.android.people;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -63,10 +64,10 @@ public class ProfileViewActivity extends ActionBarActivity implements LoadingInt
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (R.id.send_email == item.getItemId()) {
-            Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.putExtra(Intent.EXTRA_EMAIL, email);
-            intent.setType("message/rfc822");
-            startActivityForResult(intent, 5);
+            Intent testIntent = new Intent(Intent.ACTION_VIEW);
+            Uri data = Uri.parse("mailto:?to=" + email);
+            testIntent.setData(data);
+            startActivityForResult(testIntent, 3);
             return true;
         }
         return super.onOptionsItemSelected(item);

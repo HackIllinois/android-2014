@@ -97,7 +97,7 @@ public class ScheduleFragment extends Fragment implements ViewPager.OnPageChange
             ImageView view = (ImageView) getActivity().findViewById(R.id.rocketship);
             ViewPropertyAnimator animate = view.animate();
             if (animate != null && mScrollState == ViewPager.SCROLL_STATE_SETTLING) {
-                if (mCurrentPosition == (position + 1)){ // move to the right
+                if (mCurrentPosition == (position + 1)) { // move to the right
                     if (rotated) {
                         animate.rotation(0f);
                         rotated = false;
