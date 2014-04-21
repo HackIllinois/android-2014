@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,30 +19,30 @@ import android.widget.ListView;
 
 import org.hackillinois.android.MainActivity;
 import org.hackillinois.android.R;
-import org.hackillinois.android.models.Support.Support;
-import org.hackillinois.android.models.Support.SupportData;
+import org.hackillinois.android.models.Location;
+import org.hackillinois.android.models.Support;
 import org.hackillinois.android.utils.Utils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 /**
- * @author  Will Hennessy
- *         SkillsDialogFragment -- edit the user profile skills list
+ * @author  Ben Fishbein
+ *         SupportFragment -- edit the user profile skills list
  */
 
-public class SupportFragment extends DialogFragment implements LoaderManager.LoaderCallbacks<SupportData>{
+public class SupportFragment extends DialogFragment implements LoaderManager.LoaderCallbacks<Support>{
 
-    private static final String SUPPORT_ROOM_JSON_URL = "http://www.hackillinois.org/mobile/map";
-    private static final String SUPPORT_CATEGORY_JSON_URL = "http://www.hackillinois.org/mobile/support";
     private SupportListAdapter mSupportListAdapter;
-    private List<Support> rooms = new ArrayList<Support>();
-    private List<Support> categories = new ArrayList<Support>();
-    private Map<Support, List<Support>> subCategories = new HashMap<Support, List<Support>>();
+    private TreeMap<String, List<String>> categories = new TreeMap<String, List<String>>();
+    private ArrayList<Location> rooms = new ArrayList<Location>();
 
     public static SupportFragment newInstance(int sectionNumber) {
         Bundle args = new Bundle();
@@ -53,7 +54,6 @@ public class SupportFragment extends DialogFragment implements LoaderManager.Loa
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         setHasOptionsMenu(true);
         View rootView = inflater.inflate(R.layout.fragment_support, container, false);
         mSupportListAdapter = new SupportListAdapter(getActivity());
@@ -64,110 +64,71 @@ public class SupportFragment extends DialogFragment implements LoaderManager.Loa
 
         getLoaderManager().initLoader(0, null, this).forceLoad();
 
+        List<String> initialCategories = new ArrayList<String>();
+
+        Set set = categories.entrySet();
+        // Get an iterator
+        Iterator i = set.iterator();
 
         //Initially set up ListView
-        List<Support> modCategories = new ArrayList<Support>();
-        for (Support s : categories) {
-            modCategories.add(s);
+        while(i.hasNext()) {
+            Map.Entry me = (Map.Entry)i.next();
+            initialCategories.add(me.getKey().toString());
         }
-        
-        mSupportListAdapter.setData(modCategories);
 
+        mSupportListAdapter.setData(initialCategories);
         supportList.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
+                Set set = categories.entrySet();
+                // Get an iterator
+                Iterator i = set.iterator();
 
-                boolean selectionFound = false;
+                String selected = mSupportListAdapter.getItem(position).toString();
+                List<String> newCategoryList = new ArrayList<String>();
+                int size = mSupportListAdapter.getSize();
+                while(i.hasNext()) {
 
-                String selected = mSupportListAdapter.getItem(position).getTitle();
-                for (Support item : categories) {
-                    if (selected.equalsIgnoreCase(item.getTitle())) {
-                        selectionFound = true;
-                        List<Support> modSubCategories = new ArrayList<Support>();
-
-                        //Path
-                        Support OptionChosen = new Support("-" + selected);
-                        modSubCategories.add(OptionChosen);
-
-                        int tempint = -1;
-                        for (int i = 0; i < categories.size(); i++) {
-                            if(selected.equalsIgnoreCase(categories.get(i).getTitle()))
-                            {
-                                tempint = i;
-                            }
+                    Map.Entry me = (Map.Entry) i.next();
+                    if(selected.equalsIgnoreCase(me.getKey().toString())){
+                        for(int x = 0; x < position; x++){
+                            newCategoryList.add(mSupportListAdapter.getItem(x));
                         }
-                        if(tempint != -1) {
-                            for (Support s : subCategories.get(categories.get(tempint))) {
-                                modSubCategories.add(s);
-                            }
+                        newCategoryList.add(mSupportListAdapter.getItem(position)+" ");
+
+                        ArrayList cat = (ArrayList) me.getValue();
+                        for(int x = 0; x < cat.size(); x ++){
+                            newCategoryList.add("- " + cat.get(x).toString());
                         }
-                        mSupportListAdapter.setData(modSubCategories);
+                        for(int x = position+1; x < size ;x++){
+                            newCategoryList.add(mSupportListAdapter.getItem(x));
+                        }
+                        mSupportListAdapter.setData(newCategoryList);
                         break;
                     }
-                    if (selected.substring(1).equalsIgnoreCase(item.getTitle())) {
-                        selectionFound = true;
-                        List<Support> modCategories = new ArrayList<Support>();
-                        for (Support s : categories) {
-                            modCategories.add(s);
+                    if(selected.equalsIgnoreCase(me.getKey().toString()+ " ")){
+                        for(int x = 0; x < position; x++){
+                            newCategoryList.add(mSupportListAdapter.getItem(x));
                         }
-
-                        mSupportListAdapter.setData(modCategories);
+                        //removes the " " flag
+                        newCategoryList.add(mSupportListAdapter.getItem(position).substring(0,mSupportListAdapter.getItem(position).length()-1));
+                        ArrayList cat = (ArrayList) me.getValue();
+                        for(int x = position+1+cat.size(); x < size ;x++){
+                            newCategoryList.add(mSupportListAdapter.getItem(x));
+                        }
+                        mSupportListAdapter.setData(newCategoryList);
                         break;
                     }
-                }
-                if (!selectionFound) {
-                    int tempint = -1;
-                    for (int i = 0; i < categories.size(); i++) {
-                        if(mSupportListAdapter.getItem(0).getTitle().substring(1).equalsIgnoreCase(categories.get(i).getTitle()))
-                        {
-                            tempint = i;
-                        }
-                    }
-                    if(tempint != -1) {
-                        for (Support item : subCategories.get(categories.get(tempint))) {
-                            if (selected.equalsIgnoreCase(item.getTitle())) {
-                                selectionFound = true;
-                                List<Support> modRoomData = new ArrayList<Support>();
-
-                                Support OptionChosen = new Support(mSupportListAdapter.getItem(0).getTitle());
-                                modRoomData.add(OptionChosen);
-                                Support SubOptionChosen = new Support("--" + selected);
-                                modRoomData.add(SubOptionChosen);
-
-                                for (Support s : rooms) {
-                                    modRoomData.add(s);
-                                }
-
-                                mSupportListAdapter.setData(modRoomData);
-                                break;
-                            }
-                            if (selected.substring(2).equalsIgnoreCase(item.getTitle())) {
-                                selectionFound = true;
-
-
-                                List<Support> modSubCategories = new ArrayList<Support>();
-
-                                Support OptionChosen = new Support(mSupportListAdapter.getItem(0).getTitle());
-                                modSubCategories.add(OptionChosen);
-
-                                for (Support s : subCategories.get(categories.get(tempint))) {
-                                    modSubCategories.add(s);
-                                }
-                                mSupportListAdapter.setData(modSubCategories);
-                                break;
-                            }
-                        }
-                    }
-                }
-                if (!selectionFound) {
-                    for (Support item : rooms) {
-                        if (selected.equalsIgnoreCase(item.getTitle())) {
-                            Intent testIntent = new Intent(Intent.ACTION_VIEW);
-                            Uri data = Uri.parse("mailto:?subject=" + mSupportListAdapter.getItem(0).getTitle().substring(1) + " - " + mSupportListAdapter.getItem(1).getTitle().substring(2) + " - " + mSupportListAdapter.getItem(position).getTitle() + "&body=" + "" + "&to=" + "support@hackillinois.org");
-                            testIntent.setData(data);
-                            startActivityForResult(testIntent, 3);
-                            break;
+                    ArrayList cat = (ArrayList) me.getValue();
+                    for(int x = 0; x < cat.size() ;x++){
+                        if (selected.toUpperCase().contains(cat.get(x).toString().toUpperCase())) {
+                            Bundle bundle=new Bundle();
+                            bundle.putString("category", me.getKey().toString());
+                            bundle.putString("subCategory", cat.get(x).toString());
+                            LocationFragment locFrag = new LocationFragment();
+                            locFrag.setArguments(bundle);
+                            locFrag.show(getFragmentManager(), "unused");
                         }
                     }
                 }
@@ -202,9 +163,9 @@ public class SupportFragment extends DialogFragment implements LoaderManager.Loa
     }
 
     @Override
-    public Loader<SupportData> onCreateLoader(int id, Bundle args) {
+    public Loader<Support> onCreateLoader(int id, Bundle args) {
         try {
-            return new SupportDataLoader(getActivity(), new URL(SUPPORT_ROOM_JSON_URL), new URL(SUPPORT_CATEGORY_JSON_URL));
+            return new SupportDataLoader(getActivity());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -212,22 +173,24 @@ public class SupportFragment extends DialogFragment implements LoaderManager.Loa
     }
 
     @Override
-    public void onLoadFinished(Loader<SupportData> loader, SupportData data) {
-        rooms = data.getRooms();
+    public void onLoadFinished(Loader<Support> loader, Support data) {
         categories = data.getCategories();
-        subCategories = data.getSubCategories();
+
+        List<String> initialCategories = new ArrayList<String>();
+
+        Set set = categories.entrySet();
+        Iterator i = set.iterator();
 
         //Initially set up ListView
-        List<Support> modCategories = new ArrayList<Support>();
-        for (Support s : categories) {
-            modCategories.add(s);
+        while(i.hasNext()) {
+            Map.Entry me = (Map.Entry)i.next();
+            initialCategories.add(me.getKey().toString());
         }
-
-        mSupportListAdapter.setData(modCategories);
+        mSupportListAdapter.setData(initialCategories);
     }
 
     @Override
-    public void onLoaderReset(Loader<SupportData> loader) {
+    public void onLoaderReset(Loader<Support> loader) {
     }
 
 }
